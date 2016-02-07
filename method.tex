@@ -1,0 +1,149 @@
+\chapter{Method of Web Traffic Classification}
+
+Precise traffic classification relies on a clear understanding of web traffic. However, as application protocols and development techniques of web applications keep evolving (particularly, the HTTP/2 protocol \cite{HTTP2} and new development techniques such as Ajax and node.js in recent years), the traffic characterization of web applications in prior studies may not reflect the state-of-the-art. Therefore, it is necessary to re-examine the traffic characteristics from typical web applications, and find out effective features for precise classification. Typical features in traffic characterization usually include application payloads, packet size, connection length and duration, packet inter-arrival time, and so on. We argued in \cite{TFT14} that the features may be unstable due to the variations of Internet traffic. In this work, we focus primarily on the application-level features that are not subject to the conditions in underlying networks. We study the traffic characteristics in popular web applications, including office applications (Google document), maps (Google maps), file sharing (Google drive and dropbox), video streaming (Youtube, Dailymotion, Tudou), and online games (Tetris battle and Dungeon Rampage on Facebook), in terms of the features on various browsers. We then extract the features from the main connection described in next section, so we do not need to compute the average and the standard deviation of the request/response lengths like \cite{TFT14}. 
+
+\section{Data collection}
+\label{sec:collect}
+
+A web application usually involves highly user interactions between the browser and the web server. Developers often use techniques such as Ajax to improve user experiences, e.g., by actively pushing web content to the browser before the user requests it. Moreover, new application protocols, particularly SPDY (\url{www.chromium.org/spdy}) primarily developed at Google and HTTP/2 based on SPDY, support features to reduce the latency of loading web pages for efficient web browsing. Major browsers such as IE, Firefox and Chrome have supported SPDY and HTTP/2, and most of them have enabled the support by default at the time of this thesis writing. The web traffic from the Google services covered in this work is all sent over SPDY. However, the traffic  from the other web applications (see Table~\ref{table:scenario_app}) also use SPDY, except that from Facebook, Dailymotion and Tudou. Thus, the traffic studied in this work reflect the latest status in the development of web applications.  
+
+Since a browser may keep prior web content in a local cache to speed up web browsing, we use the guest mode of a browser (in which the web content in prior browsing will not be preserved) when interacting with a web application to ensure a complete set of packets during the interaction can be collected. We browse only a specific web application at a time to ensure the web traffic is all from that application, and use Wireshark (\url{www.wireshark.org}) to collect the packets. 
+
+In this work, we consider several typical scenarios of using web applications, and capture the web traffic from them. This work covers totally five types of 9 web applications, as listed in Table~\ref{table:scenario_app}. We implore users to operate each web application on either Chrome or Firefox in the scenarios described in this table. A user is requested to interact with the applications for a period from one to two minutes as usual. We do not use Internet Explorer for several reasons. First, the browser is not supported on many operating systems, e.g., Mac OS and Android \cite{IBR}. Second, the usage of IE is reported to be dropped to only 7.1\% \cite{BS}. Third, Windows 10 no longer supports IE. 
+
+
+
+\begin{table}[ht]
+\centering
+\caption{The scenario of each web application.}
+\begin{tabular}{|l|l|p{0.2\linewidth}|p{0.45\linewidth}|}
+\hline no. &type &application &scenario \\
+\hline
+\hline 1 &Document &Googledoc & arbitrarily typing and editing\\
+\hline 2 &Map  &Googlemap & typing a location name, arbitrarily browsing the map and zooming-in and zooming-out\\
+\hline 3-5 &Video  & Youtube/ Tudou/ Dailymotion & typing a video name and arbitrarily moving to a specific time position during watching\\
+\hline 6-7 &File transfer & Google drive/ Dropbox & up/downloading \\
+\hline 8-9 &Gaming &Facebook : Tetris Battle/ Dungeon Rampage & arbitrary operation\\
+\hline 
+\end{tabular}
+\label{table:scenario_app}
+\end{table}
+
+
+\subsection{Extract statistical signature}
+A web application server may offer two or more services, so identifying the application based solely on the server's IP address is unreliable. For example, Google offers all its services on the same back-end server infrastructure (e.g., Google document and Google map can be provided by the same IP address 74.125.23.102 in our observation.), so users can reuse existing TCP connections to Google servers to access the other services \cite{TNW08}. Thus, classification with statistical features to distinguish the traffic from various web applications is necessary. 
+
+There are several requirements for the training packet traces to acquire precise application-level statistical features:
+\begin{enumerate}
+\item 
+The collected packet traces must be generated only from the targeted web application. We set the filter of Wireshark to capture the packets from or to port 80 and 443, and ask the user runs only a web application on the browser for every time of packet collection.
+\item
+The packets in the beginning of connections should be preserved for TCP state tracking, which is necessary for packet reassembly to recover the application-level features.
+\item
+The collected traffic should be sufficient and diverse because it may affect the accuracy and reliability. The collected traffic must contain the packet traces from the user interactions from the targeted web application. Moreover, we performed various interactions on a same web application for every collection to ensure the diversity of packet traces. For example, we changed the frequency of typing extremely every time when we collected the traffic from Google document.
+\end{enumerate}
+
+We set the target IP address and ports and follow the scenarios listed in Table~~\ref{table:scenario_app} to run the web applications when collecting the training packet traces. The quantity of collected traffic is important to reflect practical user behavior precisely. We take advantage of this to observe whether diverse user behaviors will impact on the classification or the characterization. Not only the user interactions, but also the environment will influence the results. For example, some browsers support the SPDY protocol, but Mozilla Firefox did not until 2011. The difference will influence the patterns of some flows when the packets are carried over different protocols.
+
+After collecting a new set of packet traces for a web application in the training set, we find the main connection by using the developer tool affiliated to the browser (e.g., Firebug on Firefox), which allows developers to view information about the transmitted messages. Hence we confirm which connection is the most representative of the user interactions by referring to the parameters in the HTTP messages summarized in Table~\ref{table:judge_main}. Nevertheless, many simultaneous connections may load web information in Table~\ref{table:content_other} to provide smooth user experiences, so we choose the longest one as the main connection. The only exception is the main connection for Tetris Battle, which transfers the elements related to the game platform instead of the game interactions. Thus, our mechanism takes advantage of this property to decide the main connection when a set of packet traces are analyzed. We can effectively segregate the noise, such as embedded advertising, with the method. This work uses the \texttt{libnids} library (\url{libnids.sourceforge.net}), which offers IP defragmentation, TCP stream reassembly and TCP port scan detection, to reconstruct the request-response streams of all the connections. The tool needs to track the states of TCP connections, so the beginning time of packet capturing is crucial to ensure important state transitions, e.g., 3-way handshaking, are not missing. We extract the source/destination IP addresses and source/destination ports to recognize each flow.
+
+
+
+
+\begin{table}[ht]
+\centering
+\caption{The judgment of the main connection.}
+\label{table:judge_main}
+\begin{tabular}{|l|l|l|}
+\hline
+              & Referred parameter                                                        & \multicolumn{1}{c|}{Judgment}                                                                                                                                                                                                                                                                                                            \\ \hline \hline
+Document      & bundles                                                                    & \begin{tabular}[c]{@{}l@{}}contain some arrays to store the characters we typed\end{tabular}                                                                                                                                                                                                                                              \\ \hline
+Map           & content-type                                                               & \begin{tabular}[c]{@{}l@{}}(1)image/png : comparing whether the preview picture\\     and the map showed on the website are the\\     same or not\\ (2)application/vnd.google.octet-stream-\\     compressible;charset=x-user-defined : this \\     message continuously appear as we \\     arbitrarily send actions to the map\end{tabular} \\ \hline
+Video         & content-type                                                               & For example, audio/mp4, video/webm and video/f4v.                                                                                                                                                                                                                                                                                           \\ \hline
+File transfer & \begin{tabular}[c]{@{}l@{}}content-disposition\\ content-type\end{tabular} & \begin{tabular}[c]{@{}l@{}}(1)checking the filename in the content-\\     disposition match with the file we \\    transfer \\ (2)comparing the content-type match with the\\     file we transfer\end{tabular}                                                                                                                     \\ \hline
+Game          & content-type                                                               & \begin{tabular}[c]{@{}l@{}}the content-type is application/x-shockwave-flash\\ game applications always use .swf to transfer files\end{tabular}                                                                                                                                                                                              \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\caption{The contents of other connections }
+\label{table:content_other}
+\begin{tabular}{|l|l|l|}
+\hline
+\multicolumn{1}{|c|}{Label}    & \multicolumn{1}{c|}{Web application} & \multicolumn{1}{c|}{Content-Type}                                                                                                         \\ \hline \hline
+Document                       & Google doc                           & \begin{tabular}[c]{@{}l@{}}application/json, text/html, text/javascript, \\ font/woff, image/png, image/gif, etc.\end{tabular}            \\ \hline
+Map                            & Google map                           & \begin{tabular}[c]{@{}l@{}}application/json, text/javascript, image/gif,\\ image/png, etc.\end{tabular}                                   \\ \hline
+\multirow{2}{*}{Game}          & Dungeon Rampage                      & \begin{tabular}[c]{@{}l@{}}text/html, application/x-javascript, image/png, \\ application/x-shockwave-flash, etc.\end{tabular}            \\ \cline{2-3} 
+                               & Tetris Battle                        & \begin{tabular}[c]{@{}l@{}}image/gif, image/png, application/xml,\\ application/x-shockwave-flash, audio/mpeg, etc.\end{tabular}          \\ \hline
+\multirow{2}{*}{File Transfer} & Google Drive                         & \begin{tabular}[c]{@{}l@{}}text/javascript, application/json, text/css, \\ text/html, image/gif, etc.\end{tabular}                        \\ \cline{2-3} 
+                               & Dropbox                              & \begin{tabular}[c]{@{}l@{}}application/x-javascript, image/gif, image/png,\\  application/octet-stream, text/css, etc.\end{tabular}       \\ \hline
+\multirow{3}{*}{Video Stream}  & Youtube                              & \begin{tabular}[c]{@{}l@{}}audio/mp4, video/mp4, text/javascript, text/css,\\ application/x-shockwave-flash, image/gif, etc.\end{tabular} \\ \cline{2-3} 
+                               & Dailymotion                          & \begin{tabular}[c]{@{}l@{}}application/x-shockwave-flash, text/css, \\ text/xml, image/jpeg, application/x-javascript, etc.\end{tabular}  \\ \cline{2-3} 
+                               & Tudou                                & \begin{tabular}[c]{@{}l@{}}application/x-shockwave-flash, image/jpeg,\\ application/octet-stream, text/xml, image/gif, etc.\end{tabular}  \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Feature definition} 
+We assume that $f_m$ is the main connection when a user interacts with a certain web application, and extract all $n$ messages to be analyzed (after processed by \texttt{libnids}). Let $s_i$ be the $i$-th message size in the request connection, where $i=1\ldots n$. We do not adopt the features in the bi-direction because including the features from the responses will introduce more ambiguity between some web applications. For example, the features generated from file download applications are sometimes similar to those from games and maps, and will decrease accuracy by 6\% according to our preliminary experiment (not shown in Chapter 4). This work counts the occurrence frequency of each message size, and takes the top five frequent sizes to be represented as a vector $v_i$ for every main connection.
+
+Table~\ref{table:feature_doc} presents an example, in which we arbitrarily typed in a Google document on Chrome for around two minutes. Thus, the feature to characterize this interaction is (38, 34, 220, 224, 116). However, the number of different message sizes may be less than five to form a five-tuple vector. We take two ways to solve this problem. Table~\ref{table:fill_max} is generated by watching a video clip on Dailymotion with Chrome. It describes that there is a vacancy within the vector. We can fill up the missing tuple with the mode (i.e, the most common value) of the other message sizes \cite{DM}, and the vector becomes (636, 665, 658, 589, 636). Table~\ref{table:fill_same} is generated by downloading a file from Dropbox on Firefox. The occurrence time of all message sizes are the same in this table. We choose the first one to fill up the vacancies, and the vector is (753, 202, 162, 753, 753). The message sizes mentioned in these three tables are sorted by the occurrence times in the decreasing order. The features are stable and the testing results are showed in Section~\ref{sec:result}.
+
+\
+\begin{table}[H]
+\centering
+\caption{A feature of editing by Google document.}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & ... & $s_n$\\
+\hline
+\hline Message size (bytes) & 38 & 34 & 220 & 224 & 116 & 199 & ... & $m_n$ \\
+\hline Count & 177 & 177 & 37 & 27 & 13 & 12 & ... & $c_n$\\
+\hline 
+\multicolumn{9}{l}{The vector is (38, 34, 220, 224, 116).}\\
+\end{tabular}
+\label{table:feature_doc}
+\end{table}
+
+\
+\begin{table}[H]
+\centering
+\caption{A feature of downloading by Dailymotion.}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ \\
+\hline
+\hline Message size (bytes) & 636 & 665 & 658 & 589 &\\
+\hline Count & 4 & 3 & 2 & 1 &\\
+\hline
+\multicolumn{6}{l}{The vector is (636, 665, 658, 589, 636).}\\ 
+\end{tabular}
+\label{table:fill_max}
+\end{table}
+
+\
+\begin{table}[H]
+\centering
+\caption{A feature of downloading by Dropbox.}
+\begin{tabular}{|l|c|c|c|c|c|}
+
+\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ \\
+\hline
+\hline Message size (bytes) & 753 & 202 & 162 &  &\\
+\hline Count & 1 & 1 & 1 &  &\\
+\hline
+\multicolumn{6}{l}{The vector is (753, 202, 172, 753, 753).}\\ 
+\end{tabular}
+\label{table:fill_same}
+\end{table}
+
+
+\section{System Workflow}
+Figure~\ref{Fig.system} illustrates the workflow of the classification process. A user may use either Mozilla Firefox or Google Chrome to run a web application as mentioned above. Simultaneously, the capture filter for the web application traffic is set to port 80 and 443 on the PC. The developer tool and Wireshark is employed to find the main connection that reflects user interactions most. Next, \texttt{libnids} will reassemble the captured packets to extract application-level messages. In the last step, these features extracted from the messages are fed into Weka (\url{http://www.cs.waikato.ac.nz/ml/weka}) for traffic classification with four machine learning methods: NBTree, Random Forest, J48graft and Naive Bayes.
+
+
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1.0\textwidth]{workflow}
+\end{center}
+\caption{System workflow of classification.}
+\label{Fig.system}
+\end{figure}

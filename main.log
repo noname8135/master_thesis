@@ -1,0 +1,930 @@
+This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.3)  7 FEB 2016 03:39
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**main
+(./main.tex
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks14
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen103
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen104
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count88
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count89
+\leftroot@=\count90
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count91
+\DOTSCASE@=\count92
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count93
+\c@MaxMatrixCols=\count94
+\dotsspace@=\muskip10
+\c@parentequation=\count95
+\dspbrk@lvl=\count96
+\tag@help=\toks16
+\row@=\count97
+\column@=\count98
+\maxfields@=\count99
+\andhelp@=\toks17
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks20
+\thm@bodyfont=\toks21
+\thm@headfont=\toks22
+\thm@notefont=\toks23
+\thm@headpunct=\toks24
+\thm@preskip=\skip46
+\thm@postskip=\skip47
+\thm@headsep=\skip48
+\dth@everypar=\toks25
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithms/algorithm.sty
+Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count100
+\float@exts=\toks26
+\float@box=\box28
+\@float@everytoks=\toks27
+\@floatcapt=\box29
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks28
+\c@algorithm=\count101
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count102
+\c@ALG@rem=\count103
+\c@ALG@nested=\count104
+\ALG@tlm=\skip49
+\ALG@thistlm=\skip50
+\c@ALG@Lnr=\count105
+\c@ALG@blocknr=\count106
+\c@ALG@storecount=\count107
+\c@ALG@tmpcounter=\count108
+\ALG@tmplength=\skip51
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks29
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: xetex.def on input line 94.
+
+(/usr/local/texlive/2015/texmf-dist/tex/xelatex/xetex-def/xetex.def
+File: xetex.def 2015/03/25 v4.04 LaTeX color/graphics driver for XeTeX (TeX Liv
+e/RRM/JK)
+))
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2014/10/28 v2.10 `tabularx' package (DPC)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/array.sty
+Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen114
+\extrarowheight=\dimen115
+\NC@list=\toks30
+\extratabsurround=\skip52
+\backup@length=\skip53
+)
+\TX@col@width=\dimen116
+\TX@old@table=\dimen117
+\TX@old@col=\dimen118
+\TX@target=\dimen119
+\TX@delta=\dimen120
+\TX@cols=\count109
+\TX@ftn=\toks31
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+\epsfxsize=\dimen121
+\epsfysize=\dimen122
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks32
+\verbatim@line=\toks33
+\verbatim@in@stream=\read1
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/wallpaper/wallpaper.sty
+Package: wallpaper 2005/01/18, v1.01 easy wallpaper formatting (MHFW)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count110
+\calc@Bcount=\count111
+\calc@Adimen=\dimen123
+\calc@Bdimen=\dimen124
+\calc@Askip=\skip54
+\calc@Bskip=\skip55
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count112
+\calc@Cskip=\skip56
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/eso-pic/eso-pic.sty
+Package: eso-pic 2015/04/20 v2.0e eso-pic (RN)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is not detected.
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: xetex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+))
+\wpXoffset=\skip57
+\wpYoffset=\skip58
+\tileXoffset=\skip59
+\tileYoffset=\skip60
+\tilewidth=\skip61
+\tileheight=\skip62
+\tileX=\skip63
+\tileY=\skip64
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip65
+\LTright=\skip66
+\LTpre=\skip67
+\LTpost=\skip68
+\LTchunksize=\count113
+\LTcapwidth=\dimen125
+\LT@head=\box30
+\LT@firsthead=\box31
+\LT@foot=\box32
+\LT@lastfoot=\box33
+\LT@cols=\count114
+\LT@rows=\count115
+\c@LT@tables=\count116
+\c@LT@chunks=\count117
+\LT@p@ftn=\toks34
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen126
+\captionmargin@=\dimen127
+\captionwidth=\dimen128
+\caption@tempdima=\dimen129
+\caption@indent=\dimen130
+\caption@parindent=\dimen131
+\caption@hangindent=\dimen132
+)
+\c@ContinuedFloat=\count118
+Package caption Info: float package is loaded.
+Package caption Info: longtable package is loaded.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2013/02/03 v1.3-62 longtable captions (AR)
+))
+\c@KVtest=\count119
+\sf@farskip=\skip69
+\sf@captopadj=\dimen133
+\sf@capskip=\skip70
+\sf@nearskip=\skip71
+\c@subfigure=\count120
+\c@subfigure@save=\count121
+\c@lofdepth=\count122
+\c@subtable=\count123
+\c@subtable@save=\count124
+\c@lotdepth=\count125
+\sf@top=\skip72
+\sf@bottom=\skip73
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen134
+\lightrulewidth=\dimen135
+\cmidrulewidth=\dimen136
+\belowrulesep=\dimen137
+\belowbottomsep=\dimen138
+\aboverulesep=\dimen139
+\abovetopsep=\dimen140
+\cmidrulesep=\dimen141
+\cmidrulekern=\dimen142
+\defaultaddspace=\dimen143
+\@cmidla=\count126
+\@cmidlb=\count127
+\@aboverulesep=\dimen144
+\@belowrulesep=\dimen145
+\@thisruleclass=\count128
+\@lastruleclass=\count129
+\@thisrulewidth=\dimen146
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2015/03/31 v1.8m multicolumn formatting (FMi)
+\c@tracingmulticols=\count130
+\mult@box=\box34
+\multicol@leftmargin=\dimen147
+\c@unbalance=\count131
+\c@collectmore=\count132
+\doublecol@number=\count133
+\multicoltolerance=\count134
+\multicolpretolerance=\count135
+\full@width=\dimen148
+\page@free=\dimen149
+\premulticols=\dimen150
+\postmulticols=\dimen151
+\multicolsep=\skip74
+\multicolbaselineskip=\skip75
+\partial@page=\box35
+\last@line=\box36
+\maxbalancingoverflow=\dimen152
+\mult@rightbox=\box37
+\mult@grightbox=\box38
+\mult@gfirstbox=\box39
+\mult@firstbox=\box40
+\@tempa=\box41
+\@tempa=\box42
+\@tempa=\box43
+\@tempa=\box44
+\@tempa=\box45
+\@tempa=\box46
+\@tempa=\box47
+\@tempa=\box48
+\@tempa=\box49
+\@tempa=\box50
+\@tempa=\box51
+\@tempa=\box52
+\@tempa=\box53
+\@tempa=\box54
+\@tempa=\box55
+\@tempa=\box56
+\@tempa=\box57
+\c@columnbadness=\count136
+\c@finalcolumnbadness=\count137
+\last@try=\dimen153
+\multicolovershoot=\dimen154
+\multicolundershoot=\dimen155
+\mult@nat@firstbox=\box58
+\colbreak@box=\box59
+\mc@col@check@num=\count138
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen156
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2005/09/27 v1.99g Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 334.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 349.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 350.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 351.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 352.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 353.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 354.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 355.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 356.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 357.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 358.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 359.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 360.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 361.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 362.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 363.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 364.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 365.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 366.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 367.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 368.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 376.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 377.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 378.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 379.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 380.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 381.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 382.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 383.
+Package textcomp Info: Setting lmtt sub-encoding to TS1/0 on input line 384.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 385.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 386.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 387.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 388.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 389.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 390.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 391.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 392.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 393.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 394.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 395.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 396.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 397.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 398.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 399.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 400.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 401.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 402.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 403.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 404.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 405.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
+) (./main.aux
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+
+LaTeX Warning: Label `' multiply defined.
+
+)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 336.
+LaTeX Font Info:    ... okay on input line 336.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 336.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 336.
+
+ (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 336.
+\AtBeginShipoutBox=\box60
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Try loading font information for U+msa on input line 386.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 386.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 386.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" >
+[1
+
+] (./abstract.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [1]) (./main.toc
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" >
+[1
+
+])
+\tf@toc=\write3
+\openout3 = `main.toc'.
+
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [2] (./main.lof)
+\tf@lof=\write4
+\openout4 = `main.lof'.
+
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [3
+
+] (./main.lot
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [4
+
+])
+\tf@lot=\write5
+\openout5 = `main.lot'.
+
+ (./intro.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [5]
+Chapter 1.
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [1
+
+]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [2]
+Overfull \hbox (177.30063pt too wide) in paragraph at lines 18--20
+\OT1/cmr/m/n/12 cally. In the ex-per-i-ments, we found that XXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXX.
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [3]) (./related.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [4]
+Chapter 2.
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [5
+
+]
+Missing character: There is no — in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [6]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [7]
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [8]
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [9]
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [10]
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [11]
+Missing character: There is no ’ in font cmr12!
+Missing character: There is no ’ in font cmr12!
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [12]
+Missing character: There is no ’ in font cmr12!
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [13]
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [14]
+Missing character: There is no ’ in font cmr12!
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [15]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [16]
+Underfull \hbox (badness 10000) in paragraph at lines 125--125
+[]|\OT1/cmr/m/n/12 well-known port
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+[]|\OT1/cmr/m/n/12 string-based
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 match-ing, reg-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 u-lar ex-pres-sion
+ []
+
+
+Underfull \hbox (badness 3872) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 match-ing and IP
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+[]|\OT1/cmr/m/n/12 accurate clas-si-fi-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 ca-tion ca-pa-bil-ity
+ []
+
+
+Underfull \hbox (badness 1005) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 and easy de-vel-op-
+ []
+
+
+Underfull \hbox (badness 2680) in paragraph at lines 126--126
+\OT1/cmr/m/n/12 can't be used in
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+\OT1/cmr/m/n/12 inter-arrival time,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+\OT1/cmr/m/n/12 flow du-ra-tion,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+\OT1/cmr/m/n/12 packet num-
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 127--127
+\OT1/cmr/m/n/12 port pro-to-cols si-
+ []
+
+
+Overfull \hbox (32.41704pt too wide) in paragraph at lines 122--131
+ [][] 
+ []
+
+) (./method.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [17]
+Chapter 3.
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [18
+
+]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [19]
+Underfull \hbox (badness 4279) in paragraph at lines 24--24
+[]|\OT1/cmr/m/n/12 Youtube/ Tu-
+ []
+
+
+Underfull \hbox (badness 4739) in paragraph at lines 25--25
+[]|\OT1/cmr/m/n/12 Google drive/
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+[]|\OT1/cmr/m/n/12 Facebook :
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+\OT1/cmr/m/n/12 Tetris Bat-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+\OT1/cmr/m/n/12 tle/ Dun-geon
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [20]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [21]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [22]
+Overfull \hbox (94.48291pt too wide) in paragraph at lines 57--66
+ [][] 
+ []
+
+
+Overfull \hbox (80.11778pt too wide) in paragraph at lines 72--85
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [23]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [24]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [25]
+File: workflow.pdf Graphic file (type QTm)
+
+<use  "workflow.pdf" >) (./evaluation.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [26]
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [27]
+Chapter 4.
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [28
+
+]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [29]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [30]
+Overfull \hbox (2.67232pt too wide) in paragraph at lines 44--45
+[]\OT1/cmr/m/n/12 Figure 4.1[] presents the top 10 fre-quent mes-sage sizes fro
+m the two browsers
+ []
+
+File: msg_size_distribution1.pdf Graphic file (type QTm)
+<use  "msg_size_distribution1.pdf" >
+Overfull \hbox (7.83325pt too wide) in paragraph at lines 50--50
+ [][] 
+ []
+
+File: msg_size_distribution2.pdf Graphic file (type QTm)
+<use  "msg_size_distribution2.pdf" >
+Overfull \hbox (7.83325pt too wide) in paragraph at lines 53--54
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [31]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [32]
+File: setlabel.pdf Graphic file (type QTm)
+ <use  "setlabel.pdf" >
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [33]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [34]
+Overfull \hbox (30.165pt too wide) in paragraph at lines 86--100
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [35]
+Overfull \hbox (35.71773pt too wide) in paragraph at lines 111--123
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [36]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [37]
+Overfull \hbox (43.44385pt too wide) in paragraph at lines 158--171
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [38]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [39]
+Overfull \hbox (46.1621pt too wide) in paragraph at lines 183--199
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [40]
+File: early_dr.pdf Graphic file (type QTm)
+ <use  "early_dr.pdf" >
+Overfull \hbox (39.00238pt too wide) in paragraph at lines 212--213
+ [] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [41]
+File: early_map.pdf Graphic file (type QTm)
+ <use  "early_map.pdf" >
+Overfull \hbox (39.00238pt too wide) in paragraph at lines 223--224
+ [] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [42]
+Missing character: There is no ï in font cmr12!
+
+Overfull \hbox (29.23985pt too wide) in paragraph at lines 233--246
+ [][] 
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [43]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [44]) (./conclusion.tex
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [45]
+Chapter 5.
+)
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [46
+
+] (./references.tex
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [47]
+Missing character: There is no í in font cmr12!
+Missing character: There is no ä in font cmr12!
+Missing character: There is no ä in font cmr12!
+
+Underfull \hbox (badness 1436) in paragraph at lines 20--22
+[]\OT1/cmr/m/n/12 TIEN THANH BUI, ``Anal-y-sis of Topol-ogy Poi-son-ing At-tack
+s in
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [48
+
+]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [49]
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
+[]$\OT1/cmtt/m/n/12 http : / / www . networkworld . com / article / 2840273 / s
+dn /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 71--73
+[]$\OT1/cmtt/m/n/12 http : / / www . wipro . com / documents / insights /
+ []
+
+
+Underfull \hbox (badness 1152) in paragraph at lines 83--85
+[]\OT1/cmr/m/n/12 M. Roughan, S. Sen, O. Spatscheck and N. Duffield, ``Class-of
+-
+ []
+
+File: ccu.jpg Graphic file (type QTm)
+<use  "ccu.jpg" > [50]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [51]
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [52]
+Missing character: There is no ’ in font cmr12!
+File: ccu.jpg Graphic file (type QTm)
+
+<use  "ccu.jpg" > [53])
+File: ccu.jpg Graphic file (type QTm)
+ <use  "ccu.jpg" > [54] (./main.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 5515 strings out of 493706
+ 78678 string characters out of 6145770
+ 146481 words of memory out of 5000000
+ 8711 multiletter control sequences out of 15000+600000
+ 14470 words of font info for 59 fonts, out of 8000000 for 9000
+ 1331 hyphenation exceptions out of 8191
+ 44i,16n,47p,1574b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on main.pdf (61 pages).

@@ -1,0 +1,27 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {chapter}{\numberline {2}Background and related work}{5}
+\contentsline {section}{\numberline {2.1}Software-defined network}{5}
+\contentsline {section}{\numberline {2.2}OpenFlow structure}{7}
+\contentsline {section}{\numberline {2.3}SDN security}{11}
+\contentsline {subsection}{\numberline {2.3.1}Controller}{11}
+\contentsline {subsection}{\numberline {2.3.2}Host}{11}
+\contentsline {subsection}{\numberline {2.3.3}Switch}{11}
+\contentsline {subsection}{\numberline {2.3.4}Hardening strategies}{11}
+\contentsline {section}{\numberline {2.4}}{16}
+\contentsline {chapter}{\numberline {3}Method of Web Traffic Classification}{18}
+\contentsline {section}{\numberline {3.1}Data collection}{19}
+\contentsline {subsection}{\numberline {3.1.1}Extract statistical signature}{20}
+\contentsline {subsection}{\numberline {3.1.2}Feature definition}{24}
+\contentsline {section}{\numberline {3.2}System Workflow}{26}
+\contentsline {chapter}{\numberline {4}Traffic Characterization and Classification Evaluation}{28}
+\contentsline {section}{\numberline {4.1}Scenarios of Packet Collection}{28}
+\contentsline {section}{\numberline {4.2}Traffic Characterization of Web Applications}{29}
+\contentsline {section}{\numberline {4.3}Feature analysis}{31}
+\contentsline {subsection}{\numberline {4.3.1}Message size distribution}{31}
+\contentsline {section}{\numberline {4.4}Classification results}{34}
+\contentsline {subsection}{\numberline {4.4.1}Classification with Similar Interactions in Each Run}{35}
+\contentsline {subsection}{\numberline {4.4.2}Classification with Diverse Interactions in Each Run}{38}
+\contentsline {subsection}{\numberline {4.4.3}Classification with Interactions from Multiple Users}{39}
+\contentsline {subsection}{\numberline {4.4.4}Early Classification}{40}
+\contentsline {section}{\numberline {4.5}Practice and Limitation}{44}
+\contentsline {chapter}{\numberline {5}Conclusion}{46}

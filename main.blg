@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+I found no \bibdata command---while reading file main.aux
+Warning--I didn't find a database entry for "TTN"
+Warning--I didn't find a database entry for "TSA"
+Warning--I didn't find a database entry for "AOT"
+Warning--I didn't find a database entry for "ASO"
+Warning--I didn't find a database entry for "PNV"
+Warning--I didn't find a database entry for "HTD"
+Warning--I didn't find a database entry for "SDN_WIKI"
+Warning--I didn't find a database entry for "OF_WIKI"
+Warning--I didn't find a database entry for "EAI06"
+Warning--I didn't find a database entry for "ATC13"
+Warning--I didn't find a database entry for "AIS14"
+Warning--I didn't find a database entry for "CMF04"
+Warning--I didn't find a database entry for "COC12"
+Warning--I didn't find a database entry for "FPN13"
+Warning--I didn't find a database entry for "RTC10"
+Warning--I didn't find a database entry for "ASA09"
+Warning--I didn't find a database entry for "FTC09"
+Warning--I didn't find a database entry for "SSAV_NWW"
+Warning--I didn't find a database entry for "FBC11"
+Warning--I didn't find a database entry for "TFT11"
+Warning--I didn't find a database entry for "TTC"
+Warning--I didn't find a database entry for "nDPI"
+Warning--I didn't find a database entry for "HTTP2"
+Warning--I didn't find a database entry for "TFT14"
+Warning--I didn't find a database entry for "IBR"
+Warning--I didn't find a database entry for "BS"
+Warning--I didn't find a database entry for "TNW08"
+Warning--I didn't find a database entry for "DM"
+You've used 0 entries,
+            2118 wiz_defined-function locations,
+            552 strings with 4231 characters,
+and the built_in function-call counts, 18 in all, are:
+= -- 0
+> -- 0
+< -- 0
++ -- 0
+- -- 0
+* -- 2
+:= -- 7
+add.period$ -- 0
+call.type$ -- 0
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 0
+duplicate$ -- 0
+empty$ -- 1
+format.name$ -- 0
+if$ -- 1
+int.to.chr$ -- 0
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 3
+num.names$ -- 0
+pop$ -- 0
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 1
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 0
+width$ -- 0
+write$ -- 2
+(There was 1 error message)
