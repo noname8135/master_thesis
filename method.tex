@@ -1,5 +1,84 @@
-\chapter{Method of Web Traffic Classification}
+\chapter{Method of malicious switch detection}
 
+-----------------------------------------------------------
+A compromised switch can also drop the packet it receives and cause DOS. The detection of this kind of attack is pretty straight-forwawrd, 
+
+we will focus on the MITM types of attack
+
+
+control-channel hijacking \cite{SIYN}. 
+
+
+Compromised switches not only have the same capabilities as the malicious hosts, but they are also capable of performing more dynamic and severe attacks.
+First, a compromised switch can be used for traffic eavesdropping. Both data and control traffic passing through the compromised switch can be replicated and sent to the attacker for further processing. Furthermore, the
+attacker can interfere with the control traffic passing through the compromised
+switches to perform man-in-mhe-middle attacks [8]. By doing so, the
+attacker can act as the controller to some target switches. The attacker can
+also spoof control messages to the controller on behalf of the target
+
+Below is our attack scenario assumption: 
+
+- All switches support the OpenFlow
+- protocol and are controlled by one OpenFlow controller
+- All switch follows the controller
+- Cloud service provider is trusted
+- potential flaw is unintentional z
+- Adversary either gain unfair resource, dos, info stealing
+- The switch has access to internet
+- Attacker can add,remove, modify entries
+- Attacker can’t change the way of switch processing
+- Attacker has no physical access
+- The network uses OpenFlow as southbound protocol
+- The control channel is properly protected with TLS protocol, meaning
+that it provides confidentiality for the control traffic as well as mutual
+authentication between the controller and switches.
+- Non-compromised switch operate normally
+
+Attacker sure can drop LLDP, resulting in DOS. However, it’s very noticeable.
+
+Packet pair
+
+- The dispersion in normal vs attack scenario, regardless of congestion
+
+
+Manet protection
+
+- Protection against packet dropping => Keep trust schema according to neighbors
+
+Possible solutions
+
+- Auth the host
+
+    - Implement public-private key structure
+    - Bring space/computation overhead, not very practical
+- Verify legitimacy of migration (Adopted)
+
+    - Controller receive Port\_Down signal before host migration
+    - Host become unreachable from previous location
+    - Add light overhead to pack-in
+- Auth for LLDP packets
+    - Add TLV authenticator to packet
+    - Calculated by DPID and Port number
+    - Fail to protect against LLDP relay
+
+
+The network-wise visibility is one of a key point we can use to solve some problem, comparing to the ordinary network.
+
+Most of the existing works assume that all of the openvswitches are trustable Scenario of “switch compromised”
+
+- 0days
+- login password guessed
+- Not the main purpose of this paper. We will be discussing the hazards, detection and prevention
+
+The capabilities of the attacker are largely determined by two
+factors: how TLS is used to protect control-plane communication, and whether
+the network uses in-band or out-of-band control channels. Additionally, some
+attacks are only possible if the attacker can perform control-channel hijacking
+instead of only being able to modify the flow-table of the compromised switch.
+
+Packet forwarded to non-existent ports are just dropped
+
+-===========================================================
 Precise traffic classification relies on a clear understanding of web traffic. However, as application protocols and development techniques of web applications keep evolving (particularly, the HTTP/2 protocol \cite{HTTP2} and new development techniques such as Ajax and node.js in recent years), the traffic characterization of web applications in prior studies may not reflect the state-of-the-art. Therefore, it is necessary to re-examine the traffic characteristics from typical web applications, and find out effective features for precise classification. Typical features in traffic characterization usually include application payloads, packet size, connection length and duration, packet inter-arrival time, and so on. We argued in \cite{TFT14} that the features may be unstable due to the variations of Internet traffic. In this work, we focus primarily on the application-level features that are not subject to the conditions in underlying networks. We study the traffic characteristics in popular web applications, including office applications (Google document), maps (Google maps), file sharing (Google drive and dropbox), video streaming (Youtube, Dailymotion, Tudou), and online games (Tetris battle and Dungeon Rampage on Facebook), in terms of the features on various browsers. We then extract the features from the main connection described in next section, so we do not need to compute the average and the standard deviation of the request/response lengths like \cite{TFT14}. 
 
 \section{Data collection}
@@ -142,7 +221,7 @@ Figure~\ref{Fig.system} illustrates the workflow of the classification process. 
 
 \begin{figure}[H]
 \begin{center} 
-\includegraphics[width=1.0\textwidth]{workflow}
+\includegraphics[width=1.0\textwidth]{figures/SDN_structure.png}
 \end{center}
 \caption{System workflow of classification.}
 \label{Fig.system}

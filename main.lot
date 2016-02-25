@@ -1,19 +1,19 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Pros and cons of each classification.\relax }}{17}
+\contentsline {table}{\numberline {2.1}{\ignorespaces Pros and cons of each classification.\relax }}{19}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {3.1}{\ignorespaces The scenario of each web application.\relax }}{21}
-\contentsline {table}{\numberline {3.2}{\ignorespaces The judgment of the main connection.\relax }}{23}
-\contentsline {table}{\numberline {3.4}{\ignorespaces A feature of editing by Google document.\relax }}{25}
-\contentsline {table}{\numberline {3.5}{\ignorespaces A feature of downloading by Dailymotion.\relax }}{25}
-\contentsline {table}{\numberline {3.6}{\ignorespaces A feature of downloading by Dropbox.\relax }}{25}
-\contentsline {table}{\numberline {3.3}{\ignorespaces The contents of other connections \relax }}{27}
+\contentsline {table}{\numberline {3.1}{\ignorespaces The scenario of each web application.\relax }}{28}
+\contentsline {table}{\numberline {3.2}{\ignorespaces The judgment of the main connection.\relax }}{31}
+\contentsline {table}{\numberline {3.4}{\ignorespaces A feature of editing by Google document.\relax }}{32}
+\contentsline {table}{\numberline {3.5}{\ignorespaces A feature of downloading by Dailymotion.\relax }}{32}
+\contentsline {table}{\numberline {3.6}{\ignorespaces A feature of downloading by Dropbox.\relax }}{32}
+\contentsline {table}{\numberline {3.3}{\ignorespaces The contents of other connections \relax }}{34}
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces The average number of connections and the standard deviation (SD) for each web application.\relax }}{30}
-\contentsline {table}{\numberline {4.2}{\ignorespaces True/false positive rates of classifying the interactive connections.\relax }}{35}
-\contentsline {table}{\numberline {4.3}{\ignorespaces True/false positive rates of classifying the interactive connections with additional web applications.\relax }}{36}
-\contentsline {table}{\numberline {4.4}{\ignorespaces True/false positive rates of classifying downloading connections.\relax }}{37}
-\contentsline {table}{\numberline {4.5}{\ignorespaces True/false positive rates of classifying all connections.\relax }}{39}
-\contentsline {table}{\numberline {4.6}{\ignorespaces True/false positive rates of classifying the interactive connections for multiple users.\relax }}{40}
-\contentsline {table}{\numberline {4.7}{\ignorespaces Early classification true/false positive rate in all connections.\relax }}{43}
+\contentsline {table}{\numberline {4.1}{\ignorespaces The average number of connections and the standard deviation (SD) for each web application.\relax }}{37}
+\contentsline {table}{\numberline {4.2}{\ignorespaces True/false positive rates of classifying the interactive connections.\relax }}{42}
+\contentsline {table}{\numberline {4.3}{\ignorespaces True/false positive rates of classifying the interactive connections with additional web applications.\relax }}{43}
+\contentsline {table}{\numberline {4.4}{\ignorespaces True/false positive rates of classifying downloading connections.\relax }}{44}
+\contentsline {table}{\numberline {4.5}{\ignorespaces True/false positive rates of classifying all connections.\relax }}{46}
+\contentsline {table}{\numberline {4.6}{\ignorespaces True/false positive rates of classifying the interactive connections for multiple users.\relax }}{47}
+\contentsline {table}{\numberline {4.7}{\ignorespaces Early classification true/false positive rate in all connections.\relax }}{50}
 \addvspace {10\p@ }

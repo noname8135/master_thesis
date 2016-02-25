@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99992 (TeX Live 2015) (preloaded format=xelatex 2016.2.3)  7 FEB 2016 03:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.3)  21 FEB 2016 04:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -112,7 +112,6 @@ LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 52.
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/algorithms/algorithm.sty
-Invalid UTF-8 byte or sequence at line 11 replaced by U+FFFD.
 Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
 nment
 
@@ -165,11 +164,18 @@ Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
-Package graphics Info: Driver file: xetex.def on input line 94.
+Package graphics Info: Driver file: pdftex.def on input line 94.
 
-(/usr/local/texlive/2015/texmf-dist/tex/xelatex/xetex-def/xetex.def
-File: xetex.def 2015/03/25 v4.04 LaTeX color/graphics driver for XeTeX (TeX Liv
-e/RRM/JK)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count109
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
@@ -190,7 +196,7 @@ Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
 \TX@old@col=\dimen118
 \TX@target=\dimen119
 \TX@delta=\dimen120
-\TX@cols=\count109
+\TX@cols=\count110
 \TX@ftn=\toks31
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/epsfig.sty
@@ -209,15 +215,15 @@ Package: wallpaper 2005/01/18, v1.01 easy wallpaper formatting (MHFW)
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count110
-\calc@Bcount=\count111
+\calc@Acount=\count111
+\calc@Bcount=\count112
 \calc@Adimen=\dimen123
 \calc@Bdimen=\dimen124
 \calc@Askip=\skip54
 \calc@Bskip=\skip55
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count112
+\calc@Ccount=\count113
 \calc@Cskip=\skip56
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/eso-pic/eso-pic.sty
@@ -226,15 +232,9 @@ Package: eso-pic 2015/04/20 v2.0e eso-pic (RN)
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/atbegshi.sty
 Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
 
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is not detected.
+Package ifpdf Info: pdfTeX in PDF mode is detected.
 ))
 (/usr/local/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
@@ -242,8 +242,9 @@ Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
 (/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
-Package xcolor Info: Driver file: xetex.def on input line 225.
+Package xcolor Info: Driver file: pdftex.def on input line 225.
 Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
 Package xcolor Info: Model `RGB' extended on input line 1353.
 Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
 Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
@@ -272,16 +273,16 @@ Package: longtable 2014/10/28 v4.11 Multi-page Table package (DPC)
 \LTright=\skip66
 \LTpre=\skip67
 \LTpost=\skip68
-\LTchunksize=\count113
+\LTchunksize=\count114
 \LTcapwidth=\dimen125
 \LT@head=\box30
 \LT@firsthead=\box31
 \LT@foot=\box32
 \LT@lastfoot=\box33
-\LT@cols=\count114
-\LT@rows=\count115
-\c@LT@tables=\count116
-\c@LT@chunks=\count117
+\LT@cols=\count115
+\LT@rows=\count116
+\c@LT@tables=\count117
+\c@LT@chunks=\count118
 \LT@p@ftn=\toks34
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/subfig/subfig.sty
@@ -301,24 +302,24 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@parindent=\dimen131
 \caption@hangindent=\dimen132
 )
-\c@ContinuedFloat=\count118
+\c@ContinuedFloat=\count119
 Package caption Info: float package is loaded.
 Package caption Info: longtable package is loaded.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2013/02/03 v1.3-62 longtable captions (AR)
 ))
-\c@KVtest=\count119
+\c@KVtest=\count120
 \sf@farskip=\skip69
 \sf@captopadj=\dimen133
 \sf@capskip=\skip70
 \sf@nearskip=\skip71
-\c@subfigure=\count120
-\c@subfigure@save=\count121
-\c@lofdepth=\count122
-\c@subtable=\count123
-\c@subtable@save=\count124
-\c@lotdepth=\count125
+\c@subfigure=\count121
+\c@subfigure@save=\count122
+\c@lofdepth=\count123
+\c@subtable=\count124
+\c@subtable@save=\count125
+\c@lotdepth=\count126
 \sf@top=\skip72
 \sf@bottom=\skip73
 )
@@ -338,24 +339,24 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen141
 \cmidrulekern=\dimen142
 \defaultaddspace=\dimen143
-\@cmidla=\count126
-\@cmidlb=\count127
+\@cmidla=\count127
+\@cmidlb=\count128
 \@aboverulesep=\dimen144
 \@belowrulesep=\dimen145
-\@thisruleclass=\count128
-\@lastruleclass=\count129
+\@thisruleclass=\count129
+\@lastruleclass=\count130
 \@thisrulewidth=\dimen146
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2015/03/31 v1.8m multicolumn formatting (FMi)
-\c@tracingmulticols=\count130
+\c@tracingmulticols=\count131
 \mult@box=\box34
 \multicol@leftmargin=\dimen147
-\c@unbalance=\count131
-\c@collectmore=\count132
-\doublecol@number=\count133
-\multicoltolerance=\count134
-\multicolpretolerance=\count135
+\c@unbalance=\count132
+\c@collectmore=\count133
+\doublecol@number=\count134
+\multicoltolerance=\count135
+\multicolpretolerance=\count136
 \full@width=\dimen148
 \page@free=\dimen149
 \premulticols=\dimen150
@@ -386,14 +387,14 @@ Package: multicol 2015/03/31 v1.8m multicolumn formatting (FMi)
 \@tempa=\box55
 \@tempa=\box56
 \@tempa=\box57
-\c@columnbadness=\count136
-\c@finalcolumnbadness=\count137
+\c@columnbadness=\count137
+\c@finalcolumnbadness=\count138
 \last@try=\dimen153
 \multicolovershoot=\dimen154
 \multicolundershoot=\dimen155
 \mult@nat@firstbox=\box58
 \colbreak@box=\box59
-\mc@col@check@num=\count138
+\mc@col@check@num=\count139
 )
 (/usr/local/texlive/2015/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen156
@@ -489,442 +490,900 @@ LaTeX Warning: Label `' multiply defined.
 
 LaTeX Warning: Label `' multiply defined.
 
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
-
-LaTeX Warning: Label `' multiply defined.
-
 )
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 336.
-LaTeX Font Info:    ... okay on input line 336.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 336.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 336.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 333.
+LaTeX Font Info:    ... okay on input line 333.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 333.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 333.
 
  (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 336.
-\AtBeginShipoutBox=\box60
+LaTeX Font Info:    ... okay on input line 333.
+
+(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count140
+\scratchdimen=\dimen157
+\scratchbox=\box60
+\nofMPsegments=\count141
+\nofMParguments=\count142
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count143
+\MPscratchDim=\dimen158
+\MPnumerator=\count144
+\makeMPintoPDFobject=\count145
+\everyMPtoPDFconversion=\toks36
+) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\AtBeginShipoutBox=\box61
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 386.
+LaTeX Font Info:    Try loading font information for U+msa on input line 383.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 386.
+LaTeX Font Info:    Try loading font information for U+msb on input line 383.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 386.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 383.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" >
+<figures/ccu.jpg, id=1, 153.57375pt x 140.32425pt>
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 383.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
 [1
 
-] (./abstract.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [1]) (./main.toc
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" >
-[1
+{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figur
+es/ccu.jpg>] (./abstract.tex
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 4.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [1]) (./main.toc
+File: figures/ccu.jpg Graphic file (type jpg)
 
-])
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 15.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [1
+
+]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 34.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [2])
 \tf@toc=\write3
 \openout3 = `main.toc'.
 
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [2] (./main.lof)
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 414.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
+[3] (./main.lof)
 \tf@lof=\write4
 \openout4 = `main.lof'.
 
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [3
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 414.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [4
 
-] (./main.lot
-File: ccu.jpg Graphic file (type QTm)
-
-<use  "ccu.jpg" > [4
+]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 414.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [5]
+(./main.lot
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 17.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [6
 
 ])
 \tf@lot=\write5
 \openout5 = `main.lot'.
 
  (./intro.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [5]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
+[7]
 Chapter 1.
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [1
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 9.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [1
 
 ]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [2]
-Overfull \hbox (177.30063pt too wide) in paragraph at lines 18--20
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 17.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [2]
+Overfull \hbox (177.30063pt too wide) in paragraph at lines 20--22
 \OT1/cmr/m/n/12 cally. In the ex-per-i-ments, we found that XXXXXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXXXXXX.
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [3]) (./related.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [4]
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 34.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [3]) (./background.tex
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [4]
 Chapter 2.
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [5
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 8.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [5
 
 ]
-Missing character: There is no ‚Äî in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [6]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [7]
-File: ccu.jpg Graphic file (type QTm)
+<figures/SDN_structure.png, id=51, 603.75563pt x 352.31625pt>
+File: figures/SDN_structure.png Graphic file (type png)
 
-<use  "ccu.jpg" > [8]
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [9]
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [10]
-File: ccu.jpg Graphic file (type QTm)
+<use figures/SDN_structure.png>
+Package pdftex.def Info: figures/SDN_structure.png used on input line 11.
+(pdftex.def)             Requested size: 331.50238pt x 193.4466pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 20.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [6 <./figures/SDN_structure.png>]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 28.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [7]
+<figures/openflow_switch_overview.PNG, id=61, 566.86781pt x 456.20438pt>
+File: figures/openflow_switch_overview.PNG Graphic file (type png)
 
-<use  "ccu.jpg" > [11]
-Missing character: There is no ‚Äô in font cmr12!
-Missing character: There is no ‚Äô in font cmr12!
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [12]
-Missing character: There is no ‚Äô in font cmr12!
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [13]
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
+<use figures/openflow_switch_overview.PNG>
+Package pdftex.def Info: figures/openflow_switch_overview.PNG used on input lin
+e 31.
+(pdftex.def)             Requested size: 429.00238pt x 345.26404pt.
 
-<use  "ccu.jpg" > [14]
-Missing character: There is no ‚Äô in font cmr12!
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [15]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [16]
-Underfull \hbox (badness 10000) in paragraph at lines 125--125
+Overfull \hbox (39.00238pt too wide) in paragraph at lines 31--32
+ [] 
+ []
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 37.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [8 <./figures/openflow_switch_overview.PNG>]
+File: figures/ccu.jpg Graphic file (type jpg)
+
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 45.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [9]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 53.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [10]
+<figures/columns_of_flow_entry.png, id=73, 445.665pt x 63.23625pt>
+File: figures/columns_of_flow_entry.png Graphic file (type png)
+
+<use figures/columns_of_flow_entry.png>
+Package pdftex.def Info: figures/columns_of_flow_entry.png used on input line 5
+8.
+(pdftex.def)             Requested size: 390.0pt x 55.33832pt.
+
+<figures/packet_flow_thru_processing_pipeline.png, id=74, 614.295pt x 331.2375p
+t>
+File: figures/packet_flow_thru_processing_pipeline.png Graphic file (type png)
+ <use figures/packet_flow_thru_processing_pipeline.png>
+Package pdftex.def Info: figures/packet_flow_thru_processing_pipeline.png used 
+on input line 66.
+(pdftex.def)             Requested size: 467.99881pt x 252.35468pt.
+
+Overfull \hbox (77.99881pt too wide) in paragraph at lines 66--67
+ [] 
+ []
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 71.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [11 <./figures/columns_of_flow_entry.png>]
+<figures/group_table.png, id=79, 522.45187pt x 76.78688pt>
+File: figures/group_table.png Graphic file (type png)
+
+<use figures/group_table.png>
+Package pdftex.def Info: figures/group_table.png used on input line 74.
+(pdftex.def)             Requested size: 390.0pt x 57.32053pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 83.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [12 <./figures/packet_flow_thru_processing_pipeline.png> <./figures/group_tabl
+e.png>]
+File: figures/ccu.jpg Graphic file (type jpg)
+
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 95.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [13]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 99.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [14]
+<figures/Host_tracking.png, id=91, 702.625pt x 762.85pt>
+File: figures/Host_tracking.png Graphic file (type png)
+
+<use figures/Host_tracking.png>
+Package pdftex.def Info: figures/Host_tracking.png used on input line 103.
+(pdftex.def)             Requested size: 390.0pt x 423.44496pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 108.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [15]
+<figures/LLDP_packet_format.png, id=95, 368.87813pt x 100.87688pt>
+File: figures/LLDP_packet_format.png Graphic file (type png)
+
+<use figures/LLDP_packet_format.png>
+Package pdftex.def Info: figures/LLDP_packet_format.png used on input line 111.
+
+(pdftex.def)             Requested size: 390.0pt x 106.65343pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 116.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [16 <./figures/Host_tracking.png>] <figures/TLV_structure.png, id=101, 290.585
+63pt x 97.86563pt>
+File: figures/TLV_structure.png Graphic file (type png)
+
+<use figures/TLV_structure.png>
+Package pdftex.def Info: figures/TLV_structure.png used on input line 119.
+(pdftex.def)             Requested size: 390.0pt x 131.35725pt.
+
+<figures/OFDP_procedure.png, id=102, 613.54219pt x 383.93437pt>
+File: figures/OFDP_procedure.png Graphic file (type png)
+
+<use figures/OFDP_procedure.png>
+Package pdftex.def Info: figures/OFDP_procedure.png used on input line 127.
+(pdftex.def)             Requested size: 390.0pt x 244.04752pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 132.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [17 <./figures/LLDP_packet_format.png> <./figures/TLV_structure.png>]
+
+LaTeX Warning: Reference `' on page 18 undefined on input line 134.
+
+
+LaTeX Warning: Reference `' on page 18 undefined on input line 134.
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 135.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [18 <./figures/OFDP_procedure.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 142--142
 []|\OT1/cmr/m/n/12 well-known port
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
 []|\OT1/cmr/m/n/12 string-based
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 match-ing, reg-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 u-lar ex-pres-sion
  []
 
 
-Underfull \hbox (badness 3872) in paragraph at lines 126--126
+Underfull \hbox (badness 3872) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 match-ing and IP
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
 []|\OT1/cmr/m/n/12 accurate clas-si-fi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 ca-tion ca-pa-bil-ity
  []
 
 
-Underfull \hbox (badness 1005) in paragraph at lines 126--126
+Underfull \hbox (badness 1005) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 and easy de-vel-op-
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 126--126
+Underfull \hbox (badness 2680) in paragraph at lines 143--143
 \OT1/cmr/m/n/12 can't be used in
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--127
+Underfull \hbox (badness 10000) in paragraph at lines 144--144
 \OT1/cmr/m/n/12 inter-arrival time,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--127
+Underfull \hbox (badness 10000) in paragraph at lines 144--144
 \OT1/cmr/m/n/12 flow du-ra-tion,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--127
+Underfull \hbox (badness 10000) in paragraph at lines 144--144
 \OT1/cmr/m/n/12 packet num-
  []
 
 
-Underfull \hbox (badness 2418) in paragraph at lines 127--127
+Underfull \hbox (badness 2418) in paragraph at lines 144--144
 \OT1/cmr/m/n/12 port pro-to-cols si-
  []
 
 
-Overfull \hbox (32.41704pt too wide) in paragraph at lines 122--131
+Overfull \hbox (32.41704pt too wide) in paragraph at lines 139--148
  [][] 
  []
 
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 152.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [19]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 157.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [20]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 161.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
+[21]
+Overfull \hbox (29.62898pt too wide) in paragraph at lines 163--165
+\OT1/cmr/m/n/12 attacker-controlled host can also ex-ploit-ing host track-ing s
+er-vice to XXXXXXXXX,
+ []
+
 ) (./method.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [17]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [22]
 Chapter 3.
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [18
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 18.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [23
 
 ]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [19]
-Underfull \hbox (badness 4279) in paragraph at lines 24--24
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 60.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [24]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ú in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+
+Overfull \hbox (170.73029pt too wide) in paragraph at lines 78--80
+[]\OT1/cmr/m/n/12 -===========================================================
+ []
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 80.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [25]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 87.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [26]
+Underfull \hbox (badness 4279) in paragraph at lines 100--100
 []|\OT1/cmr/m/n/12 Youtube/ Tu-
  []
 
 
-Underfull \hbox (badness 4739) in paragraph at lines 25--25
+Underfull \hbox (badness 4739) in paragraph at lines 101--101
 []|\OT1/cmr/m/n/12 Google drive/
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--26
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
 []|\OT1/cmr/m/n/12 Facebook :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--26
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
 \OT1/cmr/m/n/12 Tetris Bat-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 26--26
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
 \OT1/cmr/m/n/12 tle/ Dun-geon
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [20]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [21]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [22]
-Overfull \hbox (94.48291pt too wide) in paragraph at lines 57--66
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 113.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [27]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 120.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [28]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 125.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
+[29]
+Overfull \hbox (94.48291pt too wide) in paragraph at lines 133--142
  [][] 
  []
 
 
-Overfull \hbox (80.11778pt too wide) in paragraph at lines 72--85
+Overfull \hbox (80.11778pt too wide) in paragraph at lines 148--161
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [23]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [24]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [25]
-File: workflow.pdf Graphic file (type QTm)
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 167.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [30]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 167.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [31]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 217.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
 
-<use  "workflow.pdf" >) (./evaluation.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [26]
-File: ccu.jpg Graphic file (type QTm)
+[32]
+File: figures/SDN_structure.png Graphic file (type png)
+ <use figures/SDN_structure.png>
+Package pdftex.def Info: figures/SDN_structure.png used on input line 221.
+(pdftex.def)             Requested size: 390.0pt x 227.57823pt.
+) (./evaluation.tex
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
 
-<use  "ccu.jpg" > [27]
+[33]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [34]
 Chapter 4.
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [28
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 8.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [35
 
 ]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [29]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [30]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 14.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [36]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 39.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+
+[37]
 Overfull \hbox (2.67232pt too wide) in paragraph at lines 44--45
 []\OT1/cmr/m/n/12 Figure 4.1[] presents the top 10 fre-quent mes-sage sizes fro
 m the two browsers
  []
 
-File: msg_size_distribution1.pdf Graphic file (type QTm)
-<use  "msg_size_distribution1.pdf" >
+<msg_size_distribution1.pdf, id=176, 639.89063pt x 403.5075pt>
+File: msg_size_distribution1.pdf Graphic file (type pdf)
+
+<use msg_size_distribution1.pdf>
+Package pdftex.def Info: msg_size_distribution1.pdf used on input line 50.
+(pdftex.def)             Requested size: 390.0pt x 245.92987pt.
+
 Overfull \hbox (7.83325pt too wide) in paragraph at lines 50--50
  [][] 
  []
 
-File: msg_size_distribution2.pdf Graphic file (type QTm)
-<use  "msg_size_distribution2.pdf" >
+<msg_size_distribution2.pdf, id=177, 639.89063pt x 383.93437pt>
+File: msg_size_distribution2.pdf Graphic file (type pdf)
+
+<use msg_size_distribution2.pdf>
+Package pdftex.def Info: msg_size_distribution2.pdf used on input line 53.
+(pdftex.def)             Requested size: 390.0pt x 234.00043pt.
+
 Overfull \hbox (7.83325pt too wide) in paragraph at lines 53--54
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [31]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [32]
-File: setlabel.pdf Graphic file (type QTm)
- <use  "setlabel.pdf" >
-File: ccu.jpg Graphic file (type QTm)
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 57.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [38]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 60.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [39 <./msg_size_distribution1.pdf> <./msg_size_distribution2.pdf
 
-<use  "ccu.jpg" > [33]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [34]
+pdfTeX warning: pdflatex (file ./msg_size_distribution2.pdf): PDF inclusion: mu
+ltiple pdfs with page group included in a single page
+>] <setlabel.pdf, id=193, 588.69937pt x 270.25969pt>
+File: setlabel.pdf Graphic file (type pdf)
+ <use setlabel.pdf>
+Package pdftex.def Info: setlabel.pdf used on input line 65.
+(pdftex.def)             Requested size: 390.0pt x 179.04pt.
+File: figures/ccu.jpg Graphic file (type jpg)
+
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 75.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [40 <./setlabel.pdf>]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 80.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [41]
 Overfull \hbox (30.165pt too wide) in paragraph at lines 86--100
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [35]
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 105.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [42]
 Overfull \hbox (35.71773pt too wide) in paragraph at lines 111--123
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [36]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [37]
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 128.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [43]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 153.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [44]
 Overfull \hbox (43.44385pt too wide) in paragraph at lines 158--171
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [38]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [39]
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 172.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [45]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 178.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [46]
 Overfull \hbox (46.1621pt too wide) in paragraph at lines 183--199
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [40]
-File: early_dr.pdf Graphic file (type QTm)
- <use  "early_dr.pdf" >
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 205.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [47] <early_dr.pdf, id=224, 654.19406pt x 283.81032pt>
+File: early_dr.pdf Graphic file (type pdf)
+
+<use early_dr.pdf>
+Package pdftex.def Info: early_dr.pdf used on input line 212.
+(pdftex.def)             Requested size: 429.00238pt x 186.1158pt.
+
 Overfull \hbox (39.00238pt too wide) in paragraph at lines 212--213
  [] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [41]
-File: early_map.pdf Graphic file (type QTm)
- <use  "early_map.pdf" >
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 217.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [48] <early_map.pdf, id=228, 688.07062pt x 307.1475pt>
+File: early_map.pdf Graphic file (type pdf)
+
+<use early_map.pdf>
+Package pdftex.def Info: early_map.pdf used on input line 223.
+(pdftex.def)             Requested size: 429.00238pt x 191.50273pt.
+
 Overfull \hbox (39.00238pt too wide) in paragraph at lines 223--224
  [] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [42]
-Missing character: There is no √Ø in font cmr12!
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 228.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [49 <./early_dr.pdf>]
+Missing character: There is no √ in font cmr12!
+Missing character: There is no Ø in font cmr12!
 
 Overfull \hbox (29.23985pt too wide) in paragraph at lines 233--246
  [][] 
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [43]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [44]) (./conclusion.tex
-File: ccu.jpg Graphic file (type QTm)
-
-<use  "ccu.jpg" > [45]
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 252.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [50 <./early_map.pdf>]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 256.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [51])
+(./conclusion.tex
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [52]
 Chapter 5.
-)
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [46
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+) (./references.tex
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 1.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [53
 
-] (./references.tex
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [47]
-Missing character: There is no √≠ in font cmr12!
-Missing character: There is no √§ in font cmr12!
-Missing character: There is no √§ in font cmr12!
+]
+Missing character: There is no √ in font cmr12!
+Missing character: There is no ≠ in font cmr12!
+Missing character: There is no √ in font cmr12!
+Missing character: There is no § in font cmr12!
+Missing character: There is no √ in font cmr12!
+Missing character: There is no § in font cmr12!
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 27.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [54
 
-Underfull \hbox (badness 1436) in paragraph at lines 20--22
+]
+Underfull \hbox (badness 1436) in paragraph at lines 28--30
 []\OT1/cmr/m/n/12 TIEN THANH BUI, ``Anal-y-sis of Topol-ogy Poi-son-ing At-tack
 s in
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [48
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 55.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [55]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ì in font cmr12!
 
-]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [49]
-Underfull \hbox (badness 10000) in paragraph at lines 68--69
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
+[]$\OT1/cmtt/m/n/12 https : / / www . opennetworking . org / images / stories /
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--83
+\OT1/cmtt/m/n/12 downloads / sdn-[]resources / onfspecifications / openflow /
+ []
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 84.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [56]
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 []$\OT1/cmtt/m/n/12 http : / / www . networkworld . com / article / 2840273 / s
 dn /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--73
+Underfull \hbox (badness 10000) in paragraph at lines 94--95
 []$\OT1/cmtt/m/n/12 http : / / www . wipro . com / documents / insights /
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 83--85
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
+[]$\OT1/cmtt/m/n/12 https : / / web . nvd . nist . gov / view / vuln / detail ?
+ vulnId =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--104
+[]$\OT1/cmtt/m/n/12 https : / / web . nvd . nist . gov / view / vuln / detail ?
+ vulnId =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--107
+[]$\OT1/cmtt/m/n/12 https : / / web . nvd . nist . gov / view / vuln / detail ?
+ vulnId =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--111
+[]$\OT1/cmtt/m/n/12 http : / / usenix . org / legacy / publications / library /
+ proceedings /
+ []
+
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 119.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [57]
+Underfull \hbox (badness 1152) in paragraph at lines 121--123
 []\OT1/cmr/m/n/12 M. Roughan, S. Sen, O. Spatscheck and N. Duffield, ``Class-of
 -
  []
 
-File: ccu.jpg Graphic file (type QTm)
-<use  "ccu.jpg" > [50]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [51]
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [52]
-Missing character: There is no ‚Äô in font cmr12!
-File: ccu.jpg Graphic file (type QTm)
+File: figures/ccu.jpg Graphic file (type jpg)
+<use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 153.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [58]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 177.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [59]
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 208.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
 
-<use  "ccu.jpg" > [53])
-File: ccu.jpg Graphic file (type QTm)
- <use  "ccu.jpg" > [54] (./main.aux)
+[60]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ô in font cmr12!
+)
+File: figures/ccu.jpg Graphic file (type jpg)
+ <use figures/ccu.jpg>
+Package pdftex.def Info: figures/ccu.jpg used on input line 422.
+(pdftex.def)             Requested size: 209.14575pt x 191.1018pt.
+ [61] (./main.aux)
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5515 strings out of 493706
- 78678 string characters out of 6145770
- 146481 words of memory out of 5000000
- 8711 multiletter control sequences out of 15000+600000
+ 6315 strings out of 493089
+ 92260 string characters out of 6134843
+ 166738 words of memory out of 5000000
+ 9617 multiletter control sequences out of 15000+600000
  14470 words of font info for 59 fonts, out of 8000000 for 9000
- 1331 hyphenation exceptions out of 8191
+ 1144 hyphenation exceptions out of 8191
  44i,16n,47p,1574b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on main.pdf (70 pages, 438695 bytes).
+PDF statistics:
+ 310 PDF objects out of 1000 (max. 8388607)
+ 198 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 76 words of extra memory for PDF output out of 10000 (max. 10000000)
 
-Output written on main.pdf (61 pages).
