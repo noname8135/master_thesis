@@ -1,0 +1,9 @@
+ID		Threat name		Location	Consequences
+1		System Vulnerability		all devices		Device compromised
+2		Administrative Interface Compromised		all administrative interfaces		Device compromised
+3		Application Vulnerability		SDN application		Malicious command to controller
+4		Host Hijacking		host		Attacker receives target host's traffic
+5		Link Fabrication		link between switch		Add non-existing link to controller's view
+6		Flow Entry Modification		switch		Unwanted packet redirection or drop
+7		Malicious Packet Controller DOS 		host, switch		DOS to controller
+8		Control-channel Hijacking		switch		Manipulate control traffic
