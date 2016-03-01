@@ -2,7 +2,7 @@
 
 \section{Software-defined network}
 \label{Software-defined network}
-Software defined network (SDN) is a dynamic, manageable and cost-effective next-generation network structure. It is designed for dealing with large scale, complex, dynamic data center network existing today. There are a lot of new concepts behind SDN. First of all, it is software programmable. One can configure, manage, and optimize network resources very quickly via dynamic, automated SDN programs. For instance, companies are able to develop new applications that can further improve manageability. Secondly, it is very flexible. Abstracting control from forwarding lets administrators dynamically adjust network-wide traffic flow to meet changing needs. Furthermore, a complete scope of the network is maintained by the central unit - controller. It is also in charge of the flows inside the network. Finally, just like all other open source softwares, it is open standards-based and vendor-neutral. SDN simplifies network design and operation because instructions are provided by SDN controllers instead of multiple, vendor-specific devices and protocols. To sum up, SDN provides greater visibility into network, reduces manual intervention, improves maintainability, and requires less hardware budget. Figure~\ref{SDN_struct} simply shows the architectural components of SDN, which are applications, network devices, Northbound and Southbound interface. In a SDN architecture, network devices are all\textit{switches} instead of \textit{switches and routers} in legacy network. In the following subsections, we will be looking at the structure of SDN.
+Software defined network (SDN) is a dynamic, manageable and cost-effective next-generation network structure. It is designed to deal with large scale, complex, dynamic data center network existing today. There are a lot of new concepts behind SDN. First of all, it is software programmable. One can configure, manage, and optimize network resources very quickly via dynamic, automated SDN programs. For instance, companies are able to develop new applications that can further improve manageability. Secondly, it is very flexible. Abstracting control from forwarding lets administrators being able to adjust network-wide traffic flow to meet changing needs dynamically. Furthermore, a complete scope of the network is maintained by the central unit - controller, which is useful for application developing. It is also in charge of the flows inside the network. Finally, just like all other open source softwares, it is open standards-based and vendor-neutral. SDN simplifies network design and operation because instructions are provided by SDN controllers instead of multiple, vendor-specific devices and protocols. To sum up, SDN provides greater visibility into network, reduces manual intervention, improves maintainability, and requires less hardware budget. Figure~\ref{SDN_struct} simply shows the architectural components of SDN, which are applications, network devices, Northbound and Southbound interface. In a SDN architecture, network devices are all\textit{switches} instead of \textit{switches and routers} in legacy network. In the following subsections, we will be looking at the structure of SDN.
 
 \begin{figure}[H]
 \begin{center} 
@@ -18,7 +18,7 @@ SDN applications are programs that communicate their requirements and desired be
 
 \subsection{SDN Controller}
 \label{SDN Controller}
-The SDN controller is a centralized entity in charge of the rules of network flows. It is responsible for managing the forwarding rules in every SDN switches and provides the abstract view of the network, incuding network topology and the state of network resources, SDN Applications need. The interface for the communication between controller layer and infrastructure layer is called Southbound Interface (SBI). Some examples are OpFlex, SoftRouter, Puppet and OpenFlow \cite{LNRSW04}. OpenFlow is the first and most popular Southbound protocol for the time being. An SDN Controller consists of NBI Agents, the SDN Control Logic, and the SBI. NOX, POX, Floodlight, Ryu and Maestro are some open source controllers that are widely used \cite{GKPPCMS08,MBF}.
+The SDN controller is a centralized entity in charge of the rules of network flows. It is responsible for managing the forwarding rules in every SDN switches and provides the abstract view of the network, incuding network topology and the state of network resources, SDN Applications need. The interface for the communication between controller layer and infrastructure layer is called Southbound Interface (SBI). Some examples are OpFlex, SoftRouter, Puppet and OpenFlow \cite{LNRSW04}. OpenFlow is the first and most popular Southbound protocol for the time being. An SDN Controller consists of NBI Agents, the SDN Control Logic, and the SBI. NOX, POX, Floodlight, Ryu and Maestro are some open source controllers that are widely used \cite{GKPPCMS08,EZA11}.
 
 \section{OpenFlow switch}
 \label{OpenFlow switch}
@@ -38,14 +38,13 @@ The \textit{OpenFlow channel} is the interface for the controller to configure s
 
 \subsection{OpenFlow port}
 \label{OpenFlow port}
-OpenFlow switches are logically connected to each other by OpenFlow ports. Similarly to ports in traditional network, OpenFlow ports are the network interfaces for packets transmission. A switch sends and receives packets via ingress ports and output ports. There are \textit{physical ports}, ports that correspond to a hardware interface of switch, and \textit{logical port}, higher abstraction ports that may map to various physical ports. When ports are added or removed, the content of flow tables remain unchanged
-. Packets forwarded to deleted or non-existent ports are just dropped, and if a same port number is reused after deletion, any remaining flow entries referencing to that particular number may be re-targeted to the new port, which possibly lead to undesirable result. Therefore, controller should clean up the reference of a port if a port is deleted. \cite{OF_SPEC}
+OpenFlow switches are logically connected to one another by OpenFlow ports. Similarly to ports in traditional network, OpenFlow ports are the network interfaces for packets transmission. A switch sends and receives packets via ingress ports and output ports. There are two kinds of port. A \textit{physical ports}ports correspond to a hardware interface of switch, and a \textit{logical port} is higher abstraction ports that may map to various physical ports. When ports are added or removed, the content of flow tables remain unchanged. Packets forwarded to deleted or non-existent ports are just dropped, and if a same port number is reused after deletion, any remaining flow entries referencing to that particular number may be re-targeted to the new port, which possibly lead to undesirable result. Therefore, controller should clean up the reference of a port if a port is deleted. \cite{OF_SPEC}
 
 \subsection{OpenFlow table and entry}
 \label{OpenFlow table and entry}
 When packets arrive at a switch, it will go through the processing pipeline. Figure~\ref{PPPIS} is a complete picture of packet processing flow inside the switch. In the pipeline, there are one or more \textit{flow tables}, and each packet is associated with an empty \textit{action set} at the beginning. Processing always starts with the first table in ingress processing. Each OpenFLow table contains multiple flow entries. Figure~\ref{FE_Col} is the columns of a flow entry. A flow entry is identified by its match fields and priority. Packets will be matched with \textit{match field}, which consists of ingress port, packet header and other optional pipeline fields. When a flow entry is matched, it will modify the action set according to its instruction. Some example of the actions are output to a specific port, drop and change TTL in the packet.
 
-There is an entry that set all matching fields to wildcard, resulting in matching all value, with a priority of 0. When a packet does not matched by all other entries in all the flow tables, it is processed according to this entry. Normally it will be encapsulated and sent the the controller, the controller decides how it should be processed, and a new flow entry will be added according to the result.
+There is an entry that set all matching fields to wildcard, resulting in matching all value, with the lowest priority. When a packet does not matched by all other entries in all the flow tables, it is processed according to this entry. Normally it will be encapsulated and sent the the controller, the controller decides how it should be processed, and a new flow entry will be added according to the result.
 
 If a flow entry does not specify next flow table, all actions in the action set are executed and the whole process inside the switch is complete. Egress processing happens after the output port is determined, its structure and mechanism is almost identical to ingress processing. It is an optional feature. It if it is not enabled, the packet is then processed by output port and in most case forwarded out of the switch. \cite{OF_SPEC}
 
@@ -53,18 +52,18 @@ Another type of OpenFlow table is called \textit{group table}. A flow entry may 
 
 \begin{figure}[H]
 \begin{center} 
-\includegraphics[width=1\textwidth]{figures/columns_of_flow_entry.png}
-\end{center}
-\caption{Columns of a flow entry}
-\label{FE_Col}
-\end{figure}
-
-\begin{figure}[H]
-\begin{center} 
 \includegraphics[width=1.2\textwidth]{figures/packet_flow_thru_processing_pipeline.png}
 \end{center}
 \caption{Packet processing pipeline in switch}
 \label{PPPIS}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1\textwidth]{figures/columns_of_flow_entry.png}
+\end{center}
+\caption{Columns of a flow entry}
+\label{FE_Col}
 \end{figure}
 
 \begin{figure}[H]
@@ -77,15 +76,23 @@ Another type of OpenFlow table is called \textit{group table}. A flow entry may 
 
 \section{Topology discovery services}
 \label{Topology discovery services}
-Topology managing in SDN is quite different from it is in regular network. To realize centralized control and high programmability, controllers need to maintain the visibility of the whole network. Therefore, topology discovery services play a important role in SDN. These services are try to achieve auto adjustment when the topology alternate, which reduce the need of man effort significantly when it comes to network managing. The topology system include three parts: switch discovery, host tracking, and internal link. We will describe how these parts work individually in the following subsection.
+Topology managing in SDN is quite different from it is in regular network. To realize centralized control and high programmability, controllers need to maintain the visibility of the whole network. Therefore, topology discovery services play an important role in SDN. These services try to achieve auto adjustment when the topology alternate, which reduce the need of man effort significantly when it comes to network managing. The topology system include three parts: switch discovery, host tracking, and internal link. We will describe how these parts work individually in the following subsection.
 
 \subsection{Switch discovery service}
 \label{Switch discovery service}
-Switch discovery is rather intuitive. When a switch try to initiate a connection with controller, the OpenFlow channel will be established just like we mentioned in~\ref{OpenFlow Channel and Control Channel}, the information of the switch will be sent to the controller and stored for future usage. 
+When a switch try to initiate a connection with controller, the OpenFlow channel will be established just like we mentioned in~\ref{OpenFlow Channel and Control Channel}, the information of the switch will be sent to the controller and stored for future usage. 
 
 \subsection{Host tracking service}
 \label{Host tracking service}
-In a controller, Host Profiles are maintained to keep track of the location of a host. When a Packet-Miss happen like we stated in the second paragraph of~\ref{OpenFlow table and entry}, a Packet\_In message, along with the missed packet's information, will be sent to the controller. The controller will lookup the Host Profiles it maintains. If the Host Profile of the host cannot be found, controller assume a new host join the network and add this information. But if there is a conflict between the Host Profile and the Packet\_In message, the controller treat this as a host migration and update the location information of the Host Profile. Figure~\ref{HTS} is a illustration of this service.
+In a controller, Host Profiles are maintained to keep track of the location of a host. When a Packet-Miss happen like we stated in the second paragraph of~\ref{OpenFlow table and entry}, a Packet\_In message, along with the missed packet's information, will be sent to the controller. Then the controller will lookup the Host Profiles it maintains. If the Host Profile of the host cannot be found, controller assume a new host join the network and add this information. But if there is a conflict between the Host Profile and the Packet\_In message, the controller treat this as a host migration and update the location information of the Host Profile. Figure~\ref{HTS} is a illustration of host tracking service.
+
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1\textwidth]{figures/Host_tracking.png}
+\end{center}
+\caption{Host tracking service.}
+\label{HTS}
+\end{figure}
 
 \subsection{Link discovery service}
 \label{Link discovery service}
@@ -93,22 +100,13 @@ When we refer to Link discovery, we mean the procedure of discovering the link b
 
 The OFDP leverages the Link Layer Discovery Protocol (LLDP) with subtle modifications to perform topology discovery in an OpenFlow network. LLDP is originally implemented by Ethernet switches to exchange its identity and capabilities with a physically adjacent layer 2 peer, its EtherType field is 0x88cc. LLDP packets are sent regularly via each port of a switch \cite{LLDP_WS}. The information learned from received LLDP packets is stored by all the switches and the packets will not be forwarded after being sent across a single hop. Figure~\ref{LLDP_frame} shows the structure of LLDP Ethernet frame structure. Each LLDP Data Unit contains a sequence of type-length-value (TLV) like Figure~\ref{TLV}. As OFDP use a normal destination multi-cast MAC, OFDP advertisements would be forwarded by backbone switches. OFDP will not interfere with LLDP messages that the backbone networks may have implemented as it uses a different MAC address. \cite{OFDP_GENI}
 
-However, OFDP operates quite differently from LLDP. Just like we mentioned in the beginning of this section~\ref{Topology discovery services}, the topology information is kept by the controller instead of OpenFlow switch, and an OpenFlow switch will do nothing more than forward the LLDP packet. The simplified process is shown in Figure~\ref{OFDP}. All switches have a pre-installed rule in their flow table, sending any LLDP packet received from any port, except the controller port, back to controller via Packet\_In. Initially, controller creates an individual LLDP packet for each port on each switch via Packet\_Out message, each LLDP packets has their own Chassis ID. In the example figure, after receiving LLDP packet from controller, S1 send it out on Port 1 and received by S2 on Port 3. As a result to the pre-installed forwarding rule, switch S2 forwards the received LLDP packet to the controller via a Packet\_In message. This Packet\_In message contains meta data such as the ID of the switch and the ingress port via which the packet was received. Thus, the controller can now infer that there exists a link between Port 1 of S1 and Port 3 of S2, and this information will be added to controller's topology database. After running this process through all the switches, controller is able to obtain all link between switches in the network. The entire discovery process is performed periodically with a typical default interval size of 5 seconds. \cite{PPTI14}
-
-
-\begin{figure}[H]
-\begin{center} 
-\includegraphics[width=1\textwidth]{figures/Host_tracking.png}
-\end{center}
-\caption{Host tracking service}
-\label{HTS}
-\end{figure}
+However, OFDP operates quite differently from LLDP. Just like we mentioned in the beginning of this section~\ref{Topology discovery services}, the topology information is kept by the controller instead of OpenFlow switch, and an OpenFlow switch will do nothing more than forward the LLDP packet. The simplified process is shown in Figure~\ref{OFDP}. All switches have a pre-installed rule in their flow table, sending any LLDP packet received from any port, except the controller port, back to controller via Packet\_In. Initially, controller creates an individual LLDP packet for each port on each switch via Packet\_Out message, each LLDP packets has their own Chassis ID. In the example figure, after receiving LLDP packet from controller, S1 sends it out on Port 1 and received by S2 on Port 3. As a result to the pre-installed forwarding rule, switch S2 forwards the received LLDP packet to the controller via a Packet\_In message. This Packet\_In message contains meta data such as the ID of the switch and the ingress port via which the packet was received. Thus, the controller can now infer that there exists a link between Port 1 of S1 and Port 3 of S2, and this information will be added to controller's topology database. After running this process through all ports on all the switches, controller is able to obtain all link between switches in the network. The entire discovery process is performed periodically with a typical default interval size of 5 seconds. \cite{PPTI14}
 
 \begin{figure}[H]
 \begin{center} 
 \includegraphics[width=1\textwidth]{figures/LLDP_packet_format.png}
 \end{center}
-\caption{LLDP packet frame structure\cite{LLDP_WS}}
+\caption{LLDP packet frame structure. \cite{LLDP_WS}}
 \label{LLDP_frame}
 \end{figure}
 
@@ -116,7 +114,7 @@ However, OFDP operates quite differently from LLDP. Just like we mentioned in th
 \begin{center} 
 \includegraphics[width=1\textwidth]{figures/TLV_structure.png}
 \end{center}
-\caption{TLV structure \cite{LLDP_WS}}
+\caption{TLV structure. \cite{LLDP_WS}}
 \label{TLV}
 \end{figure}
 
@@ -129,8 +127,15 @@ However, OFDP operates quite differently from LLDP. Just like we mentioned in th
 \end{figure}
 
 \section{SDN security}
-As SDN brings fascinating development to network technology, its security has become a top concern. As a consequence of introducing a new structure, new protocols and new concepts, there will be more vectors that we should be concerned about in SDN. For instances, applications inside the controller might have flaws, control channel should be secured carefully, take what a malicious user inside the network can achieve into consideration, and a lot more. And don't forget, beside those new elements, attacks may also happen in non-SDN-specific ways. Figure~\ref{SND_threat_overview} is a whole picture attacks we discuss and where they might possibly take place inside SDN, and Table~\ref{table:sdn_threats} contains further description of these threats with correspondent to their id. In this chapter, we will talk about SDN security-related issues. We will focus on some of them and discuss about the attack scenarios, possible consequences and countermeasures. With all the wonderful features of SDN, we believe it is possible to come up with good solutions to deal with the security problems.
+As SDN brings fascinating development to network technology, its security has become a top concern. As a consequence of introducing a new structure, new protocols and new concepts, there will be more vectors that we should be concerned about in SDN. For instances, applications inside the controller might have flaws, control channel should be secured carefully, what a malicious host inside the network can achieve should be considered, and a lot more. And don't forget, beside those new elements, attacks may also happen in non-SDN-specific ways, such as system vulnerability explout, administrative interface brute forcing etc. Figure~\ref{SND_threat_overview} is a whole picture of attacks we discuss and where they might possibly take place inside SDN, and Table~\ref{table:sdn_threats} contains further description of these threats with correspondent to their id number. In this chapter, we will talk about SDN security-related issues. We will focus on some of them and discuss about the attack scenarios, possible consequences and countermeasures. With all the wonderful features of SDN, we believe it is possible to come up with good solutions to deal with these security problems.
 
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1\textwidth]{figures/SDN_threat_overview.png}
+\end{center}
+\caption{SDN threat overview.}
+\label{SND_threat_overview}
+\end{figure}
 
 \begin{table}[H]
 \centering
@@ -151,26 +156,17 @@ As SDN brings fascinating development to network technology, its security has be
 \label{table:sdn_threats}
 \end{table}
 
-\begin{figure}[H]
-\begin{center} 
-\includegraphics[width=1\textwidth]{figures/SDN_threat_overview.png}
-\end{center}
-\caption{SDN threat overview.}
-\label{SND_threat_overview}
-\end{figure}
-
-
 \subsection{General security}
 There are quite a few hardware devices, such as controllers, switches and hosts in SDN network. One should never overlook the devices security, regardless of whether it is inside a SDN network or not. For example, all these devices might possibly contain some software vulnerabilities inside their system. Some vulnerabilities found in recent years in the systems are Heartbleeding, Poodle and Shellshock \cite{HB,POODLE,SHELLSHOCK}. In addition to the system, other software parts of SDN, such as applications and Northbound APIs might also contain some software vulnerabilities. Moreover, one might be able to gain unauthorized access to the network physically or virtually, by using trivial methods like brute forcing the administrative interface or a physical break in. 
 
 To deal with these kind of threat, all the best practices for hardening servers are applicable. Autonomic trust management technique could be used to harden these components in the network \cite{YZP11}. Also, Diego et al. propose replication, dynamic device association and self-healing concepts in their work to reinforce the security \cite{KDFRV13}. As to the administrative interface, organizations would definitely want to implement and activate Role-Based Access Control (RBAC) policies and event logging \cite{FFR09}. With all these methods, the damage will be reduced if controller compromise should happen.
 
 \subsection{Controller and control channel attack}
-SDN is a centralized controllable network structure. One can easily imagine that how a malicious controller can bring great hazard. If the controller is compromised, it will give the access to control of the flow in the network under that controller to attacker. By manipulating the flows, one may cause Deny Of Service (DOS) between the desired connections or Man In The Middle (MITM) with spoofed Southbound api message to redirect flow to host they have access. Beside that, all the sensitive information including information of devices, network topology and all the cryptographic keys will fall into attacker's hand, resulting in damage expansion. It is also hard to detect such a threat, since with what one can do with a controller, it is quite possible to avoid many intrusion detection methods. Therefore, it is often known as the most severe threat in SDN.
+SDN is a centralized controllable network structure. One can easily imagine that how a malicious controller can bring great hazard. If the controller is compromised, it will give the access to control of the flow in the network under that controller to attacker. By manipulating the flows, one may cause Deny Of Service (DOS) between the desired connections or Man In The Middle (MITM) with spoofed Southbound api message to redirect flow to host they have access. Beside that, all the sensitive information including information of devices, network topology and all the cryptographic keys, which reside in controller, will fall into attacker's hand, resulting in damage expansion. It is also hard to detect such a threat, since with what one can do with a controller, it is quite possible to avoid many intrusion detection methods. Therefore, it is often known as the most severe threat in SDN. The possibilities of controller being compromised including malicious applications that send unwanted command through northbound api, vulnerabilities on controller or administrative stations etc.
 
-The possibilities of controller being compromised including malicious applications that send unwanted command through northbound api, vulnerabilities on controller or administrative stations etc. With a compromised switch, one may also reconfigure it to use an attacker-controlled controller than the one it should. This is called Control-channel hijacking attack. By manipulating the control traffic, attacker is able to spoof any message to the target controller. An attacker also have chance to perform a DOS to the controller by deliberately crafting malicious packets for controller to process slowly with a switch or host. Nevertheless, this kind of attack depends on the design and implementation of the controller heavily \cite{AAS14}.
+With a compromised switch, one may also reconfigure it to use an attacker-controlled controller than the one it should. This is called Control-channel hijacking attack. By manipulating the control traffic, attacker is able to spoof any message to the target controller. An attacker also have chance to perform a DOS to the controller by deliberately crafting malicious packets for controller to process slowly with a switch or host. Nevertheless, this kind of attack depends on the design and implementation of the controller heavily \cite{AAS14}.
 
-As a countermeasure to malicious application, the security policy enforcement kernel, FortNox, introduced by Phillip et al. implements a rule detection engine and role-based authentication to mediate all OpenFlow rule insertion requests \cite{PSYFTG12}. As to securing the channel, using out-of-band network for control traffic could reduce the chance of undesired control channel manipulation. Also, one should always use cryptographic methods such as SSL/TLS to secure the channels. However, it is not enough, vulnerabilities of SSL/TLS have been proposed and proven \cite{HRKC12}. Kreutz et al. propose the concept of dynamic trust model and replication to maintain a trustful relationship among the connections between controller and design a secure and dependable control platform to enforce security \cite{KDFRV13}. 
+As a countermeasure to malicious application, the security policy enforcement kernel, FortNox, introduced by Phillip et al. implements a rule detection engine and role-based authentication to mediate all OpenFlow rule insertion requests \cite{PSYFTG12}. As to securing the conotrol channel, using out-of-band network for control traffic could reduce the chance of undesired control channel manipulation. Also, one should always use cryptographic methods such as SSL/TLS to secure the channels. However, it is not enough, vulnerabilities of SSL/TLS have been proposed and proven \cite{HRKC12}. Kreutz et al. propose the concept of dynamic trust model and replication to maintain a trustful relationship among the connections between controller and design a secure and dependable control platform to enforce security \cite{KDFRV13}. 
 
 \subsection{Topology poisoning attacks}
 So far, the topology poisoning attacks have been discussed in many papers. The main idea behind it is to trick controller into believing the existence of a non-existing link by exploiting some traits of topology management service. One can initiate such type of attack with either a switch or a host.
