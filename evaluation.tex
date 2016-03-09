@@ -1,18 +1,14 @@
-\chapter{Traffic Characterization and Classification Evaluation}
-\label{classification}
-In this chapter, we will discuss how to collect the traffic of web applications in detail and present not only the traffic characterization of various web applications, but also the accuracy of their classification.
+\chapter{Experiment And Evaluation}
+In this chapter, we are going to talk about the implementation of our experiment to evaluate the methods we proposed in chapter 3. First, we will list the software and config setting in detail.
 
-\section{Scenarios of Packet Collection}
-\label{sec:scenario}
-The network traffic is generated from user interactions on individual applications. We choose the following web applications for analysis: (1) Google docs for the office application, (2) Google map for the map application, (3) Youtube, Tudou, Dailymotion for the video streaming applications, (4) Google drive and Dropbox for the file transfer applications, and (5) Tetris Battle and Dungeon Rampage on Facebook for the game applications. In this work, we repeatedly performed the following actions ten times on either Chrome (version 41.0.2272.89) or Firefox (version 36.0.1) for a period from one to two minutes each time.
+\section{Environment for experiment}
+VM tutorial provided by official
+ryu\_manager 3.6
+mininet 2.1.0
 
-The interactions in the office application involve arbitrarily typing characters and changing the colors. The interactions in the map application involve typing an arbitrary location name to be searched in the map, zooming-in and zooming-out the map, and browsing the map. The interactions in the game application involve (1) arbitrarily moving a role and fighting with the other roles in Dungron Rampage and (2) moving and rotating the blocks in Tetris Battle. We also consider the download functions in the video streaming and the file sharing applications. In the former application, we typed an arbitrary video name and moved to a specific time position when watching a video or just silently watched a video until the end. In the latter application, we just downloaded an arbitrary file and waited silently until the completion of the file up/downloading.
+----------------------
 
-\section{Traffic Characterization of Web Applications}
-\label{sec:characterization}
-A typical web session may involve several parallel connections to speed up fetching the requested content, and may also contain irrelevant connections such as those for advertisements. Thus, we manually inspected the content of requests and responses with the developer tools affiliated with the browsers when collecting the related packet traces, and focused only on the connections over which the user interactions are carried. To determine the connections associated with the user interactions, we watched the ongoing connection activities in the developer tool when interacting with a web application, and selected the longest one of these active connections as the main connection. Table~\ref{table:num_connection} presents the average number of connections and the standard deviation in each web application. The values demonstrate that Chrome creates more connections than Firefox on average to transfer the data for the same web applications. 
-
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{The average number of connections and the standard deviation (SD) for each web application.}
 \label{table:num_connection}

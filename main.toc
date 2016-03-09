@@ -7,28 +7,27 @@
 \contentsline {subsection}{\numberline {2.2.1}OpenFlow Channel and Control Channel}{9}
 \contentsline {subsection}{\numberline {2.2.2}OpenFlow port}{9}
 \contentsline {subsection}{\numberline {2.2.3}OpenFlow table and entry}{10}
-\contentsline {section}{\numberline {2.3}Topology discovery services}{12}
+\contentsline {section}{\numberline {2.3}Topology discovery services}{11}
 \contentsline {subsection}{\numberline {2.3.1}Switch discovery service}{12}
-\contentsline {subsection}{\numberline {2.3.2}Host tracking service}{13}
+\contentsline {subsection}{\numberline {2.3.2}Host tracking service}{12}
 \contentsline {subsection}{\numberline {2.3.3}Link discovery service}{13}
-\contentsline {section}{\numberline {2.4}SDN security}{17}
-\contentsline {subsection}{\numberline {2.4.1}General security}{19}
-\contentsline {subsection}{\numberline {2.4.2}Controller and control channel attack}{20}
+\contentsline {section}{\numberline {2.4}SDN security}{16}
+\contentsline {subsection}{\numberline {2.4.1}General security}{18}
+\contentsline {subsection}{\numberline {2.4.2}Controller and control channel attack}{19}
 \contentsline {subsection}{\numberline {2.4.3}Topology poisoning attacks}{21}
-\contentsline {chapter}{\numberline {3}Method of malicious switch detection}{24}
-\contentsline {section}{\numberline {3.1}Data collection}{27}
-\contentsline {subsection}{\numberline {3.1.1}Extract statistical signature}{28}
-\contentsline {subsection}{\numberline {3.1.2}Feature definition}{31}
-\contentsline {section}{\numberline {3.2}System Workflow}{34}
-\contentsline {chapter}{\numberline {4}Traffic Characterization and Classification Evaluation}{37}
-\contentsline {section}{\numberline {4.1}Scenarios of Packet Collection}{37}
-\contentsline {section}{\numberline {4.2}Traffic Characterization of Web Applications}{38}
-\contentsline {section}{\numberline {4.3}Feature analysis}{40}
-\contentsline {subsection}{\numberline {4.3.1}Message size distribution}{40}
-\contentsline {section}{\numberline {4.4}Classification results}{43}
-\contentsline {subsection}{\numberline {4.4.1}Classification with Similar Interactions in Each Run}{44}
-\contentsline {subsection}{\numberline {4.4.2}Classification with Diverse Interactions in Each Run}{47}
-\contentsline {subsection}{\numberline {4.4.3}Classification with Interactions from Multiple Users}{48}
-\contentsline {subsection}{\numberline {4.4.4}Early Classification}{49}
-\contentsline {section}{\numberline {4.5}Practice and Limitation}{53}
-\contentsline {chapter}{\numberline {5}Conclusion and future work}{55}
+\contentsline {chapter}{\numberline {3}Method of malicious switch detection}{23}
+\contentsline {section}{\numberline {3.1}Data collection}{26}
+\contentsline {subsection}{\numberline {3.1.1}Extract statistical signature}{27}
+\contentsline {subsection}{\numberline {3.1.2}Feature definition}{30}
+\contentsline {section}{\numberline {3.2}System Workflow}{33}
+\contentsline {chapter}{\numberline {4}Experiment And Evaluation}{36}
+\contentsline {section}{\numberline {4.1}Environment for experiment}{36}
+\contentsline {section}{\numberline {4.2}Feature analysis}{38}
+\contentsline {subsection}{\numberline {4.2.1}Message size distribution}{38}
+\contentsline {section}{\numberline {4.3}Classification results}{41}
+\contentsline {subsection}{\numberline {4.3.1}Classification with Similar Interactions in Each Run}{42}
+\contentsline {subsection}{\numberline {4.3.2}Classification with Diverse Interactions in Each Run}{45}
+\contentsline {subsection}{\numberline {4.3.3}Classification with Interactions from Multiple Users}{46}
+\contentsline {subsection}{\numberline {4.3.4}Early Classification}{47}
+\contentsline {section}{\numberline {4.4}Practice and Limitation}{51}
+\contentsline {chapter}{\numberline {5}Conclusion and future work}{53}
