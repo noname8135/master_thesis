@@ -1,21 +1,17 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces SDN architectural structure\relax }}{6}
-\contentsline {figure}{\numberline {2.2}{\ignorespaces OpenFlow switch structure overview\relax }}{8}
-\contentsline {figure}{\numberline {2.3}{\ignorespaces Columns of a flow entry\relax }}{11}
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Columns of a group entry\relax }}{11}
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Host tracking service.\relax }}{13}
-\contentsline {figure}{\numberline {2.6}{\ignorespaces LLDP packet frame structure. \cite {LLDP_WS}\relax }}{15}
-\contentsline {figure}{\numberline {2.7}{\ignorespaces TLV structure. \cite {LLDP_WS}\relax }}{15}
-\contentsline {figure}{\numberline {2.8}{\ignorespaces A illustration of OFDP procedure\relax }}{16}
-\contentsline {figure}{\numberline {2.9}{\ignorespaces SDN threat overview.\relax }}{17}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces SDN architectural structure\relax }}{7}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Columns of a flow entry\relax }}{7}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces LLDP packet frame structure. \cite {LLDP_WS}\relax }}{10}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces A illustration of OFDP procedure\relax }}{10}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces SDN threat overview.\relax }}{12}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces System workflow of classification.\relax }}{34}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces System workflow of classification.\relax }}{29}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces The message size distribution of each web application from two browsers.\relax }}{39}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Chrome}}}{39}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Firefox}}}{39}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Categorization of web applications.\relax }}{40}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces The message size distribution for Dungeon Rampage.\relax }}{49}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces The message size distribution for Google map.\relax }}{50}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces The message size distribution of each web application from two browsers.\relax }}{34}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Chrome}}}{34}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Firefox}}}{34}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Categorization of web applications.\relax }}{35}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces The message size distribution for Dungeon Rampage.\relax }}{44}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces The message size distribution for Google map.\relax }}{45}
 \addvspace {10\p@ }
