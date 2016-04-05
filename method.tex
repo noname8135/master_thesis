@@ -1,238 +1,220 @@
-\chapter{Method of malicious switch detection}
+\chapter{Flow entry verification and Fake link detection}
+This paper try to propose detection method for the scenario that a switch is compromised. Since, the situation that a host is compromised or owned by a malicious user is more common and has already been widely discussed, this work try to solve some problems a compromised switch might bring. The possibilities of how attacks happen has already been discussed in \ref{SDN security}. As a defender, we will be focusing on detection methods of certain scenarios. There are two parts in our work. First, we will define the threat model both parts share. Then both part will be explained along with their attack scenarios and detection algorithm separately.
+
+\section{Threat model}
+The attacks take place in a SDN network. The following assumptions is used as threat model:
+\begin{enumerate}
+\item
+Only one controller is used.
+\item
+The switches implement OpenFlow with version later than 1.0 as Southbound protocol.
+\item
+The switches is able to access the Internet. 
+\item
+Only one OpenFlow switch is compromised. No cooperation for attack will happen between multiple entities inside SDN network.
+\item
+Other parts of the network such as controller, other switches and hosts function normally. Any potential flaw is unintentional and is out of our scope.
+\item
+An attacker cannot totally change the way of switch processing or core mechanism. He can only perform attack by manipulating some elements.
+\item
+Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established. 
+\end{enumerate}
+
+\section{Flow entry verification}
+In the first part of our work, we propose a method that is able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancement in our work: First, our method reduce the needed packet number and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
+
+\subsection{Attack scenario}
+\label{flow_entry_verification_attack_scenario}
+Assume an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
+switch without notifying the controller. He can forward packets to the place it should not go. Other action is beyond our detection scope, so there will be only \textit{output to port} actions among all the flow entries of all the switches in our experimental environment.
+
+\subsection{Detection method}
+\label{Detection_method}
+The main idea of the method is to assemble a packet that will go through a series of switches by matching the match fields in the flow entries of those switches. Then the packet will be sent into the network, and should be sent back to the controller if nothing goes wrong. In order to achieve such goal, we take advantage of network-wise visibility provided by the controller. The flowchart of the flow entry detection process in the controller is shown as Figure~\ref{flow_entry_detection_flowchart}. 
+
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.png}
+\end{center}
+\caption{The flowchart of flow entry detection process.}
+\label{flow_entry_detection_flowchart}
+\end{figure}
+
+First, we have to define the \textit{aggregated groups}. An aggregated group consists of one or more than one flow entries existing in the switches. Each of those flow entry have output action pointing to the next OpenFlow switch which contains a flow entry that is also in the same aggregated group. The flow entries in the same aggregated group must satisfy either of the two conditions, we will name them \textit{aggregation condition} for later usage: 
+\begin{enumerate}
+\item
+There is at least one other flow entry that has exactly the same match field and same value in a different switch.
+\item
+There is no other flow entry with the same match field.
+\end{enumerate}
+
+With the complete view of network provided by controller and aggregation condition prepared, one is able to construct a special packet that will be sent from the first flow entry all the way down to the last flow entry in the same aggregated group, and finally come back to the controller, indicating that all the flow entries inside this aggregate group work as expected. 
+
+Figure~\ref{aggregated_group} illustrates an aggregated group and the content of a constructed packet. The flow entries connected by arrows belong to the same group. After determining an aggregated group, the controller constructs a packet according to the match fields of flow entries inside the aggregated group. With the aggregation condition, it will match every flow entry inside the aggregated group. In the example figure, we have a controller, three switches, which are S1,S2 and S3, and a packet waiting to be constructed. In S1, there is a flow entry that contains match field eth\_dst, match value A and output action to S2. In S2, the flow entry has match field ipv4\_src, match value B and output action to S3. Initially in S3, there is no flow entry that matches the aggregation condition of this aggregated group, so we use it as the ending node and set a flow entry with arbitrary match field (in the example, arp\_op is used) and value C in order to notify the controller. According to these match fields, the constructed packet will contain eth\_dst as A, ipv4\_src as B and arp\_op as C. Then the packet is sent to S1, and will match to the flow entry and be sent to S2. After this, the packet will match the second flow entry in the aggregated group and be sent to S3. Finally, when it reaches the last flow entry made by us, it will be sent back to the controller, and the processing of this aggregated group is done. 
+
+\begin{figure}[H]
+\begin{center} 
+\includegraphics[width=1\textwidth]{figures/aggregated_group.png}
+\end{center}
+\caption{An aggregated group and constructed packet.}
+\label{aggregated_group}
+\end{figure}
+
+The process of generating a packet is done along with defining one aggregated group, the pseudo-code of it is as follow:
+
+\begin{algorithm}[htb]
+  \caption{Packet generating process.}
+  
+  \begin{algorithmic}[1]
+    \Require
+      Information of all switches, $switches$;
+      Global visited status of every flow entry, $visited$;
+    \Ensure
+      Details of flow entries are obtainable from switches;
+
+    \Function{flow\_entry\_traversal}{switches}
+      \ForAll{$switch$ in $switches$}
+        \ForAll{$entry$ in $switch$}
+          \State Extract $match\_field$, $match\_value$, $action$ from $entry$;
+          \State $entry\_id$ = $switch$ + $match\_field$ + $match\_value$;
+          \If{NOT $visited$[$entry\_id$]}
+            \State $visited$[$entry\_id$] = true
+            \Call{check_aggregation_condition}{}
+            \EndIf
+            \State \Call{packet\_gen}{$match\_field$, $match\_value$, $action$, empty};
+          \EndIf
+      \EndFor
+        \EndFor
+    \EndFunction
+
+    \Function{packet\_gen}{match\_field$, match\_value$, action$, packet$}      
+      \State Extract $next\_switch$ from $action$;
+
+      \ForAll {$entry$ in $next\_switch$}
+        \State Extract $match\_field$, $match\_value$, $action$ from $entry$;
+        \State $entry\_id$ = $switch$ + $match\_field$ + $match\_value$;
+        \If{NOT $visited$[$entry\_id$]}   
+          
+        \EndIf
+      \EndFor
+      \State \Return $packet$ 
+    \EndFunction
+  \end{algorithmic}
+
+  \If{$packet$[$match\_field$] is set and $packet$[$match\_field$] = $match\_value$}            
+    \State $visited$[$entry\_id$] = true;
+  \ElsIf{$packet$[$match\_field$] is not set}
+    \State $visited$[$entry\_id$] = true;
+    \State $packet$[$match\_field$] = $match\_value$;
+\end{algorithm}
+
+When defining an aggregated group, we start with an unvisited flow entry, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. By looping through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. Other actions such as drop, set field, change TTL etc. will be ignored because they are not in our scope. 
+
+\section{Fake link detection}
+
+-----
+When a switch is compromised, an attacker is surely able to drop LLDP and causes DOS. However, it is very noticeable. We will focus on the MITM types of attack
+-----
+\subsection{Attack scenario}
+\subsection{Detection method}
+
 
 -----------------------------------------------------------
-
-Two part of my work.
-
-Condition: Switches in aggregated pipe line must have output action to next switch in the pipe line.
-
-
-
-Algorithm pipe line figure~~~~~~~~~~~~~~~~~~
-
-
-A compromised switch can also drop the packet it receives and cause DOS. The detection of this kind of attack is pretty straight-forwawrd, 
-
-we will focus on the MITM types of attack
-
-
 control-channel hijacking \cite{AAS14}. 
 
-
 Compromised switches not only have the same capabilities as the malicious hosts, but they are also capable of performing more dynamic and severe attacks.
-First, a compromised switch can be used for traffic eavesdropping. Both data and control traffic passing through the compromised switch can be replicated and sent to the attacker for further processing. Furthermore, the
-attacker can interfere with the control traffic passing through the compromised
+First, a compromised switch can be used for traffic eavesdropping. Both data and control traffic passing through the compromised switch can be replicated and sent to the attacker for further processing. Furthermore, the attacker can interfere with the control traffic passing through the compromised
 switches to perform man-in-the-middle attacks [8]. By doing so, the
 attacker can act as the controller to some target switches. The attacker can
 also spoof control messages to the controller on behalf of the target
 
 Below is our attack scenario assumption: 
-
-- All switches support the OpenFlow
-- protocol and are controlled by one OpenFlow controller
-- All switch follows the controller
-- Cloud service provider is trusted
-- potential flaw is unintentional z
-- Adversary either gain unfair resource, dos, info stealing
-- The switch has access to internet
-- Attacker can add,remove, modify entries
-- Attacker can’t change the way of switch processing
-- Attacker has no physical access
-- The network uses OpenFlow as southbound protocol
 - The control channel is properly protected with TLS protocol, meaning
 that it provides confidentiality for the control traffic as well as mutual
 authentication between the controller and switches.
-- Non-compromised switch operate normally
-
-Attacker sure can drop LLDP, resulting in DOS. However, it’s very noticeable.
 
 Packet pair
 
 - The dispersion in normal vs attack scenario, regardless of congestion
 
+----
+If this is not the case, further narrow down process is needed to find the location of the compromised switch XXXXXXXXXXXXXXXXXXXXXXX.
+----
 
-Manet protection
+Time and space complexity
 
-- Protection against packet dropping => Keep trust schema according to neighbors
-
-Possible solutions
-
-- Auth the host
-
-    - Implement public-private key structure
-    - Bring space/computation overhead, not very practical
-- Verify legitimacy of migration (Adopted)
-
-    - Controller receive Port\_Down signal before host migration
-    - Host become unreachable from previous location
-    - Add light overhead to pack-in
-- Auth for LLDP packets
-    - Add TLV authenticator to packet
-    - Calculated by DPID and Port number
-    - Fail to protect against LLDP relay
-
-
-The network-wise visibility is one of a key point we can use to solve some problem, comparing to the ordinary network.
-
-Most of the existing works assume that all of the openvswitches are trustable Scenario of “switch compromised”
-
-- 0days
-- login password guessed
-- Not the main purpose of this paper. We will be discussing the hazards, detection and prevention
-
-The capabilities of the attacker are largely determined by two
-factors: how TLS is used to protect control-plane communication, and whether
-the network uses in-band or out-of-band control channels. Additionally, some
-attacks are only possible if the attacker can perform control-channel hijacking
-instead of only being able to modify the flow-table of the compromised switch.
 
 Packet forwarded to non-existent ports are just dropped
 
--===========================================================
-Precise traffic classification relies on a clear understanding of web traffic. However, as application protocols and development techniques of web applications keep evolving (particularly, the HTTP/2 protocol \cite{HTTP2} and new development techniques such as Ajax and node.js in recent years), the traffic characterization of web applications in prior studies may not reflect the state-of-the-art. Therefore, it is necessary to re-examine the traffic characteristics from typical web applications, and find out effective features for precise classification. Typical features in traffic characterization usually include application payloads, packet size, connection length and duration, packet inter-arrival time, and so on. We argued in \cite{TFT14} that the features may be unstable due to the variations of Internet traffic. In this work, we focus primarily on the application-level features that are not subject to the conditions in underlying networks. We study the traffic characteristics in popular web applications, including office applications (Google document), maps (Google maps), file sharing (Google drive and dropbox), video streaming (Youtube, Dailymotion, Tudou), and online games (Tetris battle and Dungeon Rampage on Facebook), in terms of the features on various browsers. We then extract the features from the main connection described in next section, so we do not need to compute the average and the standard deviation of the request/response lengths like \cite{TFT14}. 
+\begin{algorithm}[htb]
+  \caption{ Framework of ensemble learning for our system.}
+  \label{alg:Framwork}
+  \begin{algorithmic}[1]
+    \Require
+      The set of positive samples for current batch, $P_n$;
+      The set of unlabelled samples for current batch, $U_n$;
+      Ensemble of classifiers on former batches, $E_{n-1}$;
+    \Ensure
+      Ensemble of classifiers on the current batch, $E_n$;
+    \State Extracting the set of reliable negative and/or positive samples $T_n$ from $U_n$ with help of $P_n$;
+    \label{code:fram:extract}
+    \State Training ensemble of classifiers $E$ on $T_n \cup P_n$, with help of data in former batches;
+    \label{code:fram:trainbase}
+    \State $E_n=E_{n-1}cup E$;
+    \label{code:fram:add}
+    \State Classifying samples in $U_n-T_n$ by $E_n$;
+    \label{code:fram:classify}
+    \State Deleting some weak classifiers in $E_n$ so as to keep the capacity of $E_n$;
+    \label{code:fram:select} \\
+    \Return $E_n$;
+  \end{algorithmic}
+\end{algorithm}
 
-\section{Data collection}
-\label{sec:collect}
+\begin{algorithm}[h]
+  \caption{An example for format For \& While Loop in Algorithm}
+  \begin{algorithmic}[1]
+    \For{each $i\in [1,9]$}
+      \State initialize a tree $T_{i}$ with only a leaf (the root);
+      \State $T=T\cup T_{i};$
+    \EndFor
+    \ForAll {$c$ such that $c\in RecentMBatch(E_{n-1})$}
+      \label{code:TrainBase:getc}
+      \State $T=T\cup PosSample(c)$;
+      \label{code:TrainBase:pos}
+    \EndFor;
+    \For{$i=1$; $i<n$; $i++$ }
+      \State $//$ Your source here;
+    \EndFor
+    \For{$i=1$ to $n$}
+      \State $//$ Your source here;
+    \EndFor
+    \State $//$ Reusing recent base classifiers.
+    \label{code:recentStart}
+    \While {$(|E_n| \leq L_1 )and( D \neq \phi)$}
+      \State Selecting the most recent classifier $c_i$ from $D$;
+      \State $D=D-c_i$;
+      \State $E_n=E_n+c_i$;
+    \EndWhile
+    \label{code:recentEnd}
+  \end{algorithmic}
+\end{algorithm}
 
-A web application usually involves highly user interactions between the browser and the web server. Developers often use techniques such as Ajax to improve user experiences, e.g., by actively pushing web content to the browser before the user requests it. Moreover, new application protocols, particularly SPDY (\url{www.chromium.org/spdy}) primarily developed at Google and HTTP/2 based on SPDY, support features to reduce the latency of loading web pages for efficient web browsing. Major browsers such as IE, Firefox and Chrome have supported SPDY and HTTP/2, and most of them have enabled the support by default at the time of this thesis writing. The web traffic from the Google services covered in this work is all sent over SPDY. However, the traffic  from the other web applications (see Table~\ref{table:scenario_app}) also use SPDY, except that from Facebook, Dailymotion and Tudou. Thus, the traffic studied in this work reflect the latest status in the development of web applications.  
-
-Since a browser may keep prior web content in a local cache to speed up web browsing, we use the guest mode of a browser (in which the web content in prior browsing will not be preserved) when interacting with a web application to ensure a complete set of packets during the interaction can be collected. We browse only a specific web application at a time to ensure the web traffic is all from that application, and use Wireshark (\url{www.wireshark.org}) to collect the packets. 
-
-In this work, we consider several typical scenarios of using web applications, and capture the web traffic from them. This work covers totally five types of 9 web applications, as listed in Table~\ref{table:scenario_app}. We implore users to operate each web application on either Chrome or Firefox in the scenarios described in this table. A user is requested to interact with the applications for a period from one to two minutes as usual. We do not use Internet Explorer for several reasons. First, the browser is not supported on many operating systems, e.g., Mac OS and Android \cite{IBR}. Second, the usage of IE is reported to be dropped to only 7.1\% \cite{BS}. Third, Windows 10 no longer supports IE. 
-
-
-
-\begin{table}[ht]
-\centering
-\caption{The scenario of each web application.}
-\begin{tabular}{|l|l|p{0.2\linewidth}|p{0.45\linewidth}|}
-\hline no. &type &application &scenario \\
-\hline
-\hline 1 &Document &Googledoc & arbitrarily typing and editing\\
-\hline 2 &Map  &Googlemap & typing a location name, arbitrarily browsing the map and zooming-in and zooming-out\\
-\hline 3-5 &Video  & Youtube/ Tudou/ Dailymotion & typing a video name and arbitrarily moving to a specific time position during watching\\
-\hline 6-7 &File transfer & Google drive/ Dropbox & up/downloading \\
-\hline 8-9 &Gaming &Facebook : Tetris Battle/ Dungeon Rampage & arbitrary operation\\
-\hline 
-\end{tabular}
-\label{table:scenario_app}
-\end{table}
-
-
-\subsection{Extract statistical signature}
-A web application server may offer two or more services, so identifying the application based solely on the server's IP address is unreliable. For example, Google offers all its services on the same back-end server infrastructure (e.g., Google document and Google map can be provided by the same IP address 74.125.23.102 in our observation.), so users can reuse existing TCP connections to Google servers to access the other services \cite{TNW08}. Thus, classification with statistical features to distinguish the traffic from various web applications is necessary. 
-
-There are several requirements for the training packet traces to acquire precise application-level statistical features:
-\begin{enumerate}
-\item 
-The collected packet traces must be generated only from the targeted web application. We set the filter of Wireshark to capture the packets from or to port 80 and 443, and ask the user runs only a web application on the browser for every time of packet collection.
-\item
-The packets in the beginning of connections should be preserved for TCP state tracking, which is necessary for packet reassembly to recover the application-level features.
-\item
-The collected traffic should be sufficient and diverse because it may affect the accuracy and reliability. The collected traffic must contain the packet traces from the user interactions from the targeted web application. Moreover, we performed various interactions on a same web application for every collection to ensure the diversity of packet traces. For example, we changed the frequency of typing extremely every time when we collected the traffic from Google document.
-\end{enumerate}
-
-We set the target IP address and ports and follow the scenarios listed in Table~~\ref{table:scenario_app} to run the web applications when collecting the training packet traces. The quantity of collected traffic is important to reflect practical user behavior precisely. We take advantage of this to observe whether diverse user behaviors will impact on the classification or the characterization. Not only the user interactions, but also the environment will influence the results. For example, some browsers support the SPDY protocol, but Mozilla Firefox did not until 2011. The difference will influence the patterns of some flows when the packets are carried over different protocols.
-
-After collecting a new set of packet traces for a web application in the training set, we find the main connection by using the developer tool affiliated to the browser (e.g., Firebug on Firefox), which allows developers to view information about the transmitted messages. Hence we confirm which connection is the most representative of the user interactions by referring to the parameters in the HTTP messages summarized in Table~\ref{table:judge_main}. Nevertheless, many simultaneous connections may load web information in Table~\ref{table:content_other} to provide smooth user experiences, so we choose the longest one as the main connection. The only exception is the main connection for Tetris Battle, which transfers the elements related to the game platform instead of the game interactions. Thus, our mechanism takes advantage of this property to decide the main connection when a set of packet traces are analyzed. We can effectively segregate the noise, such as embedded advertising, with the method. This work uses the \texttt{libnids} library (\url{libnids.sourceforge.net}), which offers IP defragmentation, TCP stream reassembly and TCP port scan detection, to reconstruct the request-response streams of all the connections. The tool needs to track the states of TCP connections, so the beginning time of packet capturing is crucial to ensure important state transitions, e.g., 3-way handshaking, are not missing. We extract the source/destination IP addresses and source/destination ports to recognize each flow.
-
-
-
-
-\begin{table}[ht]
-\centering
-\caption{The judgment of the main connection.}
-\label{table:judge_main}
-\begin{tabular}{|l|l|l|}
-\hline
-              & Referred parameter                                                        & \multicolumn{1}{c|}{Judgment}                                                                                                                                                                                                                                                                                                            \\ \hline \hline
-Document      & bundles                                                                    & \begin{tabular}[c]{@{}l@{}}contain some arrays to store the characters we typed\end{tabular}                                                                                                                                                                                                                                              \\ \hline
-Map           & content-type                                                               & \begin{tabular}[c]{@{}l@{}}(1)image/png : comparing whether the preview picture\\     and the map showed on the website are the\\     same or not\\ (2)application/vnd.google.octet-stream-\\     compressible;charset=x-user-defined : this \\     message continuously appear as we \\     arbitrarily send actions to the map\end{tabular} \\ \hline
-Video         & content-type                                                               & For example, audio/mp4, video/webm and video/f4v.                                                                                                                                                                                                                                                                                           \\ \hline
-File transfer & \begin{tabular}[c]{@{}l@{}}content-disposition\\ content-type\end{tabular} & \begin{tabular}[c]{@{}l@{}}(1)checking the filename in the content-\\     disposition match with the file we \\    transfer \\ (2)comparing the content-type match with the\\     file we transfer\end{tabular}                                                                                                                     \\ \hline
-Game          & content-type                                                               & \begin{tabular}[c]{@{}l@{}}the content-type is application/x-shockwave-flash\\ game applications always use .swf to transfer files\end{tabular}                                                                                                                                                                                              \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\caption{The contents of other connections }
-\label{table:content_other}
-\begin{tabular}{|l|l|l|}
-\hline
-\multicolumn{1}{|c|}{Label}    & \multicolumn{1}{c|}{Web application} & \multicolumn{1}{c|}{Content-Type}                                                                                                         \\ \hline \hline
-Document                       & Google doc                           & \begin{tabular}[c]{@{}l@{}}application/json, text/html, text/javascript, \\ font/woff, image/png, image/gif, etc.\end{tabular}            \\ \hline
-Map                            & Google map                           & \begin{tabular}[c]{@{}l@{}}application/json, text/javascript, image/gif,\\ image/png, etc.\end{tabular}                                   \\ \hline
-\multirow{2}{*}{Game}          & Dungeon Rampage                      & \begin{tabular}[c]{@{}l@{}}text/html, application/x-javascript, image/png, \\ application/x-shockwave-flash, etc.\end{tabular}            \\ \cline{2-3} 
-                               & Tetris Battle                        & \begin{tabular}[c]{@{}l@{}}image/gif, image/png, application/xml,\\ application/x-shockwave-flash, audio/mpeg, etc.\end{tabular}          \\ \hline
-\multirow{2}{*}{File Transfer} & Google Drive                         & \begin{tabular}[c]{@{}l@{}}text/javascript, application/json, text/css, \\ text/html, image/gif, etc.\end{tabular}                        \\ \cline{2-3} 
-                               & Dropbox                              & \begin{tabular}[c]{@{}l@{}}application/x-javascript, image/gif, image/png,\\  application/octet-stream, text/css, etc.\end{tabular}       \\ \hline
-\multirow{3}{*}{Video Stream}  & Youtube                              & \begin{tabular}[c]{@{}l@{}}audio/mp4, video/mp4, text/javascript, text/css,\\ application/x-shockwave-flash, image/gif, etc.\end{tabular} \\ \cline{2-3} 
-                               & Dailymotion                          & \begin{tabular}[c]{@{}l@{}}application/x-shockwave-flash, text/css, \\ text/xml, image/jpeg, application/x-javascript, etc.\end{tabular}  \\ \cline{2-3} 
-                               & Tudou                                & \begin{tabular}[c]{@{}l@{}}application/x-shockwave-flash, image/jpeg,\\ application/octet-stream, text/xml, image/gif, etc.\end{tabular}  \\ \hline
-\end{tabular}
-\end{table}
-
-\subsection{Feature definition} 
-We assume that $f_m$ is the main connection when a user interacts with a certain web application, and extract all $n$ messages to be analyzed (after processed by \texttt{libnids}). Let $s_i$ be the $i$-th message size in the request connection, where $i=1\ldots n$. We do not adopt the features in the bi-direction because including the features from the responses will introduce more ambiguity between some web applications. For example, the features generated from file download applications are sometimes similar to those from games and maps, and will decrease accuracy by 6\% according to our preliminary experiment (not shown in Chapter 4). This work counts the occurrence frequency of each message size, and takes the top five frequent sizes to be represented as a vector $v_i$ for every main connection.
-
-Table~\ref{table:feature_doc} presents an example, in which we arbitrarily typed in a Google document on Chrome for around two minutes. Thus, the feature to characterize this interaction is (38, 34, 220, 224, 116). However, the number of different message sizes may be less than five to form a five-tuple vector. We take two ways to solve this problem. Table~\ref{table:fill_max} is generated by watching a video clip on Dailymotion with Chrome. It describes that there is a vacancy within the vector. We can fill up the missing tuple with the mode (i.e, the most common value) of the other message sizes \cite{DM}, and the vector becomes (636, 665, 658, 589, 636). Table~\ref{table:fill_same} is generated by downloading a file from Dropbox on Firefox. The occurrence time of all message sizes are the same in this table. We choose the first one to fill up the vacancies, and the vector is (753, 202, 162, 753, 753). The message sizes mentioned in these three tables are sorted by the occurrence times in the decreasing order. The features are stable and the testing results are showed in Section~\ref{sec:result}.
-
-\
-\begin{table}[H]
-\centering
-\caption{A feature of editing by Google document.}
-\begin{tabular}{|l|c|c|c|c|c|c|c|c|}
-\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ & $s_6$ & ... & $s_n$\\
-\hline
-\hline Message size (bytes) & 38 & 34 & 220 & 224 & 116 & 199 & ... & $m_n$ \\
-\hline Count & 177 & 177 & 37 & 27 & 13 & 12 & ... & $c_n$\\
-\hline 
-\multicolumn{9}{l}{The vector is (38, 34, 220, 224, 116).}\\
-\end{tabular}
-\label{table:feature_doc}
-\end{table}
-
-\
-\begin{table}[H]
-\centering
-\caption{A feature of downloading by Dailymotion.}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ \\
-\hline
-\hline Message size (bytes) & 636 & 665 & 658 & 589 &\\
-\hline Count & 4 & 3 & 2 & 1 &\\
-\hline
-\multicolumn{6}{l}{The vector is (636, 665, 658, 589, 636).}\\ 
-\end{tabular}
-\label{table:fill_max}
-\end{table}
-
-\
-\begin{table}[H]
-\centering
-\caption{A feature of downloading by Dropbox.}
-\begin{tabular}{|l|c|c|c|c|c|}
-
-\hline  & $s_1$ & $s_2$ & $s_3$ & $s_4$ & $s_5$ \\
-\hline
-\hline Message size (bytes) & 753 & 202 & 162 &  &\\
-\hline Count & 1 & 1 & 1 &  &\\
-\hline
-\multicolumn{6}{l}{The vector is (753, 202, 172, 753, 753).}\\ 
-\end{tabular}
-\label{table:fill_same}
-\end{table}
-
-
-\section{System Workflow}
-Figure~\ref{Fig.system} illustrates the workflow of the classification process. A user may use either Mozilla Firefox or Google Chrome to run a web application as mentioned above. Simultaneously, the capture filter for the web application traffic is set to port 80 and 443 on the PC. The developer tool and Wireshark is employed to find the main connection that reflects user interactions most. Next, \texttt{libnids} will reassemble the captured packets to extract application-level messages. In the last step, these features extracted from the messages are fed into Weka (\url{http://www.cs.waikato.ac.nz/ml/weka}) for traffic classification with four machine learning methods: NBTree, Random Forest, J48graft and Naive Bayes.
-
-
-\begin{figure}[H]
-\begin{center} 
-\includegraphics[width=1.0\textwidth]{figures/SDN_structure.png}
-\end{center}
-\caption{System workflow of classification.}
-\label{Fig.system}
-\end{figure}
+\begin{algorithm}[h]
+  \caption{Conjugate Gradient Algorithm with Dynamic Step-Size Control}
+  \label{alg::conjugateGradient}
+  \begin{algorithmic}[1]
+    \Require
+      $f(x)$: objective funtion;
+      $x_0$: initial solution;
+      $s$: step size;
+    \Ensure
+      optimal $x^{*}$
+    \State initial $g_0=0$ and $d_0=0$;
+    \Repeat
+      \State compute gradient directions $g_k=\bigtriangledown f(x_k)$;
+      \State compute Polak-Ribiere parameter $\beta_k=\frac{g_k^{T}(g_k-g_{k-1})}{\parallel g_{k-1} \parallel^{2}}$;
+      \State compute the conjugate directions $d_k=-g_k+\beta_k d_{k-1}$;
+      \State compute the step size $\alpha_k=s/\parallel d_k \parallel_{2}$;
+    \Until{($f(x_k)>f(x_{k-1})$)}
+  \end{algorithmic}
+\end{algorithm}
