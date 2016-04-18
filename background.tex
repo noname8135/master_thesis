@@ -1,30 +1,21 @@
 \chapter{Background and related work}
 \section{SDN and OpenFlow}
-SDN provides better visibility into network, reduces manual intervention, improves maintainability, and decreases hardware budget. Figure~\ref{SDN_struct} simply shows the architectural components of SDN, which are applications, network devices, Northbound and Southbound interface. SDN applications consume the resources on controller and provide network functions. Routing, Intrusion Detection System (IDS), firewall, network balancer, network monitor are all good examples of SDN applications \cite{SPYFGT13}. A controller is able to determine the path of packets by adding, updating and deleting flow entries in flow tables of the OpenFlow switches in both reative and proactive way \cite{OF_SPEC}. It also maintains the abstract view of the network, including network topology, host position and the state of network resources.
 
-OpenFlow is the first and most popular standard southbound interface. The switch that support OpenFlow is called OpenFlow switches, they are connected to one another by OpenFlow ports. Aside from physical switches, there are also software implementations of virtual switch, such as \textit{Open vSwtich}. Typically, OpenFlow switches separate OpenFlow traffic and non-OpenFlow traffic with OpenFlow instances, they do not interfere with each other \cite{HP_SPEC}.
+OpenFlow is the most popular southbound interface in SDN. A switch that supports OpenFlow is called an OpenFlow switch. Aside from physical switches, there are also software implementations of virtual switches, such as \textit{Open vSwtich} (\url{openvswitch.org}). OpenFlow switches typically separate OpenFlow traffic and non-OpenFlow traffic with OpenFlow instances {\color{red} What do you mean by ``with OpenFlow instances''?}, and they do not interfere with each other \cite{HP_SPEC}.
 
-When a packet comes in from the \textit{ingress port}, it will go through flow tables, group table, and will be processed in corresponding to the matching flow entry. Each OpenFlow table contains multiple flow entries, figure~\ref{FE_Col} is the columns of a flow entry. Packets will be matched with \textit{match field} of a flow entry. When a packet matches, it will modify the action set according to its instruction. There is an entry with lowest priority that matches all fields. It is for packets that cannot match with any other flow entry. Normally it will be encapsulated and sent to the controller, the controller decides how it should be processed, and a new flow entry will be added according to the result. Some examples of the action are output to a specific port, drop and change TTL in the packet. After the end of processing pipe line, all the actions in the action set will be executed. When ports are added or removed, the content of flow tables remain unchanged, so the controller should clean up the reference of a port if a port is deleted \cite{OF_SPEC}.
-
-\begin{figure}[H]
-\begin{center} 
-\includegraphics[width=0.85\textwidth]{figures/SDN_structure.png}
-\end{center}
-\caption{SDN architectural structure}
-\label{SDN_struct}
-\end{figure}
+A controller is able to determine the forwarding path of packets by adding, updating and deleting flow entries in the flow tables of OpenFlow switches in both reactive and proactive ways \cite{OF_SPEC}. It also maintains the abstract view of the network, including network topology, host positions and the states of network resources. When a packet comes in from the \textit{ingress port}, it will go through one or more flow tables, optionally through the group table, and be processed according to the actions defined by the matched flow entry. Each OpenFlow table typically contains thousands of flow entries. Figure~\ref{FE_Col} presents the columns of a flow entry. Packets will be matched with the \textit{match fields} of a flow entry. When a packet matches a flow entry, the action set to that packet will be modified according to the instructions in the entry. The actions may be ``output to a specific port'' and ``drop and change TTL in the packet''. There is an entry with the lowest priority that matches all fields. It is for packets that cannot match with any other flow entry. Normally, it will be encapsulated and sent to the controller. The controller will decide how it should be processed, and a new flow entry will be added according to the network policy. After the end of processing pipeline, the actions in the action set will be executed.% When ports are added or removed, the content of flow tables remain unchanged, so the controller should clean up the reference of a port if a port is deleted \cite{OF_SPEC}.
 
 \begin{figure}[H]
 \begin{center} 
 \includegraphics[width=1\textwidth]{figures/columns_of_flow_entry.png}
 \end{center}
-\caption{Columns of a flow entry}
+\caption{Columns of a flow entry. {\color{red} bad quality!!}}
 \label{FE_Col}
 \end{figure}
 
 \section{Topology discovery services}
 \label{Topology discovery services}
-To realize centralized control and high programmability, controllers need to maintain the visibility of the whole network. Therefore, topology discovery services play an important role in SDN. These services try to achieve auto adjustment when the topology alternate, resulting in reducing man effort significantly when it comes to network managing. The topology system includes three parts: switch discovery, host tracking, and internal link.
+To realize centralized control and high programmability, controllers need to maintain the visibility of the whole network. Therefore, topology discovery services play an important role in SDN. These services try to achieve automatic adjustment when the topology is altered, resulting in reducing manual effort significantly when it comes to network managing. The topology system includes three parts: switch discovery, host tracking and internal link.
 
 \subsection{Switch discovery service and Host tracking service}
 Switch discovery is rather simple. When a switch try to initiate a connection with controller, the OpenFlow channel will be established, and the information of the switch will be sent to the controller and stored for future usage. 
@@ -33,7 +24,7 @@ A controller maintains Host Profiles to keep track of the host location. When a 
 
 \subsection{Link discovery service}
 \label{Link discovery service}
-When we refer to Link discovery, we mean the procedure of discovering the link between switches. Since there has not been a standard for the link discovery in OpenFlow controller, we will be using the term \textit{OpenFLow Discovery Protocol} (OFDP) when mentioning it. Currently, although there are be some minor differences in detail, all the main stream controllers support OFDP.
+When we refer to Link discovery, we mean the procedure of discovering the link between switches. Since there has not been a standard for the link discovery in the OpenFlow controller, we will use the term \textit{OpenFLow Discovery Protocol} (OFDP) when mentioning it. Currently, although there are be some minor differences in detail, all the main stream controllers support OFDP.
 
 OFDP leverages the Link Layer Discovery Protocol (LLDP) with subtle modification to perform topology discovery in an OpenFlow network. LLDP is originally implemented by Ethernet switch to exchange its identity and capabilities with a adjacent layer 2 peers. In legacy network, LLDP packets are sent regularly via each port of switches \cite{LLDP_WS}. The information learned from LLDP packets sent by neighbor is stored by all the switches and the packets will not be forwarded after a single hop. Figure~\ref{LLDP_frame} shows the structure of LLDP Ethernet frame structure. Each LLDP Data Unit contains a sequence of type-length-value (TLV). 
 
