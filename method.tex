@@ -5,28 +5,28 @@ This paper try to propose detection method for the scenario that a switch is com
 The attacks take place in a SDN network. The following assumptions is used as threat model:
 \begin{enumerate}
 \item
-Only one controller is used.
+Only one controller is used. No cooperation for attack will happen between multiple compromised switches.
 \item
 The switches implement OpenFlow with version later than 1.0 as Southbound protocol.
 \item
 The switches is able to access the Internet. 
 \item
-Only one OpenFlow switch is compromised. No cooperation for attack will happen between multiple entities inside SDN network.
+Only one OpenFlow switch is compromised. Other parts of the network such as controller, other switches and hosts function normally. Any potential flaw is unintentional and is out of our scope.
 \item
-Other parts of the network such as controller, other switches and hosts function normally. Any potential flaw is unintentional and is out of our scope.
+An attacker cannot change the way of switch processing. He can only perform attack by adding, removing, or modifying the entries in the flow tables of the compromised switch.
 \item
-An attacker cannot totally change the way of switch processing or core mechanism. He can only perform attack by manipulating some elements.
-\item
-Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established. 
+Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established.
+\item 
 \end{enumerate}
 
 \section{Flow entry verification}
 In the first part of our work, we propose a method that is able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancement in our work: First, our method reduce the needed packet number and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
 
-\subsection{Attack scenario}
+\subsection{Attack scenario discussion}
 \label{flow_entry_verification_attack_scenario}
-Assume an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
-switch without notifying the controller. He can forward packets to the place it should not go. Other action is beyond our detection scope, so there will be only \textit{output to port} actions among all the flow entries of all the switches in our experimental environment.
+With the assumption that an attacker is able to add, remove, or modify the entries in the flow tables of the compromised switch without notifying the controller, he can forward packets to the place it should not go. Flow entries with other actions are beyond our detection scope, if there is any then it should be ignored.
+
+It is quite reasonable that more than one switches are the made by the same manufacturer or have the same software version, which might result in multiple switches being compromised. However, cooperation between multiple compromised switches makes the scenario a lot more complicate. Take our own method as an example, suppose there are two compromised switches, CS1 and CS2, that are neighbor to each other, and both of them contain an entry in the same aggregation group. When CS1 receives a detection packet and forwarded to other place maliciously, it sends a copy to CS2, and the rest of the detection process will continue without raising any suspicion. In order to simplify the case as a starting point for detection method developing, we assume only one switch inside the network is compromised.
 
 \subsection{Detection method}
 \label{Detection_method}
@@ -40,12 +40,14 @@ The main idea of the method is to assemble a packet that will go through a serie
 \label{flow_entry_detection_flowchart}
 \end{figure}
 
-First, we have to define the \textit{aggregated groups}. An aggregated group consists of one or more than one flow entries existing in the switches. Each of those flow entry have output action pointing to the next OpenFlow switch which contains a flow entry that is also in the same aggregated group. The flow entries in the same aggregated group must satisfy either of the two conditions, we will name them \textit{aggregation condition} for later usage: 
+First, we have to define the \textit{aggregated groups}. An aggregated group consists of one or more than one flow entries existing in the switches. Each of those flow entry have output action pointing to the next OpenFlow switch which contains a flow entry that is also in the same aggregated group. The flow entries in the same aggregated group must satisfy the following conditions, which will be referred to using the term \textit{aggregation condition}:
 \begin{enumerate}
 \item
 There is at least one other flow entry that has exactly the same match field and same value in a different switch.
 \item
 There is no other flow entry with the same match field.
+\item
+Entries in the same group must not have forward action to a switch that cause cycle.
 \end{enumerate}
 
 With the complete view of network provided by controller and aggregation condition prepared, one is able to construct a special packet that will be sent from the first flow entry all the way down to the last flow entry in the same aggregated group, and finally come back to the controller, indicating that all the flow entries inside this aggregate group work as expected. 
