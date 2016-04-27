@@ -1,11 +1,11 @@
 \chapter{Flow entry verification and Fake link detection}
 This work presents the detection method for the scenario in which a switch is compromised, and focuses on the problem that a compromised switch will bring. The possibilities of how attacks happen has already been discussed in \ref{SDN security}. As a defender, we will focus on detection methods of certain scenarios. There are two parts in our work. We will define the threat model both parts share, and both parts will be explained along with their attack scenarios and detection algorithm separately.
 
-\section{Threat model}
-The attacks take place in an SDN network. The following assumptions is used as threat model:
+\section{Threat model and Attack scenario}
+The attacks take place in a SDN network. The following assumptions is used as threat model:
 \begin{enumerate}
 \item
-Only one controller is used.
+Only one controller is used. No cooperation for attack will happen between multiple compromised switches.
 \item
 OpenFlow version 1.3 is used as Southbound protocol.
 \item
@@ -17,16 +17,17 @@ Other parts of the network such as controller, other switches and hosts function
 \item
 An attacker cannot totally change the way of switch processing or core mechanism. He can only perform attack by manipulating some elements.
 \item
-Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established. 
+Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established.
+
+Assume an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
+switch without notifying the controller. Packets might be forwarded to the undesired destination, and the proposed method tries to detect this behavior with high efficiency. In this method, only output action is considered, other actions such as drop packets, set field, change TTL etc. will be ignored. 
+
+It is quite reasonable that more than one switches are the made by the same manufacturer or have the same software version, which might result in multiple switches being compromised. However, cooperation between multiple compromised switches makes the scenario a lot more complicate. Take our own method as an example, suppose there are two compromised switches, CS1 and CS2, that are neighbor to each other, and both of them contain an entry in the same aggregation group. When CS1 receives a detection packet and forwarded to other place maliciously, it sends a copy to CS2, and the rest of the detection process will continue without raising any suspicion. In order to simplify the case as a starting point for detection method developing, we assume only one switch inside the network is compromised.
+
 \end{enumerate}
 
 \section{Flow entry verification}
 In the first part of our work, we propose a method that is able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancement in our work: First, our method reduce the needed packet number and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
-
-\subsection{Attack scenario}
-\label{flow_entry_verification_attack_scenario}
-Assume an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
-switch without notifying the controller. He can forward packets to the place it should not go. Other action is beyond our detection scope, so there will be only \textit{output to port} actions among all the flow entries of all the switches in our experimental environment.
 
 \subsection{Detection method}
 \label{Detection_method}
@@ -46,13 +47,17 @@ First, we have to define the \textit{aggregated groups}. An aggregated group con
 There is at least one other flow entry that has exactly the same match field and same value in a different switch.
 \item
 There is no other flow entry with the same match field.
+\item
+Entries in the same group must not have forward action to a switch that cause cycle.
 \end{enumerate}
 
 With the complete view of network provided by controller and aggregation condition prepared, one is able to construct a special packet that will be sent from the first flow entry all the way down to the last flow entry in the same aggregated group, and finally come back to the controller, indicating that all the flow entries inside this aggregate group work as expected. 
 
 Figure~\ref{aggregated_group} illustrates an aggregated group and the content of a constructed packet. The flow entries connected by arrows belong to the same group. After determining an aggregated group, the controller constructs a packet according to the match fields of flow entries inside the aggregated group. With the aggregation condition, it will match every flow entry inside the aggregated group. In the example figure, we have a controller, three switches, which are S1,S2 and S3, and a packet waiting to be constructed. In S1, there is a flow entry that contains match field eth\_dst, match value A and output action to S2. In S2, the flow entry has match field ipv4\_src, match value B and output action to S3. Initially in S3, there is no flow entry that matches the aggregation condition of this aggregated group, so we use it as the ending node and set a flow entry with arbitrary match field (in the example, arp\_op is used) and value C in order to notify the controller. According to these match fields, the constructed packet will contain eth\_dst as A, ipv4\_src as B and arp\_op as C. Then the packet is sent to S1, and will match to the flow entry and be sent to S2. After this, the packet will match the second flow entry in the aggregated group and be sent to S3. Finally, when it reaches the last flow entry made by us, it will be sent back to the controller, and the processing of this aggregated group is done. 
+
+
 \begin{figure}[H]
-\begin{center} 
+\begin{center}
 \includegraphics[width=1\textwidth]{figures/aggregated_group.png}
 \end{center}
 \caption{An aggregated group and constructed packet.}
@@ -121,7 +126,10 @@ grow to left by=1cm, grow to right by=1cm]
 \end{algorithm}
 \end{tcolorbox}
 
-When defining an aggregated group, we start with an unvisited flow entry, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By looping through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. Other actions such as drop, set field, change TTL etc. will be ignored because they are not in our scope. 
+When defining an aggregated group, we start with an unvisited flow entry, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By looping through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. 
+
+In real case, the variety of the conditions we try to aggregate can be much more complicated. A flow entry might have multiple match fields. Multiple flow table may also cause similar problem. When the action in a flow entry send the packet to next table for further processing. The packet is also matched against more than one match field. These kind of situations can still be covered by our method with some modification. 
+If all the fields and values match the under-constructing packet, we process it according to first aggregation rule. Otherwise we fill the packet with all of those match fields. If any match fields is already taken with different value, it will be ignored for this turn of aggregation process and fill the match fields in another packet that has no conflict field. However, the number of flow entries aggregated in a packet is reduced, and so is the effectiveness. Another condition is the conjunction action that ties groups of individual flows with same match field and different value into ``conjunctive  flows'' and reduce the number of flow entry~\ref{OVS_OFCTL}. It can also be dealt in a specific way. However, the main purpose of our method is to demonstrate the result of flow entry aggregation. We will only use the most simple condition, which is a match field that has one value.
 
 \section{Fake link detection}
 

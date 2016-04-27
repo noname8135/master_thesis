@@ -24,13 +24,16 @@ In both of our methods, hosts are irrelevant, so there will not be any host in o
 \label{table:Experiment_table}
 \end{table}
 
-
 \section{Method Implementation}
 preinstall flow entries proactively to simulate the situation. 
 In the experiment, there will be only \textit{output to port} actions among all the flow entries of all the switches in our environment. 
-\subsection{}
+\subsection{Flow entry verification method}
+There will be only output actions among all the flow entries of all the switches in our experimental environment.
 
 
+There are 253 flow tables in every switch simulated by mininet, we will only use the first table.
+
+Since compromised switch is able to send fake xxxx to controller, controller cannot rely on the response of the switches. Hence, it needs to maintain detail of flow entry it installed. 
 
 \section{Evaluation}
 
