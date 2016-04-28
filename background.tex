@@ -45,40 +45,9 @@ However, OFDP operates quite differently. The controller keeps the topology info
 
 \section{SDN security}
 \label{SDN security}
-As SDN brings fascinating development and introduces new factors to network technology, there are a lot more vectors for us to concern about. Figure~\ref{SND_threat_overview} is a whole picture of attacks we discuss and where they might take place inside SDN, and Table~\ref{table:sdn_threats} contains further description of these threats. In this chapter, we will talk about SDN security-related issues. We will focus on some of them and discuss about the attack scenarios, possible consequences and countermeasures. 
+A thorough review of SDN-related security issues can be found in \red{Cite a few SDN security survey papers; not hard to find in IEEE Xplore}. Therefore, rather than repeat the review, we will focus on the issue of compromising OpenFlow switches, since it has been less addressed than others so far. Compromising OpenFlow switches can lead to some bad results. (1) \red{Finish this sentence.} topology poisoning. (2) The actions specified in the flow rules on a compromised switch can be unexpected altered. (3) The packets through a compromised switch can be eavesdropped. \red{enumerate more (4) ...} \red{Please rewrite the content until the end of this section to discuss existing research related to addressing these results.}
 
-\begin{figure}[H]
-\begin{center} 
-\includegraphics[width=1\textwidth]{figures/SDN_threat_overview.png}
-\end{center}
-\caption{SDN threat overview.}
-\label{SND_threat_overview}
-\end{figure}
-
-\begin{table}[H]
-\centering
-\caption{Detail of each attack.}
-\begin{tabular}{|l|p{4cm}|p{3.2cm}|p{5cm}|}
-\hline ID & Threat name	& Location & Consequences \\
-\hline
-\hline 1 & System Vulnerability & all devices & Device compromised\\
-\hline 2 & Administrative Interface Compromised & all administrative interfaces & Device compromised \\
-\hline 3 & Application Vulnerability & SDN application & Malicious command to controller \\
-\hline 4 & Host Hijacking & host & Attacker receives target host's traffic \\
-\hline 5 & Link Fabrication & link between switch & Add non-existing link to controller's view \\
-\hline 6 & Flow Entry Modification & switch & Unwanted packet redirection or drop \\
-\hline 7 & Malicious Packet Controller DOS  & host, switch & DOS to controller \\
-\hline 8 & Control-channel Hijacking & switch & Manipulate control traffic \\
-\hline 
-\end{tabular}
-\label{table:sdn_threats}
-\end{table}
-
-\subsection{General security}
-There are quite a few devices in SDN network, such as controllers, switches and hosts. All these devices possibly contain system vulnerabilities like Heartbleeding, Poodle and Shellshock \cite{HB,POODLE,SHELLSHOCK} found in recent years. Moreover, one might be able to gain unauthorized access to the network physically or virtually, by using trivial methods like brute forcing the administrative interface or a physical break in. To deal with these kind of threats, all the best practices for hardening servers are applicable. Autonomic trust management technique should be used to harden these components in the network \cite{YZP11}. Also, Diego et al. propose replication, dynamic device association and self-healing concepts in their work to reinforce the security \cite{KDFRV13}. As to the administrative interface, organizations should implement Role-Based Access Control (RBAC) policies and event logging \cite{FFR09}. With all these methods, the damage should be reduced if controller compromise should happen.
-
-\subsection{Topology poisoning attacks}
-So far, the topology poisoning attacks have been discussed in many papers. The main idea of this type of attack is to trick controller into believing the existence of a non-existing link to host or switch by exploiting traits of topology management service. One can initiate such type of attack with either a switch or a host.
+The main idea of the topology poisoning attack is to trick controller into believing the existence of a non-existing link to host or switch by exploiting traits of topology management service. One can initiate such type of attack with either a switch or a host.
 
 In Host Location Hijacking Attack, attacker exploits the trait of Host Tracking Service. The attacker impersonates a target host by sending spoofed packet with the host's information with PACKET\_IN, and the controller will think that the target host has moved to a new location. But the truth is, the traffic of the target host is now redirected to the attacker's host \cite{HXWG15}. Another type of host-initiated attack is called Link Fabrication Attack. The attack is caused by the fact that OpenFlow controllers accept LLDP from all switch ports, even if it is connected to a host. After an attacker receives LLDP packet with a host, he can modify specific contents like DPID or port number of LLDP packets to launch a LLDP packet injection attack. To deal with these two types of host-initiated attack, Hong et al. present TopoGuard, a new security extension to OpenFlow controller. They verify the legitimacy of Host Migration by further inspecting sign of host migration, and manage port property in order to avoid any host residing inside the LLDP propagation \cite{HXWG15}.
 
