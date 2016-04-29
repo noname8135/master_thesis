@@ -18,6 +18,7 @@ Other parts of the network such as controller, other switches and hosts function
 An attacker cannot totally change the way of switch processing or core mechanism. He can only perform attack by manipulating some elements.
 \item
 Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established.
+\end{enumerate}
 
 Assuming an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
 switch without notifying the controller, packets might be forwarded to the undesired destination, and the proposed method tries to detect this behavior with high efficiency. In this method, only output action is considered, other actions such as drop packets, set field, change TTL etc. will be ignored. 
@@ -25,7 +26,6 @@ switch without notifying the controller, packets might be forwarded to the undes
 It is quite reasonable that more than one switches are the made by the same manufacturer or have the same software version, which might result in multiple switches being compromised. However, cooperation between multiple compromised switches makes the scenario a lot more complicate. Take our own method as an example, suppose there are two compromised switches, CS1 and CS2, that are neighbor to each other, and both of them contain an entry in the same aggregation group. When CS1 receives a detection packet and forwarded to other place maliciously, it sends a copy to CS2, and the rest of the detection process will continue without raising any suspicion. In order to simplify the case as a starting point for detection method developing, we assume only one switch inside the network is compromised.
 
 In our method, there is another important consideration: the controller must self-maintain unpolluted information of all flow entries. It is not reliable for a controller to obtain flow entry information by querying switches, because a switch might be malicious and forge a fake response that gives false information about flow entry.
-\end{enumerate}
 
 \section{Flow entry verification}
 In the first part of our work, we propose a method that is able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancement in our work: First, our method reduce the needed packet number and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
@@ -56,9 +56,6 @@ With the complete view of network provided by controller and aggregation conditi
 
 Figure~\ref{aggregated_group} illustrates an aggregated group and the content of a constructed packet. The flow entries connected by arrows belong to the same group. After determining an aggregated group, the controller constructs a packet according to the match fields of flow entries inside the aggregated group. With the aggregation condition, it will match every flow entry inside the aggregated group. In the example figure, we have a controller, three switches, which are S1,S2 and S3, and a packet waiting to be constructed. In S1, there is a flow entry that contains match field eth\_dst, match value A and output action to S2. In S2, the flow entry has match field ipv4\_src, match value B and output action to S3. Initially in S3, there is no flow entry that matches the aggregation condition of this aggregated group, so we use it as the ending node and set a flow entry with arbitrary match field (in the example, arp\_op is used) and value C in order to notify the controller. According to these match fields, the constructed packet will contain eth\_dst as A, ipv4\_src as B and arp\_op as C. Then the packet is sent to S1, and will match to the flow entry and be sent to S2. After this, the packet will match the second flow entry in the aggregated group and be sent to S3. Finally, when it reaches the last flow entry made by us, it will be sent back to the controller, and the processing of this aggregated group is done.
 
-In order to optimize the number of necessary detection packets, the whole network should be covered with the minimum number of aggregated groups. The graph problem is more complex than Longest path problem, which is 
-
-
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=1\textwidth]{figures/aggregated_group.png}
@@ -83,9 +80,9 @@ grow to left by=1cm, grow to right by=1cm]
     \Function{flow\_entry\_traversal}{switches}
       \ForAll{$switch$ in $switches$}
         \ForAll{$entry$ in $switch$}
-          \State Extract $match\_field$, $match\_value$, $action$ from $entry$;
-          \State $entry\_id \gets \textit{switch} + \textit{match\_field} + \textit{match\_value}$;  
-          \State //xxxxxxxxxxxxxxxxxxxxxx
+          \State Extract $match\_field$, $match\_value$, $action$, $cookie$ from $entry$;
+          \State $entry\_id = \gets \textit{cookie}$; //use cookie as entry identifier
+          \State 
           \If{NOT $visited$[$entry\_id$]}
             \State $\textit{visited}[\textit{entry\_id}] \gets true$;
             \State $packet[\textit{match\_field}] \gets \textit{match\_value}$;
@@ -128,10 +125,12 @@ grow to left by=1cm, grow to right by=1cm]
 \end{algorithm}
 \end{tcolorbox}
 
-When defining an aggregated group, we start with an unvisited flow entry, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By going through through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. 
+In order to optimize the number of necessary detection packets, the whole network should be covered with the minimum number of aggregated groups. By taking switches as vertex and forwarding actions as edges, it forms a complex graph problem. It is more complex than Longest path problem, which is also np-complete in time complexity. Inspired by Euler Path, we calculate the number that every vertex is destination of some edges, and use it as visiting priority as a approximation method. The reason behind the thought is that, the vertex who is treated as the destination the least time should be used as start point in order to reduce the number of the necessary groups.
+
+When defining an aggregated group, we start with an unvisited flow entry that currently is treated as destination the least time, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By going through through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. 
 
 In real case, the variety of the conditions aggregation may be much more complicated. A flow entry might have multiple match fields. Multiple flow table may also cause similar problem. When the action in a flow entry send the packet to next table for further processing. The packet is also matched against more than one match field. These kind of situations can still be covered by our method with some modification. 
-If all the fields and values match the under-constructing packet, we process it according to first aggregation rule. Otherwise we fill the packet with all of those match fields. If any match fields is already taken with different value, it will be ignored for this turn of aggregation process and fill the match fields in another packet that has no conflict field. However, the number of flow entries aggregated in a packet is reduced, and so is the effectiveness. Another condition is the conjunction action that ties groups of individual flows with same match field and different value into ``conjunctive  flows'' and reduce the number of flow entry \cite{OVS_OFCTL}. It can also be dealt in a specific way. However, the main purpose of our method is to demonstrate the result of flow entry aggregation. We will only use the most simple condition, which is a match field that has one value.
+If all the fields and values match the under-constructing packet, we process it according to first aggregation rule. Otherwise we fill the packet with all of those match fields. If any match fields is already taken with different value, it will be ignored for this turn of aggregation process and fill the match fields in another packet that has no conflict field. However, the number of flow entries aggregated in a packet is reduced, and so is the effectiveness. Another condition is the conjunction action that ties groups of individual flows with same match field and different value into ``conjunctive  flows'' and reduce the number of flow entry \cite{OVS_OFCTL}. It can also be dealt in a specific way. However, the main purpose of our method is to show the effectiveness of flow entry aggregation method. We will only demonstrate with the most simple condition, which is a match field that has one value.
 
 \section{Fake link detection}
 
@@ -143,13 +142,6 @@ When a switch is compromised, an attacker is surely able to drop LLDP and causes
 
 
 -----------------------------------------------------------
-control-channel hijacking \cite{AAS14}. 
-
-Compromised switches not only have the same capabilities as the malicious hosts, but they are also capable of performing more dynamic and severe attacks.
-First, a compromised switch can be used for traffic eavesdropping. Both data and control traffic passing through the compromised switch can be replicated and sent to the attacker for further processing. Furthermore, the attacker can interfere with the control traffic passing through the compromised
-switches to perform man-in-the-middle attacks [8]. By doing so, the
-attacker can act as the controller to some target switches. The attacker can
-also spoof control messages to the controller on behalf of the target
 
 Below is our attack scenario assumption: 
 - The control channel is properly protected with TLS protocol, meaning
