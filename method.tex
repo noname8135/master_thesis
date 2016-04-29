@@ -74,28 +74,32 @@ grow to left by=1cm, grow to right by=1cm]
   \begin{algorithmic}[1]
     \Require
       Information of all switches, $switches$;
-      Global visited status of every flow entry, $visited$;
+      Global visited status of every flow entry, $visited\_entry$;
+      Visited status of every switch in a aggregation group, $visited\_switch$
       An under-constructing packet that is initially empty, $packet$; 
 
     \Function{flow\_entry\_traversal}{switches}
       \ForAll{$switch$ in $switches$}
         \ForAll{$entry$ in $switch$}
           \State Extract $match\_field$, $match\_value$, $action$, $cookie$ from $entry$;
-          \State $entry\_id = \gets \textit{cookie}$; //use cookie as entry identifier
+          \State $entry\_id \gets \textit{cookie}$; //use cookie as entry identifier
           \State 
-          \If{NOT $visited$[$entry\_id$]}
-            \State $\textit{visited}[\textit{entry\_id}] \gets true$;
+          \State Extract $next\_switch$ from $action$;
+          \If{NOT $visited\_entry$[$entry\_id$] and NOT $visited\_switch$[$next\_switch$]}
+            %\State $\textit{visited\_switch}[\textit{switch}] \gets true$;
+            \State $\textit{visited\_entry}[\textit{entry\_id}] \gets true$;
             \State $packet[\textit{match\_field}] \gets \textit{match\_value}$;
             \State $\textit{complete\_packet} \gets \Call{packet\_gen}{\textit{match\_field}, \textit{match\_value}, \textit{action}, \textit{packet}}$;
+            \State Send $\textit{complete\_packet}$ with PACKET\_OUT;
           \EndIf
       \EndFor
         \EndFor
     \EndFunction
     \State
     \Function{packet\_gen}{match\_field$, match\_value$, action$, packet$}      
-      \State Extract $next\_switch$ from $action$;
       \ForAll {$entry$ in $next\_switch$}
-        \State Extract $match\_field$, $match\_value$, $action$ from $entry$;
+        \State Extract $match\_field$, $match\_value$, $action$, $cookie$ from $entry$;
+        \State Extract $next\_switch$ from $action$; 
   \algstore{packet_generating}
   \end{algorithmic}
 \end{algorithm}
@@ -106,19 +110,20 @@ grow to left by=1cm, grow to right by=1cm]
 \begin{algorithm}[H]
   \begin{algorithmic}[1]
   \algrestore{packet_generating}
-        \State $\textit{entry\_id} \gets \textit{switch} + \textit{match\_field} + \textit{match\_value}$;
-        \If{NOT $visited$[$entry\_id$]}  
+        \State $\textit{entry\_id} \gets \textit{cookie}$;
+        \If{NOT $visited\_entry$[$entry\_id$] and NOT $visited\_switch$[$next\_switch$]}  
+          \State $\textit{visited\_entry}[\textit{entry\_id}] \gets true$;
+          \State $\textit{visited\_switch}[\textit{next\_switch}] \gets true$;
           \If{$packet$[$match\_field$] is set and $packet$[$match\_field$] = $match\_value$}            
-            \State $\textit{visited}[\textit{entry\_id}] \gets true$;
             \State \Return \Call{packet\_gen}{$match\_field$, $match\_value$, $action$, $packet$};
           \ElsIf{$packet$[$match\_field$] is not set}
-            \State $\textit{visited}[\textit{entry\_id}] \gets true$;
             \State $\textit{packet}[\textit{match\_field}] \gets \textit{match\_value}$;
             \State \Return \Call{packet\_gen}{$match\_field$, $match\_value$, $action$, $packet$};
           \EndIf
         \EndIf
       \EndFor
       \State Install new flow entry with action forwarding to controller into $next\_switch$;
+      \State $\textit{visited\_switch} \gets EMPTY$;
       \State \Return $packet$;
     \EndFunction
   \end{algorithmic}
@@ -127,7 +132,7 @@ grow to left by=1cm, grow to right by=1cm]
 
 In order to optimize the number of necessary detection packets, the whole network should be covered with the minimum number of aggregated groups. By taking switches as vertex and forwarding actions as edges, it forms a complex graph problem. It is more complex than Longest path problem, which is also np-complete in time complexity. Inspired by Euler Path, we calculate the number that every vertex is destination of some edges, and use it as visiting priority as a approximation method. The reason behind the thought is that, the vertex who is treated as the destination the least time should be used as start point in order to reduce the number of the necessary groups.
 
-When defining an aggregated group, we start with an unvisited flow entry that currently is treated as destination the least time, seek for a flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By going through through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. 
+The cookie is used to identify every unique entry in different switches. When defining an aggregated group, we start with an unvisited flow entry that currently is treated as destination the least time, seek for an unvisited flow entry that matches the aggregation condition, and go to the next flow entry in other switch according to the output action recursively. Eventually, switch that does not have any entry that matches the aggregation condition for this group is reached, the aggregated group defining process ends, and a packet will be generated in correspondent to the flow entries inside the aggregated group. According to the aggregation condition, every aggregated group will be mutual exclusive. By going through through all the flow entries inside the switches, we should be able to cover all of the flow entries with multiple aggregated group. After all of the flow entries with output action is visited and belong to certain aggregated groups, and all the flow entries will be verified after sending the same number of packets with the number of aggregated groups. 
 
 In real case, the variety of the conditions aggregation may be much more complicated. A flow entry might have multiple match fields. Multiple flow table may also cause similar problem. When the action in a flow entry send the packet to next table for further processing. The packet is also matched against more than one match field. These kind of situations can still be covered by our method with some modification. 
 If all the fields and values match the under-constructing packet, we process it according to first aggregation rule. Otherwise we fill the packet with all of those match fields. If any match fields is already taken with different value, it will be ignored for this turn of aggregation process and fill the match fields in another packet that has no conflict field. However, the number of flow entries aggregated in a packet is reduced, and so is the effectiveness. Another condition is the conjunction action that ties groups of individual flows with same match field and different value into ``conjunctive  flows'' and reduce the number of flow entry \cite{OVS_OFCTL}. It can also be dealt in a specific way. However, the main purpose of our method is to show the effectiveness of flow entry aggregation method. We will only demonstrate with the most simple condition, which is a match field that has one value.
