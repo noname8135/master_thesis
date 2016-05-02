@@ -1,34 +1,34 @@
 \chapter{Flow entry verification and Fake link detection}
-This work presents the detection method for the scenario in which a switch is compromised, and focuses on the problem that a compromised switch will bring. The possibilities of how attacks happen has already been discussed in \ref{SDN security}. As a defender, we will focus on detection methods of certain scenarios. There are two parts in our work. We will define the threat model both parts share, and both parts will be explained along with their attack scenarios and detection algorithm separately.
+This work presents a method of detecting a compromised switch, and focuses on the problem that a compromised switch will bring. The possibilities of how attacks \red{general SDN attacks or just compromising a switch?} happen have been already discussed in Section~\ref{SDN security}. As a defender, we will focus on detection methods of certain scenarios \red{Don't use `certain'. Be specific.}. There are two parts in our work \red{What two parts? Name them here.}. We will define the threat model both parts share, and both parts will be explained along with their attack scenarios and detection algorithm.
 
 \section{Threat model and Attack scenario}
-The attacks take place in a SDN network. The following assumptions is used as threat model:
+In this work, we assume the following scenario of compromising a switch in the threat model:
 \begin{enumerate}
 \item
-Only one controller is used. No cooperation for attack will happen between multiple compromised switches.
+Only one controller is used. No cooperation for attacks will happen between multiple compromised switches.
 \item
-OpenFlow version 1.3 is used as Southbound protocol.
+OpenFlow version 1.3 is used as the southbound protocol \red{Is version 1.3 necessary in the assumption?}.
 \item
 The switches is able to access the Internet. 
 \item
-Only one OpenFlow switch is compromised. No cooperation for attack will happen between multiple entities inside SDN network.
+Only one OpenFlow switch is compromised. No cooperation for attack will happen between multiple entities inside SDN network. \red{You repeat the first item here.}
 \item
-Other parts of the network such as controller, other switches and hosts function normally. Any potential flaw is unintentional and is out of our scope.
+Other parts of the network such as the controller, other switches and hosts function normally. Any potential flaw is unintentional and is out of our scope.
 \item
-An attacker cannot totally change the way of switch processing or core mechanism. He can only perform attack by manipulating some elements.
+An attacker cannot totally change the way of switch processing or core mechanism, but only perform attack by manipulating some elements \red{What elements? Be specific.} .
 \item
-Initially, the network is all clean, nothing has been compromised. The attacks take place some time after the whole network is established.
+Initially, the network is all clean, and nothing has been compromised. The attacks take place some time after the whole network is established.
 \end{enumerate}
 
-Assuming an attacker is able to add, remove, or modify the entries in the flow tables of the compromised
-switch without notifying the controller, packets might be forwarded to the undesired destination, and the proposed method tries to detect this behavior with high efficiency. In this method, only output action is considered, other actions such as drop packets, set field, change TTL etc. will be ignored. 
+Suppose an attacker is able to add, remove, or modify the entries in the flow tables of a compromised
+switch without notifying the controller, so packets may be forwarded to an undesired destination. The proposed method is intended to detect this behavior with high efficiency. In this method, only output action of packets is considered, other actions such as dropping packets, setting field, changing TTL etc. will be ignored \red{Cann't they (e.g., dropping packets) be detected?}. 
 
-It is quite reasonable that more than one switches are the made by the same manufacturer or have the same software version, which might result in multiple switches being compromised. However, cooperation between multiple compromised switches makes the scenario a lot more complicate. Take our own method as an example, suppose there are two compromised switches, CS1 and CS2, that are neighbor to each other, and both of them contain an entry in the same aggregation group. When CS1 receives a detection packet and forwarded to other place maliciously, it sends a copy to CS2, and the rest of the detection process will continue without raising any suspicion. In order to simplify the case as a starting point for detection method developing, we assume only one switch inside the network is compromised.
+It is certainly possible that more than one switch are made by the same manufacturer or have the same software version in the same network, so multiple switches share the same vulnerabilities and may be compromised simultaneously. However, cooperation between multiple compromised switches complicates the scenario significantly. Taking our own method as an example, suppose there are two compromised switches, CS1 and CS2, which are neighbors to each other, and both contain an entry in the same aggregation group \red{You haven't defined aggregation group here}. When CS1 receives a detection packet and forwarded to other place maliciously, it sends a copy to CS2, and the rest of the detection process will continue without raising any suspicion \red{Since the controller does not receive the detection packet, is it possible to raise a suspicion here?}. In order to simplify the case as a starting point for developing the detection method, we assume only one switch inside the network is compromised.
 
-In our method, there is another important consideration: the controller must self-maintain unpolluted information of all flow entries. It is not reliable for a controller to obtain flow entry information by querying switches, because a switch might be malicious and forge a fake response that gives false information about flow entry.
+In this detection method, there is another important consideration: the controller must maintain unpolluted information of all flow entries. It is not reliable for a controller to obtain flow entry information by querying switches because a switch may be malicious and forge a fake response that gives false information about the flow entries.
 
 \section{Flow entry verification}
-In the first part of our work, we propose a method that is able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancement in our work: First, our method reduce the needed packet number and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
+In the first part of our work, we propose a method able to detect if the flow entries work as expected. The method is inspired by \cite{CKGL15}. There are mainly two enhancements in this work: First, this method reduces the number of detection packets, and therefore increase the efficiency significantly. Second, the additional flow entries we need to install is less than the original method, resulting in lower cost for setting up and cleaning up. 
 
 \subsection{Detection method}
 \label{Detection_method}
