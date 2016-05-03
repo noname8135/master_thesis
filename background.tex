@@ -51,16 +51,7 @@ The main idea of the topology poisoning attack is to trick the controller into b
 
 Attackers can also modify the flow entries inside the flow tables of the compromised switch to perform MITM, eavesdropping or DOS attack \cite{AAS14}. The detection method proposed in \cite{CKGL15} is able to detect whether a switch is forwarding the packets in an unexpected way. After selecting a flow entry as the detecting target, they install new entry on its neighbors. With the match field selected by their algorithm, they are able to let every packet that matches the new flow entry matches the target flow entry. A packet containing the match field of the new flow entry will be sent from \texttt{Packet\_Out} to a neighbor of the target switch, forwarded to the target switch, and should be sent back to the controller. Finally, they will check if the packet comes back to the controller as expected and remain unchanged. However, this method will take a long time to run if it is desired to scan through a large number of flow entries. A pre-detection method to narrow down the potential target is needed.
 
+By intercepting the control channel without complete TLS with a compromised switch, an attacker is able to spoof messages and effect whole network. For example, one may also reconfigure a compromised switch to use an attacker-controlled controller than the one it should. This type of attack is called Control-channel hijacking attack.
 
+An attacker can tell if a new flow entry is installed by sending packet and observing the response time. With this method, one can fingerprint the flow entries inside the OpenFlow switches and perform a DOS to the controller by deliberately crafting malicious packets for controller to process slowly with a switch or host\cite{AAS14}.
 
------------
-However, due to the constant connectivity
-and lack of authentication in the plaintext OpenFlow
-TCP control channel, an attacker can immediately seize full
-control of any down-stream switches and execute very finegrained
-eavesdropping attacks that would be difficult to detect.
-While this type of attack was technically achievable before,
-OpenFlow eliminates both the heterogeneity in network
-management interfaces and the time-consuming requirement
-of capturing management credentials.
-Listener Mode This risk of adve
