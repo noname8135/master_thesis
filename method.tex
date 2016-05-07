@@ -23,27 +23,28 @@ In the first part of this work, we propose a method to detect if the flow entrie
 
 \subsection{Detection method}
 \label{Detection_method}
-The main idea of the method is to assemble a packet that will go through a series of switches by matching the match fields in the flow entries of those switches. Then the packet will be sent into the network, and should be sent back to the controller finally if nothing goes wrong. For this purpose, we take advantage of the network-wise visibility provided by the controller. The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. 
+The main idea of the method is to assemble a packet that will go through a series of switches by matching the match fields in the flow entries of those switches. Then the packet will be sent into the network, go through a serie of flow entries inside switches, and should be sent back to the controller finally if nothing goes wrong. For this purpose, we take advantage of the network-wise visibility provided by the controller. 
+
+The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. In the first step of this flowchart, we try to find ``aggregated groups''. An aggregated group is able to aggregate multiple match fields together. It consists of one flow entry of each switch in the same group. Assume there is a serie of switches, $S_{1..n}$ in a same aggregated group. Each switch will contain a flow entry selected according to our self-defined condition that has the output action forwarding to next switch. For example, starting from $S_{1}$, we try to find a flow entry that matches the requirement inside $S_{1}$, it has output action to $S_{2}$. We move on to $S_{2}$ and try to find an entry which also meets the requirement, it has forwarding action to $S_{3}$, and so on. Eventually, when a switch $S_{n}$ does not contain any flow entry that fits the requirement, a new flow entry with action forwarding to the controller will be installed on $S_{n}$.
+
+The requirement condition that the flow entries in the same aggregated group must satisfy is called \textit{aggregation conditions}:
+
+\begin{enumerate}
+\item
+Either one other flow entry that has exactly the same match field and same value, or there is no other flow entry with the same match field in different switches of the same group.
+\item
+There is no switch that has more than one entry selected in the same group, which might cause cycle.
+\end{enumerate}
 
 \begin{figure}[H]
 \begin{center} 
-\includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.png}
+\includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.pdf}
 \end{center}
 \caption{The flow chart of the flow entry detection process.}
 \label{flow_entry_detection_flowchart}
-\end{figure}
+\end{figure} 
 
-First, we define the \textit{aggregated groups}. An aggregated group consists of one or more than one flow entries in the switches. Each of the flow entries has an output action pointing to the next switch which contains a flow entry that is also in the same aggregated group. In addition, the flow entries in the same aggregated group must satisfy either of the two conditions below \red{but you list three below}, and we name them the \textit{aggregation condition} for later usage: 
-\begin{enumerate}
-\item
-There is at least one other flow entry that has exactly the same match field and same value in a different switch.
-\item
-There is no other flow entry with the same match field.
-\item
-Entries in the same group must not have forward action to a switch that cause cycle.
-\end{enumerate}
-
-With the complete view of network provided by the controller and the aggregation condition, the controller is able to construct a detection packet to be sent from the first flow entry all the way down to the last flow entry in the same aggregated group, and finally come back to the controller, indicating that all the flow entries inside this aggregate group work as expected. 
+With the complete view of network provided by the controller and the aggregation condition, the controller is able to construct a detection packet to be sent from the first flow entry all the way down to the last flow entry during an aggregated group defining process. After sending it to the first switch of the aggregated group, it should come back to the controller, indicating that all the flow entries inside this aggregate group work as expected. 
 
 Figure~\ref{aggregated_group} illustrates an aggregated group and the content of a constructed packet. The flow entries connected by arrows belong to the same group. After determining an aggregated group, the controller constructs a packet according to the match fields of flow entries inside the aggregated group. With the aggregation condition, it will match every flow entry inside the aggregated group. In the example figure, we have a controller, three switches, which are S1,S2 and S3, and a packet waiting to be constructed. In S1, there is a flow entry that contains match field eth\_dst, match value A and output action to S2. In S2, the flow entry has match field ipv4\_src, match value B and output action to S3. Initially in S3, there is no flow entry that matches the aggregation condition of this aggregated group, so we use it as the ending node and set a flow entry with arbitrary match field (in the example, arp\_op is used) and value C in order to notify the controller. According to these match fields, the constructed packet will contain eth\_dst as A, ipv4\_src as B and arp\_op as C. Then the packet is sent to S1, and will match to the flow entry and be sent to S2. After this, the packet will match the second flow entry in the aggregated group and be sent to S3. Finally, when it reaches the last flow entry made by us, it will be sent back to the controller, and the processing of this aggregated group is done.
 
