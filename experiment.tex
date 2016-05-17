@@ -1,13 +1,13 @@
 \chapter{Detection Method Implementation and Evaluation}
-In this chapter, we detail experimental detail of methods we proposed in chapter 3. First, the environment and the reason of using them will be explained. Then, we will show test items and their correspondent result.
+In this chapter, we detail the experimental part of methods we proposed in chapter 3. First, the environment and the reason of using them will be explained. Then, we will show test items and their correspondent result.
 
 \section{General experimental setup}
 We use Mininet as our network environment. It allows us to creates a large-scale virtual network easily. 
 It provides python API as well as command line interface to customize the network. It also offers an interactive interface to test the connectivity and performance. We use the virtual machine provided by the OpenFlow tutorial \cite{OFT}. It comes with all the elements we need, such as Mininet, ryu controller, OpenvSwitch etc.
 
-Table~~\ref{table:Experiment_table} is a summary of all the tools used. 
+Table~~\ref{table:Experiment_table} is a summary of all the tools used and their version detail. 
 
-In both of our methods, hosts are irrelevant, so there will not be any host in our environment. Some setup like topology or number of switches are different in two parts of our work, they will be described individually.
+In our methods, hosts are irrelevant, so there will not be any host in our environment. Some setup like topology or number of switches are different in two parts of our work, they will be described individually.
 
 \begin{table}[H]
 \centering
@@ -24,18 +24,57 @@ In both of our methods, hosts are irrelevant, so there will not be any host in o
 \label{table:Experiment_table}
 \end{table}
 
-\section{Method Implementation}
-preinstall flow entries proactively to simulate the situation. 
-In the experiment, there will be only \textit{output to port} actions among all the flow entries of all the switches in our environment. 
-\subsection{Flow entry verification method}
-There will be only output actions among all the flow entries of all the switches in our experimental environment.
+\subsection{Network environment and flow entry simulation} 
+To evaluate the effectiveness of the detection method under different environment, there will be three different scales of network in our experiment. The detail of each network is shown as Table~~\ref{table:network_env}. In order to simulate the scenario that lots of flow entries exist in the OpenFlow switches in the network, the flow entry are installed proatively. Just like what is mentioned in third paragraph of \ref{Detection_method}, the match fields of flow entries should satisfy dependency reqirement. Event though we intend to keep it simple and have only one match value for each flow entry, the flow entries should have additional required match field to satisfy the dependency. Therefore, we choose the match fields that are more common, and add the flow entries with necessary additional match fields. The chosen match fields and their dependent match fields are shown in Table~~\ref{table:selected_match_fields}.
+
+A script will randomly generate certain number of flow entries according to different scales of network.
+When a flow entry is generated, the script selects a match field from the set of chosen match fields along with random value in valid range and format, output port and the switch this entry is going to install on. Due to the reason stated in \ref{Further_discussion}, there will be only ``output port\_no'' action among all the flow entries in the switches.
+\begin{table}[H]
+\centering
+\caption{Detailed network scale and setup}
+\begin{tabular}{|l|p{4cm}|p{4.5cm}|}
+\hline  Switch number & link number & flow entry number \\
+\hline 123 & 456 & 789	\\
+\hline 
+\end{tabular}
+\label{table:network_env}
+\end{table}
 
 
-There are 254 flow tables in every switch simulated by mininet, we will only use the first table.
+\begin{table}[H]
+\centering
+\caption{Selected Match fields and their dependency requirement}
+\begin{tabular}{|l|p{4cm}|p{8cm}}
+\hline Match field & required dependent field(s) \\
+\hline in\_port & None \\
+\hline vlan\_vid & None \\
+\hline eth\_dst & None \\
+\hline eth\_src & None \\
+\hline ipv4\_src & eth\_type=0x0800 \\
+\hline ipv4\_dst & eth\_type=0x0800 \\
+\hline ipv6\_src & eth\_type=0x86DD \\ 
+\hline ipv6\_dst & eth\_type=0x86DD \\
+\hline tcp\_src & eth\_type=0x0800, ip\_proto=0x6 \\
+\hline tcp\_dst & eth\_type=0x0800, ip\_proto=0x6 \\
+\hline udp\_src & eth\_type=0x0800, ip\_proto=0x11 \\
+\hline udp\_dst & eth\_type=0x0800, ip\_proto=0x11 \\
+\hline icmpv4\_type & eth\_type=0x0800, ip\_proto=0x1 \\
+\hline icmpv4\_code & eth\_type=0x0800, ip\_proto=0x1 \\
+\hline icmpv6\_type & eth\_type=0x86DD, ip\_proto=0x3a \\
+\hline icmpv6\_code & eth\_type=0x86DD, ip\_proto=0x3a \\
+\hline 
+\end{tabular}
+\label{table:selected_match_fields}
+\end{table}
+
+In fact, there are 254 flow tables in every OpenFlow switch simulated by mininet, we will only use the first table.
 
 Since compromised switch is able to send fake xxxx to controller, controller cannot rely on the response of the switches. Hence, it needs to maintain detail of flow entry it installed. 
 
+
+The Packet\_Out with raw packet will not be processed as normal packet. The action set will be executed directly \cite{PACKETOUT}.
+
+
 \section{Evaluation}
 
-
-there will be only \textit{output to port} actions among all the flow entries of all the switches in our environment. 
+\subsection{Estimated expectation}
