@@ -3,9 +3,9 @@ In this chapter, we detail the experimental part of methods we proposed in chapt
 
 \section{General experimental setup}
 We use Mininet as our network environment. It allows us to creates a large-scale virtual network easily. 
-It provides python API as well as command line interface to customize the network. It also offers an interactive interface to test the connectivity and performance. We use the virtual machine provided by the OpenFlow tutorial \cite{OFT}. It comes with all the elements we need, such as Mininet, ryu controller, OpenvSwitch etc. Table~~\ref{table:Experiment_table} is a summary of all the tools used and their version detail. 
+It provides python API as well as command line interface to customize the network. It also offers an interactive interface to test the connectivity and performance. We use the virtual machine provided by the mininet offical website \cite{Mininet}. It comes with all the elements we need, such as Mininet, ryu controller, OpenvSwitch etc. Table~~\ref{table:Experiment_table} is a summary of all the tools used and their version detail. 
 
-The in-band control is used for control channel. It is the default setting and is more convenient to set up. Although there will be special flow entries in-band control channel, they are hidden and will not have any influence on our experiemnt. Hosts are irrelevant in our methods, so there will not be any host in our environment, and only one controller is used. Some setup like topology or number of switches are different in two parts of our work, they will be described individually.
+The in-band control is used for control channel. It is the default setting of mininet and is more convenient to set up. Although there will be special flow entries in-band control channel, they are hidden and will not have any influence on our experiemnt. Hosts are irrelevant in our methods, there will not be any host in our environment, and only one controller is used. Some setup like topology or number of switches are different in two parts of our work, they will be described individually.
 
 \begin{table}[H]
 \centering
@@ -25,16 +25,16 @@ The in-band control is used for control channel. It is the default setting and i
 \subsection{Network environment and flow entry simulation} 
 To evaluate the effectiveness of the detection method under different environment, there will be XXXX different scales of network in our experiment. The detail of each network is shown as Table~~\ref{table:network_env}. 
 
-There are 254 flow tables in every OpenFlow switch simulated by mininet, we will only use the first table. In order to simulate the flow entries exist in the OpenFlow switches in the network, the flow entry are installed proatively, and due to the reason stated in the last paragraph of \ref{Further_discussion}, the controller will maintain a record of switches, including ports, links and flow entries. Just like what is mentioned in third paragraph of \ref{Detection_method}, the match fields of flow entries should satisfy dependency reqirement. Event though we intend to keep it simple and have only one match value for each flow entry, the flow entries should have additional required match field to satisfy the dependency. Therefore, we choose the match fields that are more common, and add the flow entries with necessary additional match fields. The chosen match fields and their dependent match fields are shown in Table~~\ref{table:selected_match_fields}.
+There are 254 flow tables in OpenFlow switch simulated by mininet, we will only use the first table. In order to simulate the flow entries exist in the OpenFlow switches in the network, the flow entry are installed proatively, and due to the reason stated in the last paragraph of Section~\ref{Further_discussion}, the controller will maintain a record of switches, including ports, links and flow entries. Just like what is mentioned in the third paragraph of Section~\ref{Detection_method}, the match fields of flow entries should satisfy dependency reqirement. Even though we intend to keep it simple and have only one match value for each flow entry, the flow entries should have additional required match field to satisfy the dependency. Therefore, we choose the match fields that are more common, and add the flow entries with necessary additional match fields. The chosen match fields and their dependent match fields are shown in Table~~\ref{table:selected_match_fields}.
 
 A script will randomly generate number of flow entries according to different scales of network.
-When a flow entry is generated, the script selects a match field from the set of chosen match fields along with random value in valid range and format, output port and the switch this entry is going to install on. Due to the reason stated in \ref{Further_discussion}, there will be only ``output port\_no'' action among all the flow entries in the switches.
+When a flow entry is generated, the script selects a match field from the set of chosen match fields along with random value in valid range and format, output port and the switch this entry is going to install on. Due to the reason stated in Section~\ref{Further_discussion}, there will be only ``output port\_no'' action in all the flow entries.
 
 \begin{table}[H]
 \centering
 \caption{Detailed network scale and setup}
 \begin{tabular}{|l|p{4cm}|p{4.5cm}|}
-\hline  Switch number & link number & flow entry number \\
+\hline  number of switch & number of link & number of flow entry(each switch) \\
 \hline 123 & 456 & 789	\\
 \hline 
 \end{tabular}
@@ -43,7 +43,7 @@ When a flow entry is generated, the script selects a match field from the set of
 
 \begin{table}[H]
 \centering
-\caption{Selected Match fields and their dependency requirement}
+\caption{Selected match fields and their dependency requirement}
 \begin{tabular}{|l|p{4cm}|p{8cm}}
 \hline Match field & required dependent field(s) \\
 \hline in\_port & None \\
