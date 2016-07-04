@@ -32,7 +32,7 @@ The conditions for an entry to be in the same aggregated group. It is defined to
 \item
 In the same group, the flow entries on different switches either have exactly the same match fields and values, or have no common match fields.
 \item
-The route for a detection packet of an aggregation group must not contain any loop.
+A detection packet should not visit switches switch more than once.
 \item
 For a flow entry \textit{A} on an arbitrary switch, if there exist another flow entry \textit{B} on another switch such that \textit{A} and \textit{B} have the same match field and value, then \textit{A} might belong to more than one aggregated group. Otherwise entries belong to one aggregated group.
 
@@ -79,7 +79,7 @@ The main idea of the method is to assemble a packet that will go through a seque
 \label{flow_entry_detection_flowchart}
 \end{figure}
 
-The first aggregation condition is the essential idea of the method: aggregating flow entries this way allows us to forge a packet with multiple fields that match the entries inside the same aggregated group. The second condition is to eliminate the cycle in the forwarding path of a detection packet. Since a switch has at most one flow entry in an aggregated group, a detection packet will not go through a switch more than once. Otherwise it might causes loop. The third aggregation condition is also for eliminating loops, we will talk more about it in \ref{Aggregated_group_finding}.
+The first aggregation condition is the essential idea of the method: aggregating flow entries this way allows us to forge a packet with multiple fields that match the entries inside the same aggregated group. The second condition is to ensure the detection packet does not get stuck in a loop and never comes back to the controller. The third aggregation condition is also for eliminating loops, we will talk more about it in \ref{Aggregated_group_finding}.
 
 A detection packet is needed for each aggregated group. In other words, minimizing the number of aggregated groups means minimizing the number of detection packets needed, resulting in fast detection. In order to achieve this, we try to increase the number of entries that one detection packet goes through. On a switch, there might be a collection of entries $E$ that suit the aggregation conditions. We can add a new flow entry with multiple forwarding actions. It will duplicate the detection packet and forward them according to the action set. Therefore, the switches the entries in an aggregated group are on and their forwarding actions will form a tree. More detail will be stated in \ref{Aggregated_group_finding}.
 
@@ -89,42 +89,13 @@ As the abstraction of the problem, we treat switches as vertex and forwarding ac
 \subsection{Aggregate group finding}
 \label{Aggregated_group_finding}
 
-The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. Let $S=\{s_1,s_2,\ldots,s_n\}$ be the set of switches under the control of a controller, and $f(s_i)$, where $i=1\ldots n$, represents the flow entries on $S_i$. Let $F=\cup_{i=1}^n f(s_i)$, i.e., the set of all the flow entries. In the first step of the flow chart, we attempt to find $A$, overlapping disjoint sets of $F$, such that each element $a$ (i.e. aggregation group) belong to $A$, all entries $E$ in $a$ satisfy the aggregation conditions, noted . 
+The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. Let $S=\{s_1,s_2,\ldots,s_n\}$ be the set of switches under the control of a controller, and $f(s_i)$, where $i=1\ldots n$, represents the flow entries on $s_i$. Let $F=\cup_{i=1}^n f(s_i)$, i.e., the set of all the flow entries. In the first step of the flow chart, we attempt to find $A$, the set of aggregation groups, which are overlapping disjoint sets of $F$, such that for $\{a_1, a_2, \ldots, a_m\}$ (i.e. aggregation group) in $A$, all entries in $a_i$, where $i=1\ldots m$ satisfy the aggregation conditions.
 
-When finding an aggregated group, we start from an arbitrary switch as the starting switch. While we search for $E$ on a switch $S_x$, if we find a such $E$, we follow its forwarding action and move on to the destination. 
+When finding an aggregated group $a_x$, the $a_x$ is initially empty. We start from an arbitrary switch as the starting switch and perform DFS search . While we are looking into a switch $s_y$, we first check if there is any entry which has the match field and value that the detection will match. If so, the entry is selected and added to $a_x$, not matter it is already in other group or not, since the detection packet will match. If there are more than one such entry, the one with the highest priority will be selected. If no such entry exists, we search on $s_y$ for the entry $E$ which meets the aggregation conditions. That is, the forwarding destination of $E$ is not visited this round and $E$ belong to this group only. In order to check this, $E$ should not be used, and neither should the switches the entries are currently in $a_x$ contain any entry that has the same field and column as $E$, which corresponding to the third aggregation condition. If $E$ is found, it is added into $a_x$. Otherwise if we cannot find any $E$, $s_y$ is a leaf switch, and we return to last depth, which is the parent node of $s_y$ in aggregation tree and continue to find another $E$. If there are another entry that fits the requirement of $E$, resulting than more than one $E$ in this depth and making this switch a splitting switch, we need to add an additional flow entry that forwards the detection packet to all the destinations of all the entries that satisfied the condition of $E$.
 
+Regardless of how the selected entry is chosen, the selected entry forwards to a destination, which might be a switch or a host if $s_y$ is a leaf switch. If the destination is a host, we need to install another new entry on $s_y$ which use Packet_In to send the detection packet to the controller. If it is a switch, we move on to the next depth, treating this switch as $s_y$ and start the above procedure all over again until the detection packet has no more field available, or all the flow entries belong to certain group, and the group finding process for $a_x$ is complete.
 
-
-otherwise if we cannot find such $E$, we return to last depth, which the parent node of this switch in aggregation tree. If we find an entry 
-
-unless the detection packet has no more field available. 
-
-
-
-switch and try to find an entry which also meets aggregation condition and also has an output action action to the third switch, and so on. Eventually when we find a switch that does not contain any flow entry that fits the requirement, and the detection process in this aggregated group ends. Because all flow entries will be aggregated to some aggregated group, all the flow entries will be verified after all the aggregated groups have been explored.
----------------
-
-
-
-
-After finding an aggregated group, the controller will send a detection packet with PACKET\_OUT to the starting switch, and the detection packet will pass the through the switches in the aggregation trees. The detection packets should also meet the dependency requirement stated in the third paragraph of \ref{SDN and OpenFlow}; otherwise, it will not be matched by any flow entry. When it arrives at a splitting switch, it will be duplicated and sent to more than one switch due to the additional flow entry we install on splitting switch. Eventually, when the detection packet reach the last entry in the aggregated group, it will be sent to an end point, which is either a switch that contain no flow entry that matches the aggregation conditions or a host depending on the output port of the last entry. If the end point is a switch, the packet will fail to match any flow entry on that switch and be sent back to the controller due to the table-miss entry, and the switch will become a leaf switch of the aggregation tree. If it is a host, the controller installs a new flow entry on the leaf switch the last entry is on. Either case will notifying the controller that the detection process of this aggregated group is carried out as expected.
-
-Figure~\ref{aggregated_group} illustrates a realistic example with an aggregated group and the content of a detection packet. The flow entries connected by arrows belong to the same group. we have a controller, three switches, $s_a$,$s_b$ and $s_c$, and a detection packet.
-
-XXXXXXX
-
-
-After, the controller sends the detection packet to starting switch. In the example figure,  Only the entries that will be matched are shown. In $s_a$, there is a flow entry that contains match field \texttt{eth\_dst}=\texttt{a2:b4:c6:d8:e0:f1} and an output action to $s_b$. In $s_b$, the flow entry has match fields \texttt{eth\_type}=\texttt{0x800}, \texttt{ipv4\_src}=\texttt{140.123.103.123} and an output action to $s_c$. The \texttt{eth\_type}=\texttt{0x800} is required for a valid IP match field. According to the match fields of these flow entries in the aggregated group, the forged detection packet will contain \texttt{eth\_dst} as \texttt{a2:b4:c6:d8:e0:f1}, \texttt{ipv4\_src} as \texttt{140.123.103.123}.  
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=1\textwidth]{figures/aggregated_group.png}
-\end{center}
-\caption{An aggregated group and constructed packet. \red{wrong figure}}
-\label{aggregated_group}
-\end{figure}
-
-The process of generating a packet is done along with defining one aggregated group. Its pseudo-code is as follows:
+The pseudo-code of finding an aggregated group and generating a detection packet is as follows:
 
 \begin {tcolorbox}[blanker,float=tbp,
 grow to left by=1cm, grow to right by=1cm]
@@ -180,11 +151,30 @@ grow to left by=1cm, grow to right by=1cm]
 \end{algorithm}
 \end{tcolorbox}
 
+After finding an aggregated group, the controller will send a detection packet with PACKET\_OUT to the starting switch, and the detection packet will pass the through the switches in the aggregation trees. The detection packets should also meet the dependency requirement stated in the third paragraph of \ref{SDN and OpenFlow}; otherwise, it will not be matched by any flow entry. When it arrives at a splitting switch, it will be duplicated and sent to more than one switch due to the additional flow entry we install on splitting switch. Eventually, when the detection packet reach the last entry in the aggregated group, it will be sent to an end point, which is either a switch that contain no flow entry that matches the aggregation conditions or a host depending on the output port of the last entry. If the end point is a switch, the packet will fail to match any flow entry on that switch and be sent back to the controller due to the table-miss entry, and the switch will become a leaf switch of the aggregation tree. If it is a host, the controller installs a new flow entry on the leaf switch the last entry is on. Either case will notifying the controller that the detection process of this aggregated group is carried out as expected.
+
+
+Figure~\ref{aggregated_group} illustrates a realistic example with an aggregated group and the content of a detection packet. The flow entries connected by arrows belong to the same group. we have a controller, three switches, $s_a$,$s_b$ and $s_c$, and a detection packet.
+
+XXXXXXX
+
+
+After, the controller sends the detection packet to starting switch. In the example figure,  Only the entries that will be matched are shown. In $s_a$, there is a flow entry that contains match field \texttt{eth\_dst}=\texttt{a2:b4:c6:d8:e0:f1} and an output action to $s_b$. In $s_b$, the flow entry has match fields \texttt{eth\_type}=\texttt{0x800}, \texttt{ipv4\_src}=\texttt{140.123.103.123} and an output action to $s_c$. The \texttt{eth\_type}=\texttt{0x800} is required for a valid IP match field. According to the match fields of these flow entries in the aggregated group, the forged detection packet will contain \texttt{eth\_dst} as \texttt{a2:b4:c6:d8:e0:f1}, \texttt{ipv4\_src} as \texttt{140.123.103.123}.  
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{figures/aggregated_group.png}
+\end{center}
+\caption{An aggregated group and constructed packet. \red{wrong figure}}
+\label{aggregated_group}
+\end{figure}
+
+\subsection{Detection packets checking}
 
 \subsection{Further discussion of attack scenario and our method}
 \label{Further_discussion}
 On splitting switches and leaf switches, we install additional flow entries. However, this will make the detection packet matches the newly installed flow entries rather than the original ones. XXXXXXXXXXXXXX
-With egress processing enabled, we are able to add the new flow entry in egress table, 
+With egress processing enabled, we are able to add the new flow entry in egress table and let the original entries match first before our new entries. 
 
 
 As the result, the original entries was matched, and no entry is missed. 
@@ -200,6 +190,3 @@ Suppose an attacker is able to add, remove, or modify the entries in the flow ta
 switch without notifying the controller, so packets may be forwarded to an undesired destination. The proposed method is intended to detect this behavior with high efficiency. In this method, only output action of packets is considered. Other actions such as dropping packets, setting field, changing TTL is not included \sout{\red{Cann't they (e.g., dropping packets) be detected?}}. Although there are might be reasonable ways to deal with these actions, for example, to detect packet dropping, we can add timeout checking function, such detection function is irrelevant to our main method and is not implemented in our work.
 
 In this detection method, there is another important consideration: the controller must maintain unpolluted information of all flow entries. It is not reliable for a controller to obtain flow entry information by querying switches because a switch may be malicious and forge a fake response that gives false information about the flow entries. That is the reason for the last statement of attack model. Also mind that the detection packet should not be distinguishable from normal packet, otherwise the attacker will be able to circumvent the detection method. 
-------
-
- 
