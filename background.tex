@@ -63,5 +63,3 @@ Although the main purpose is not identical, some network debugging methods can b
 By intercepting the control channel without complete TLS with a compromised switch, an attacker is able to spoof messages and effect whole network. For example, one may also reconfigure a compromised switch to use an attacker-controlled controller than the one it should. This type of attack is called Control-channel hijacking attack.
 
 An attacker can tell if a new flow entry is installed by sending packet and observing the response time. \cite{BCKK15}. With this method, one can fingerprint the flow entries inside the OpenFlow switches and perform a DOS to the controller by deliberately crafting malicious packets for controller to process slowly with a switch or host\cite{AAS14}.
-
----------------

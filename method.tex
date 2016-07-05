@@ -13,13 +13,13 @@ Other parts of the network such as the controller, other switches and hosts func
 \item
 An attacker cannot totally change the way of switch processing or core mechanism, but only perform the attack by modifying flow entries.
 \item
-Initially, the network is all clean, and nothing is compromised. The attacks take place some time after the whole network is established.
+Initially, the network is clean, and nothing is compromised. The attacks take place some time after the whole network is established.
 \end{enumerate}
 
 Other attack scenarios beyond the assumptions such as multiple compromised switches, as well as possible circumvention, will be discussed in Section~\ref{Further_discussion}.
 
 \section{Rapid detection method of disobedient forwarding}
-Our method aim to detect if the flow entries of a switch work as expected. It is inspired by \cite{CKGL15}. The method in this work has two main enhancements. First, it reduces the number of detection packets required, and therefore increases the efficiency significantly. Second, no existing flow entries is modified. Only some temporary entries will be added and will timeout after the detection process is over, which has little influence to the whole network and is easy to clean up. 
+Our method aim to detect if the flow entries of a switch work as expected. It is inspired by \cite{CKGL15}. The method in this work has two main enhancements. First, it reduces the number of detection packets required, and therefore increases the efficiency significantly. Second, no existing flow entry is modified. Only some temporary entries will be added and will timeout after the detection process is over, which has little influence to the whole network and is easy to clean up. 
 
 \subsection{Terminology}
 
@@ -38,26 +38,27 @@ For a flow entry \textit{A} on an arbitrary switch, if there exist another flow 
 
 \end{enumerate}
 
-
 \item
 [Aggregated groups]: 
-A set of entries that satisfied the aggregation condition. An entry in the group has forwarding action either to the switch that the other entry is on or a host. Each group has an integer number as an identifier.
+A set of entries that satisfy the aggregation conditions. An entry in the group has forwarding action either to the switch that the other entry is on or a host. Each group has an integer number as an identifier.
 
 \item 
 [Aggregation tree]
-A tree format data structure for packet traversal route of an aggregated group. It treats the switches that the entries of the aggregated group are on as vertex, and the forwarding action of those entries as edges. It contains:
+A data structure in tree format, representing the packet traversal path of an aggregated group. It treats the switches that the entries of the aggregated group are on as vertex, and the forwarding action of those entries as edges. It contains:
 \begin{enumerate}
 \item
 [starting switch]:
-A switch as a start point for traversal.
+A switch as a starting point for traversal.
 \item
 [splitting switches]:
-The switches who has more than one children. 
+The switches which has more than one children. 
 \item
 [leaf switches]:
-The switches who are the leaves of the aggregation tree.
+The switches which are the leaves of the aggregation tree.
 \end{enumerate}
 \item 
+[Auxiliary entry]:
+The entry that will be added to splitting switches or leaf switches to duplicate the packet and send to several switches or send the packet back to controller. The match field is selected from a field of detection packet in order for it to match. In our implementation, vid is used.
 
 \item
 [Detection packets]:
@@ -73,7 +74,7 @@ The main idea of the method is to assemble a packet that will go through a seque
 
 \begin{figure}[H]
 \begin{center} 
-\includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.pdf}
+\includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.png}
 \end{center}
 \caption{The flow chart of the flow entry detection process.}
 \label{flow_entry_detection_flowchart}
@@ -89,11 +90,11 @@ As the abstraction of the problem, we treat switches as vertex and forwarding ac
 \subsection{Aggregate group finding}
 \label{Aggregated_group_finding}
 
-The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. Let $S=\{s_1,s_2,\ldots,s_n\}$ be the set of switches under the control of a controller, and $f(s_i)$, where $i=1\ldots n$, represents the flow entries on $s_i$. Let $F=\cup_{i=1}^n f(s_i)$, i.e., the set of all the flow entries. In the first step of the flow chart, we attempt to find $A$, the set of aggregation groups, which are overlapping disjoint sets of $F$, such that for $\{a_1, a_2, \ldots, a_m\}$ (i.e. aggregation group) in $A$, all entries in $a_i$, where $i=1\ldots m$ satisfy the aggregation conditions.
+The flow chart of the flow entry detection process in the controller is shown in Figure~\ref{flow_entry_detection_flowchart}. Let $S=\{s_1,s_2,\ldots,s_n\}$ be the set of switches under the control of a controller, and $f(s_i)$, where $i=1\ldots n$, represents the flow entries on $s_i$. Let $F=\cup_{i=1}^n f(s_i)$, i.e., the set of all the flow entries. In the first step of the flow chart, we attempt to find $A$, the set of aggregated groups, which are set cover of $F$, such that for $\{a_1, a_2, \ldots, a_m\}$ (i.e. aggregated groups) in $A$, all entries in $a_i$, where $i=1\ldots m$ satisfy the aggregation conditions.
 
-When finding an aggregated group $a_x$, the $a_x$ is initially empty. We start from an arbitrary switch as the starting switch and perform DFS search . While we are looking into a switch $s_y$, we first check if there is any entry which has the match field and value that the detection will match. If so, the entry is selected and added to $a_x$, not matter it is already in other group or not, since the detection packet will match. If there are more than one such entry, the one with the highest priority will be selected. If no such entry exists, we search on $s_y$ for the entry $E$ which meets the aggregation conditions. That is, the forwarding destination of $E$ is not visited this round and $E$ belong to this group only. In order to check this, $E$ should not be used, and neither should the switches the entries are currently in $a_x$ contain any entry that has the same field and column as $E$, which corresponding to the third aggregation condition. If $E$ is found, it is added into $a_x$. Otherwise if we cannot find any $E$, $s_y$ is a leaf switch, and we return to last depth, which is the parent node of $s_y$ in aggregation tree and continue to find another $E$. If there are another entry that fits the requirement of $E$, resulting than more than one $E$ in this depth and making this switch a splitting switch, we need to add an additional flow entry that forwards the detection packet to all the destinations of all the entries that satisfied the condition of $E$.
+When finding an aggregated group $a_x$, the $a_x$ is initially empty. We start from an arbitrary switch as the starting switch and perform DFS search. While we are looking into a switch $s_y$, we first check if there is any entry which has the match field and value that the detection will match. If so, the entry is selected and added to $a_x$, not matter it is already in other group or not, since the detection packet will match. This may force an undesirable loop at low probability, we will discuss this situation in the second paragraph of \ref{Further_discussion}, for now, let's assume that no such situation exists. If there are more than one such entry, the one with the highest priority will be selected. If no such entry exists, we search on $s_y$ for the entry $E$ which meets the aggregation conditions. That is, the forwarding destination of $E$ is not visited this round and $E$ belong to this group only. To see if $E$ belong to this group only, $E$ should not be used, and neither should the switches the entries are currently in $a_x$ contain any entry that has the same field and column as $E$, which corresponding to the third aggregation condition. If $E$ is found, it is added into $a_x$. Otherwise if we cannot find any $E$, $s_y$ is a leaf switch, and we return to last depth, which is the parent node of $s_y$ in aggregation tree and continue to find another $E$. If there are another entry that fits the requirement of $E$, resulting than more than one $E$ in this depth and making this switch a splitting switch, we need to add an auxiliary entry that forwards the detection packet to all the destinations of all the entries that satisfied the condition of $E$.
 
-Regardless of how the selected entry is chosen, the selected entry forwards to a destination, which might be a switch or a host if $s_y$ is a leaf switch. If the destination is a host, we need to install another new entry on $s_y$ which use Packet_In to send the detection packet to the controller. If it is a switch, we move on to the next depth, treating this switch as $s_y$ and start the above procedure all over again until the detection packet has no more field available, or all the flow entries belong to certain group, and the group finding process for $a_x$ is complete.
+Regardless of how the selected entry is chosen, the selected entry forwards to a destination, which might be a switch or a host. If the destination is a host, the $s_y$ is also a leaf switch, but in this case we need to install an auxiliary entry on $s_y$ which use Packet\_In to send the detection packet to the controller. If it is a switch, we move on to the next depth, treating this switch as $s_y$ and start the above procedure all over again until the detection packet has no more field available, or all the flow entries belong to certain group, and the group finding process for $a_x$ is complete.
 
 The pseudo-code of finding an aggregated group and generating a detection packet is as follows:
 
@@ -107,24 +108,21 @@ grow to left by=1cm, grow to right by=1cm]
       Set of switch, $switches$;  \newline
       Each switch is a set of entries, $switch$;  \newline
       Info of an entry, including match field, value and destination switch, $entry$;  \newline
-      Visited status of every switch in one group finding process, cleared every round, $visited\_switch$;  \newline
+      Visited switch in one group finding process, cleared every round, $visited\_switch$;  \newline
+      Visited entries among all group finding processes, it uses cookie as identifier, $visited\_entry$; \newline
       An under-constructing packet that is initially empty and send after one round of group finding is done, $packet$; \newline
-      In-Degree of every switch that will be alternated dynamically, $switch_in_degree$
+
       
     \Function{find\_aggregated\_groups}{$switches$}
       \State $\textit{group\_id} \gets 0$;
-      \While{not all $switch$ is empty}  
-            \State $\textit{starting\_switch} \gets A\;switch\;with\;max\;\Call{heuristic}{\textit{switch}}\;\forall\;\textit{switch} \in \textit{switches}$;
+      \While{\textit{not all entry is visited}}
+            \State $\textit{starting\_switch} \gets An\;arbitrary\;switch\;with\;unvisited\;entry\;from\textit{switches}$;
             \State $\textit{packet} \gets empty\;dictionary$;   // Cleared per group finding round
             \State $packet[vid] \gets \textit{group\_id}$;   // Use vid as group identifier 
             \State $group\_id \gets \textit{group\_id} + 1$;
-            \State $\textit{packet} \gets \Call{find\_one\_group}{\textit{starting\_switch}, \textit{packet},$visited\_switch$}$;
+            \State $\textit{packet} \gets \Call{find\_one\_group}{\textit{starting\_switch}, \textit{packet}, $visited\_switch, $visited\_entry}$;
             \State $Send\;\textit{packet}\;with\;PACKET\_OUT$;
       \EndWhile
-    \EndFunction
-    \State
-    \Function{heuristic}{$switch$}
-      \State \Return $value$;
     \EndFunction
     \State
   \algstore{find_group}
@@ -137,29 +135,69 @@ grow to left by=1cm, grow to right by=1cm]
 \begin{algorithm}[H]
   \begin{algorithmic}[1]
   \algrestore{find_group}
-    \Function{find\_one\_group}{switch$, packet$, $visited\_switch$}
-      \State $\textit{best\_entry} \gets \textit{entry}\;with\;max\; \Call{heuristic}{\textit{entry}[\textit{dst\_switch}]}\;\forall\;\textit{entry}\;in\;\textit{switch}$
-      \State $such\;that\;\textit{entry}[\textit{dst\_switch}] \notin \textit{visited\_switch}\;and\;\textit{entry}\;fit\;in\;group$;  //get best entry that fits the aggregation conditions;
-      \If{$best\_entry$}  //found an entry that satisfy aggregation condition
-        \State $\textit{packet}[\textit{match\_field}] \gets \textit{match\_value}$;  //add match field to detection packet
-        \State Add $best\_entry$[$dst\_switch$] to $visited\_switch$;
-        \State \Return \Call{packet\_gen}{$match\_field$, $match\_value$, $action$, $packet$};  //no entry in the switch satisfies aggregation condition of this group
+    \Function{find\_one\_group}{switch$, packet$, $visited\_switch$, $visited\_entry$}
+      \State Add $switch$ to $visited\_switch$;
+      \State $\textit max\_priority \gets -1$;  
+      \ForAll{$entry\;in\;switch$}
+        \State $\textit{field, value, priority} \gets extract(\textit{entry})$;
+        \If{$packet[$field$] == value and priority > max\_priority$} //get the one with highest priority
+          \State $\textit{max\_priority} \gets \textit{priority}$;
+          \State $\textit{selected\_entry} \gets \textit{entry}$; 
+        \EndIf
+      \EndFor
+
+      \If{$max\_priority$ == -1}  //found an entry that has field and value already in packet
+        \State Add cookie of $selected\_entry$ to $visited\_entry$;
+        \State $\textit{destination} \gets extract(\textit{entry})$;
+        \If{$destination$ is a host}
+          \State Add auxiliary entry that forward back to the controller;
+          \State \Return;
+        \Else
+          \State Add to aggregated group;
+          \State \Call{find\_one\_group}{$destination$, $packet$, $visited\_switch$, $visited\_entry$}; //move on to next depth
+        \EndIf
       \EndIf
-      \State \Return $packet$;
-    \EndFunction
+  \algstore{find_group}
   \end{algorithmic}
 \end{algorithm}
 \end{tcolorbox}
 
-After finding an aggregated group, the controller will send a detection packet with PACKET\_OUT to the starting switch, and the detection packet will pass the through the switches in the aggregation trees. The detection packets should also meet the dependency requirement stated in the third paragraph of \ref{SDN and OpenFlow}; otherwise, it will not be matched by any flow entry. When it arrives at a splitting switch, it will be duplicated and sent to more than one switch due to the additional flow entry we install on splitting switch. Eventually, when the detection packet reach the last entry in the aggregated group, it will be sent to an end point, which is either a switch that contain no flow entry that matches the aggregation conditions or a host depending on the output port of the last entry. If the end point is a switch, the packet will fail to match any flow entry on that switch and be sent back to the controller due to the table-miss entry, and the switch will become a leaf switch of the aggregation tree. If it is a host, the controller installs a new flow entry on the leaf switch the last entry is on. Either case will notifying the controller that the detection process of this aggregated group is carried out as expected.
+\begin {tcolorbox}[blanker,float=tbp,
+grow to left by=1cm, grow to right by=1cm]
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+  \algrestore{find_group}
+      \State $\textit{output\_set} \gets empty$;  //  the output ports auxiliary entry out to
+      \State $\textit{entry\_fit} \gets empty$;  
+      \ForAll{$entry\;in\;switch$}
+        \State $\textit{field, value, destination, cookie} \gets extract(\textit{entry})$;
+        \If{$cookie$ not in $visited\_entry$ and $destination$ not in $visited\_switch$ and no entry with same field and value exist in $parent\_switch$ for all $\textit{parent\_switch} \in \textit{visited\_switch}$} 
+          //  entry that fit aggregation conditions
+          \State Add to aggregated group;
+          \State $\textit{packet}[\textit{match\_field}] \gets \textit{match\_value}$;  //add match field to detection packet
+          \State Add cookie of $selected\_entry$ to $visited\_entry$;
+          \State Add output port to destination to $output\_set$
+          \If{$destination$ is a host}
+            \State Add auxiliary entry on $switch$ with forwarding action back to the controller;
+            \State \Return;
+          \Else
+            \State \Call{find\_one\_group}{$destination$, $packet$, $visited\_switch$, $visited\_entry$}; // move on to next depth
+          \EndIf
+        \EndIf
+      \EndFor
+      \If{$output\_set$ has more than one element}
+        \State $Add auxiliary entry on \textit{switch} with forwarding action to elements \in 
+        \textit{output\_set}$;
+      \EndIf
+      \State \Return  $packet$;
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+\end{tcolorbox}
 
+After finding the aggregated group $a_x$, the controller will send a detection packet with PACKET\_OUT to the starting switch, and the detection packet will pass the through the switches in the aggregation trees. The detection packets should also meet the dependency requirement stated in the third paragraph of \ref{SDN and OpenFlow}; otherwise, it will not be matched by any flow entry. When it arrives at a splitting switch, it will be duplicated and sent to more than one switch due to the auxiliary entry we install on splitting switch. Eventually, when the detection packet reaches the last entry in $a_x$, it will be sent to a leaf switch which either contains no flow entry in $a_x$ or forwards to a host. In the former case, the packet will fail to match any flow entry on that switch and be sent back to the controller due to the table-miss entry while in the later case the leaf switch will send the detection packet back to the controller by the auxiliary entry. 
 
-Figure~\ref{aggregated_group} illustrates a realistic example with an aggregated group and the content of a detection packet. The flow entries connected by arrows belong to the same group. we have a controller, three switches, $s_a$,$s_b$ and $s_c$, and a detection packet.
-
-XXXXXXX
-
-
-After, the controller sends the detection packet to starting switch. In the example figure,  Only the entries that will be matched are shown. In $s_a$, there is a flow entry that contains match field \texttt{eth\_dst}=\texttt{a2:b4:c6:d8:e0:f1} and an output action to $s_b$. In $s_b$, the flow entry has match fields \texttt{eth\_type}=\texttt{0x800}, \texttt{ipv4\_src}=\texttt{140.123.103.123} and an output action to $s_c$. The \texttt{eth\_type}=\texttt{0x800} is required for a valid IP match field. According to the match fields of these flow entries in the aggregated group, the forged detection packet will contain \texttt{eth\_dst} as \texttt{a2:b4:c6:d8:e0:f1}, \texttt{ipv4\_src} as \texttt{140.123.103.123}.  
+Figure~\ref{aggregated_group} illustrates a realistic example with a complete aggregated group with group id 1 and its corresponding detection packet. We have a controller, three switches, $s_1$, $s_2$ and $s_3$, and a detection packet. $s_1$ is a starting switch as well as a splitting switch. $s_b$ and $s_c$ are leaf switches. The solid lines are the traveling path of detection packet, the dash lines are Packet\_Out and Packet\_In from and to the controller, and the direction of the arrow is the direction that the detection packet is send to. The entries colored with green are the entries that will be matched by the detection packet. Fields of entries other than match field and value is omitted. There are multiple entries on every switch, but only the entries that are in the group. There are three entries on $s_1$: one with match field \texttt{eth\_dst}=\texttt{a2:b4:c6:d8:e0:f1} and an output action to $s_2$, one with match field \texttt{eth\_src}=\texttt{b1:c0:aa:03:51:6b} and an output action to $s_3$, and an auxiliary entry that duplicate the detection packet and send them to $s_2$ and $s_3$. $s_2$ has an entry with match field \texttt{ipv4\_src}=\texttt{140.123.103.123} and an output action to host and also an auxiliary entry that sends the detection packet back to controller. According to the match fields of these flow entries in the aggregated group, the forged detection packet contains \texttt{eth\_src}=\texttt{b1:c0:aa:03:51:6b}, \texttt{eth\_dst}=\texttt{a2:b4:c6:d8:e0:f1}, \texttt{ipv4\_src}=\texttt{140.123.103.123} and \texttt{vid}=\texttt{1}. After, the controller sends the detection packet to $s_a$, it will be duplicated and sent to $s_2$ and $s_3$. Since the entry in $s_2$ direct to a host, the packet will be sent back to the controller by auxiliary entry. And the packet sent to $s_3$ will be sent back by table-miss. The controller sends one packet out and receives two packet since there are two leaf switches.
 
 \begin{figure}[H]
 \begin{center}
@@ -170,23 +208,19 @@ After, the controller sends the detection packet to starting switch. In the exam
 \end{figure}
 
 \subsection{Detection packets checking}
+The controller checks two things to see if the forwarding actions of all entries work as expected. First, when it receives Packet\_In, it checks the vid field of the detection packet. The packet is expected to come back from one of the leaf switches in the aggregated group the vid is associated to. If the vid is not one of the leaf switches, then the controller should raise an alarm. Second, the controller waits for the detection packets to come back. After the time that all the detection packets should arrive, it check all the leaf switches, where the Packet\_Ins expected to come back from, to see if any switch has not send back a Packet\_In as expected, and raises an alarm if there is any. 
 
 \subsection{Further discussion of attack scenario and our method}
 \label{Further_discussion}
-On splitting switches and leaf switches, we install additional flow entries. However, this will make the detection packet matches the newly installed flow entries rather than the original ones. XXXXXXXXXXXXXX
-With egress processing enabled, we are able to add the new flow entry in egress table and let the original entries match first before our new entries. 
+On splitting switches and leaf switches, we install auxiliary entries. However, this will make the detection packet matches auxiliary entries rather than the original ones. To deal with this problem, the egress processing, newly introduced in OpenFlow 1.5 \cite{OF_SPEC_15} should be used. With egress processing enabled, we are able to add the auxiliary entries in egress table, which will be processed after output action and let the original entries match in prior to the auxiliary entries, and no entry will be missed. For the OpenFlow version former than 1.5, we should choose a field for the auxiliary entries that does not conflict to the existing entry in switch it is installed on with high priority to ensure that the auxiliary entries will be matches in prior to other entries.
 
-
-As the result, the original entries was matched, and no entry is missed. 
-
-
-XXXXXXXX\cite{OF_SPEC_15}
+In the second paragraph of \ref{Aggregated_group_finding}, we mentioned that the entry that might force a loop if it contains the match field and value that will the detection packet will match. This happens when it forwards the packet to a parent node in aggregation tree by chance. In reality, there will be mechanisms like spanning tree protocol to deal with the loop problem. However, implementing such mechanism is irrelevant to our method. In our implementation, we remove simply remove the particular switch from the aggregation tree that causes loop. This results in little effect and should make the experiment go on as normal.
 
 The trait of match field mentioned in third paragraph of \ref{SDN and OpenFlow} makes match field aggregation much more complicated. These kind of situations can still be covered by our method with some modification if we manage to resolve the complex conjunctive conditions. Take the entry with multiple match fields for example, if all the fields and values match the under-constructing packet, we process it according to first aggregation rule. Otherwise we fill the packet with all of those match fields. If any match field is already taken with different value, it will be ignored for this turn of aggregation process and fill the match fields in another packet that has no conflict field. However, the main purpose of our method is to show the effectiveness of flow entry aggregation method. We will demonstrate with the most simple condition, which is that every entry has only one matching field and use only one flow table.
 
-It is certainly possible that more than one switch are made by the same manufacturer or have the same software version in the same network, so multiple switches share the same vulnerabilities and may be compromised simultaneously. However, cooperation between multiple compromised switches complicates the scenario significantly. In order to simplify the case as a starting point for developing the detection method, we assume only one switch inside the network is compromised.
+It is certainly possible that more than one switch are made by the same manufacturer or have the same software version in the same network, so multiple switches share the same vulnerabilities and may be compromised simultaneously. However, cooperation between multiple compromised switches complicates the scenario significantly. To simplify the case as a starting point for developing the detection method, we assume only one switch inside the network is compromised.
 
 Suppose an attacker is able to add, remove, or modify the entries in the flow tables of a compromised
-switch without notifying the controller, so packets may be forwarded to an undesired destination. The proposed method is intended to detect this behavior with high efficiency. In this method, only output action of packets is considered. Other actions such as dropping packets, setting field, changing TTL is not included \sout{\red{Cann't they (e.g., dropping packets) be detected?}}. Although there are might be reasonable ways to deal with these actions, for example, to detect packet dropping, we can add timeout checking function, such detection function is irrelevant to our main method and is not implemented in our work.
+switch without notifying the controller, so packets may be forwarded to an undesired destination. The proposed method is intended to detect this behavior with high efficiency. In this method, only output action of packets is considered. Other actions such as dropping packets, setting field, changing TTL is not included. Although there are might be reasonable ways to deal with these actions, for example, to detect packet dropping, we can add timeout checking function, such detection function is irrelevant to our main method and is not implemented in our work.
 
 In this detection method, there is another important consideration: the controller must maintain unpolluted information of all flow entries. It is not reliable for a controller to obtain flow entry information by querying switches because a switch may be malicious and forge a fake response that gives false information about the flow entries. That is the reason for the last statement of attack model. Also mind that the detection packet should not be distinguishable from normal packet, otherwise the attacker will be able to circumvent the detection method. 
