@@ -86,7 +86,6 @@ A detection packet is needed for each aggregated group. In other words, minimizi
 
 As the abstraction of the problem, we treat switches as vertex and forwarding actions of entries as edges. Our goal is to find the minimum number sets of aggregated group such that all entries belong to at least an aggregated group. It forms a complex DAG problem and is more complex than the longest path problem \cite{DMR97,RU04}, which is NP-complete and hard to find a approximation algorithm. Starting from an arbitrary switch, we use DFS to traversal and compose aggregated groups one by one until all the entries belong to at least one group. It can be done in a reasonable amount of time, which will be listed in \ref{Implementation_and_Evaluation}, under the scale of experimental environments.
 
-
 \subsection{Aggregate group finding}
 \label{Aggregated_group_finding}
 
