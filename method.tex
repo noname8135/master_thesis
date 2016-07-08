@@ -80,7 +80,6 @@ The main idea of the method is to assemble a packet that will go through a seque
 \label{flow_entry_detection_flowchart}
 \end{figure}
 
-
 The first aggregation condition is the essential idea of the method: aggregating flow entries this way allows us to forge a packet with multiple fields that match the entries inside the same aggregated group. The second condition is to ensure the detection packet does not get stuck in a loop and never comes back to the controller. The third aggregation condition is also for eliminating loops, we will talk more about it in \ref{Aggregated_group_finding}.
 
 A detection packet is needed for each aggregated group. In other words, minimizing the number of aggregated groups means minimizing the number of detection packets needed, resulting in fast detection. In order to achieve this, we try to increase the number of entries that one detection packet goes through. On a switch, there might be a collection of entries $E$ that suit the aggregation conditions. We can add a new flow entry with multiple forwarding actions. It will duplicate the detection packet and forward them according to the action set. Therefore, the switches the entries in an aggregated group are on and their forwarding actions will form a tree. More detail will be stated in \ref{Aggregated_group_finding}.
