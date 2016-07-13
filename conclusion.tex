@@ -1,18 +1,7 @@
 \chapter{Conclusion and future work}
 \label{conclusion}
-In this work, we can see how the problems in a certain scenario can be solved by using SDN features. Even the scenario is different, we believe that the new problem it introduced can also be solved with some extension and adjustment, as long as we are using SDN.
+In this work, we discuss the hazard that an compromised switch in SDN network may bring. In the scenario we set up, we can see how the problems can be solved by using SDN features. Even the scenario is different, we believe that the new problem it introduced can also be solved with some extension and adjustment with the functionality SDN provides. We propose an effective way that is able to scan through the entire network for disobedient forwarding behavior with less number of packets, and evaluate it under different network topology type, scale and entry number on each switch.
 
+The experimental result demonstrates that our method is effective under a network topology with balance structure. Also, the scale of the network topology does not effect the effeciency significantly, and the aggregation rate grows to 3.48 in fat tree topology once there are 120 entries in each switch. 
 
-We can only try to anticipate what the attackers may try to target with SDNs.  The deployments are new, the protocols are new, the controller software is new, and the history of past SDN attacks is unknown.  Based on the SDN architecture, we can predict where an attacker may be likely to strike.  If we put ourselves in the attacker’s shoes, we might be able to spot a weakness to exploit. Then we can harden that weakness ahead of time.
-
-Before an organization embarks on an SDN deployment project, they should consider how they will secure the system during the early design stage. 
-
-In the future work, 
-
-1. we may also want to figure out a way to detect other types of flow entries.
-
-2. We might also want to take collaboration of multiple compromised switches into consideration.
-
-3. Optimize the algorithm by improving the group finding method. Currently, the group finding method is not the bestXXXXXXX.
-
-4. Considering the situation of multiple flow table and more complex match field condition
+In the future work, more realistic factors should be take into consideration, such as the collaboration of multiple compromised switches, the entries with multiple match fields and wildcard fields. Furthermore, the aggregated group finding method currently performs DFS without any estimation, the core algorithm can be improve by adding heuristic function. Also, as the new versions of OpenFlow release, the method should able to be optimized with the support of the new features. For example, the auxiliary entries can be installed on egress table once it is fully supported.
