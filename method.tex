@@ -63,9 +63,8 @@ The setups will be explained further in next subsection.
 The main idea of the method is to assemble a packet that will go through a sequence of switches by matching the match fields in the flow entries of these switches. Then the packet will be sent into the network, go through the switches, and should be sent back to the controller from expected switches finally if nothing goes wrong. Therefore, the detection packet can check whether the matched flow entries on these switches work as expected or not. For this purpose, we need to find the path that a detection packet should traverse, find the flow entries on each switch with which the packet will be matched, and set the fields in the packet so that it will pass through the switches in order. Because the controller has the network-wise visibility and the policy of all the flow entries, it is able to decide the switches to be involved in an aggregation tree and the detection packet in each run of detection. 
 
 \begin{figure}[H]
-\begin{center} 
+\centering
 \includegraphics[width=1\textwidth]{figures/flow_entry_detection_flowchart.png}
-\end{center}
 \caption{The flow chart of the flow entry detection process.}
 \label{flow_entry_detection_flowchart}
 \end{figure}
