@@ -214,7 +214,6 @@ In this experiment, we will use only one topology -- fat\_tree\_4, and change th
 
 From the trend chart in Figure~\ref{exp_entrynum_trend}, we can clearly see that the aggregation rates grow as the number of entries in the switch increases from 5 to 50 entries per switch. However, the growth rate decreases slowly after 50 entries per switch as the number of entries gets larger. A reasonable explanation for this phenomenon is the limited number of fields in a detection packet. Two fields can be selected at each L2/L3/L4 layer at most. For example, after entries with the match fields ``source IP'' and ``destination IP'', which are both at IP layer, are chosen into an aggregated group, it is impossible to add another entry whose match field is also at IP layer. Hence, a detection packet is able to accommodate no more than 6 fields and values. Since effective aggregation rate means the average number of entries in the aggregated groups, from this perspective, we may infer that the effective aggregation rate should converge at 6 if the number of entries on each switch gets really large. We refer to a packet with 6 fields and values set as a saturated packet.
 
-
 \subsection{Examination and discussion}
 \label{examination_and_discussion}
 
