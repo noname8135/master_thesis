@@ -147,7 +147,7 @@ grow to left by=1cm, grow to right by=1cm]
           \State Add auxiliary entry that forward back to the controller;
           \State \Return $packet$;
         \Else
-          \State Add $entry$ to $aggregated\_group$;
+          \State Add $selected\_entry$ to $aggregated\_group$;
           \State \Call{find\_one\_group}{$destination$, $packet$, $visited\_switch$, $visited\_entry$}; //move on to next depth
         \EndIf
       \EndIf
