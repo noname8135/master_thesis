@@ -402,9 +402,7 @@ We assume the following scenarios of compromising a switch in the threat models:
 \item
 Only one OpenFlow switch is compromised. No cooperation among multiple compromised switches for attacks will happen.
 \item
-Other parts of the network such as the controller, other switches and hosts function normally. Any potential flaw is unintentional and out of the scope of this work.
-\item
-An attacker cannot totally change the way of switch processing or core mechanism, but only perform the attack by modifying flow entries.
+An attacker only perform the attack by modifying flow entries.
 \item
 Initially, the network is clean, and nothing is compromised. The attacks take place some time after the whole network is established.
 \end{enumerate}
@@ -422,14 +420,14 @@ In the same group, the flow entries on different switches either have exactly th
 \item
 A detection packet should not visit a switch more than once.
 \item
-A entry \textit{A} may belong to more than one aggregated group if there exists another flow entry \textit{B} on another switch that \textit{A} and \textit{B} have the same match field and value. Otherwise, \textit{A} belongs to one aggregated group.
+A entry \textit{A} may only belong to more than one aggregated group if there exists another flow entry \textit{B} on another switch that \textit{A} and \textit{B} have the same match field and value.
 \end{enumerate}
 
 \item
-Aggregated groups: A set of entries that satisfy the aggregation conditions. An entry in the group has a forwarding action either to the switch that the next entry is on or a host.
+Aggregated groups: A set of entries that satisfy the aggregation conditions.
 
 \item 
-Aggregation tree: A tree-formated structure representing the packet traversal path of an aggregated group. It contains three types of switches: (1) starting switch: the switch as a starting point for traversal, (2) splitting switches: the switches which have more than one child and are responsible of duplicating the detection packet and sending them to the children, (3) leaf switches: the switches which are the leaves of an aggregation tree.
+Aggregation tree: A tree-formated structure representing the packet traversal path of a detection packet. It contains starting switch: the switch as a starting point for traversal, splitting switches, the switches which have more than one child and are responsible of duplicating the detection packet and sending them to the children and leaf switches, the switches which are the leaves of an aggregation tree.
 
 \item
 Detection packets: It is forged according to the match fields of the flow entries in an aggregated group. The VLAN identifier (vid) of each detection packet is set to the group identifier it is associated with.
@@ -441,7 +439,7 @@ Auxiliary entry: The entry that will be added to splitting switches to duplicate
 \subsubsection{The detection method}
 \label{Detection_method}
 
-The main idea of the method is to assemble a packet that will go through a sequence of switches by matching the match fields in the flow entries of these switches. Then the packet will be sent into the network, go through the switches, and should be sent back to the controller from expected switches finally if nothing goes wrong. Therefore, the detection packet can check whether the matched flow entries on these switches work as expected or not. For this purpose, we need to find the path that a detection packet should traverse, find the flow entries on each switch with which the packet will be matched, and set the fields in the packet so that it will pass through the switches in order. Because the controller has the network-wise visibility and the policy of all the flow entries, it is able to decide the switches to be involved in an aggregation tree and the detection packet in each run of detection. 
+The main idea of the method is to assemble a packet and send it into the network. It goes through the switches, and should be sent back to the controller from expected switches finally if nothing goes wrong. Therefore, the detection packet can check whether the matched flow entries on these switches work as expected or not. For this purpose, we need to find the path that a detection packet should traverse, find the flow entries on each switch with which the packet will be matched, and set the fields in the packet so that it will pass through the switches in order. Because the controller has the network-wise visibility and the policy of all the flow entries, it is able to decide the switches to be involved in an aggregation tree and the detection packet in each run of detection. 
 
 \begin{figure}[ht]
 \centering
@@ -450,9 +448,9 @@ The main idea of the method is to assemble a packet that will go through a seque
 \label{flow_entry_detection_flowchart}
 \end{figure}
 
-The first aggregation condition is the essential idea of the method: aggregating flow entries this way allows us to forge a packet with multiple fields that matches the entries inside the same aggregated group. The second condition is to ensure the detection packet does not get stuck in a loop and never comes back to the controller. The third aggregation condition is also for eliminating loops, we will talk more about it in Section~\ref{Aggregated_group_finding}.
+The first aggregation condition allows us to forge a packet with multiple fields that matches the entries inside the same aggregated group. The second condition is to ensure the detection packet does not get stuck in a loop and never comes back to the controller. The third aggregation condition is also for eliminating loops, we will talk more about it in Section~\ref{Aggregated_group_finding}.
 
-Since a detection packet is needed for each aggregated group, minimizing the number of aggregated groups results in fast detection. Hence, we try to increase the number of entries that one detection packet goes through. On a switch, there may be a collection of entries that suit the aggregation conditions. We can add an auxiliary flow entry. It has multiple forwarding actions that duplicate the detection packet and forward them to the switches on which the next entries in an aggregated group are. More detail will be stated in Section~\ref{Aggregated_group_finding}.
+Since a detection packet is needed for each aggregated group, minimizing the number of aggregated groups results in fast detection. Hence, we try to increase the number of entries that one detection packet goes through. On a switch, there may be a collection of entries that fit the aggregation conditions. We can add an auxiliary flow entry with multiple forwarding actions that duplicate the detection packet and forward them to the switches on which the next entries in an aggregated group are.
 
 As the abstraction of the problem, we treat switches as vertices and forwarding actions as edges. Our goal is to find the minimum number aggregated groups such that all the entries belong to at least an aggregated group. It forms a complex set covering problem for a directed graph. It is more complex than the longest path problem, which is NP-complete. Starting from an arbitrary switch we use depth-first search (DFS) to traverse and compose aggregated groups one by one until all the entries belong to at least one group. 
 
@@ -491,7 +489,7 @@ The flow chart of the flow entry detection process in the controller is shown in
 
 When finding an aggregated group $a_x$ with our recursion function, its corresponding detection packet initially contains no field and value. We start from an arbitrary switch as the starting switch. While we are at a node of the recursion function, we perform the following steps:
 
-\texttt{Step 1.} We check if there is any entry that current detection packet will match. If no such entry exists, we go to step 2. If so, the one with the highest priority will be selected and be added to $a_x$, then we will go into next depth. In this case, an undesirable loop may occur. In reality, there are mechanisms like spanning tree protocol to deal with the loop problem. In our implementation, we simply remove the particular switch from the aggregation tree that causes a loop and continue as if there is no loop. 
+\texttt{Step 1.} If no entry that current detection packet will match exists, we go to step 2. Otherwise the one with the highest priority will be added to $a_x$, then we will go into next depth with destination of the selected entry as node. In this case, an undesirable loop may occur. In reality, there are mechanisms like spanning tree protocol to deal with the loop problem. In our implementation, we simply remove the particular switch from the aggregation tree that causes a loop and continue as if there is no loop.
 
 \texttt{Step 2.}
 We search $s_y$ for the entry $E$ which meets the aggregation conditions. Additionally, the switches on which the entries are already in $a_x$ are should not contain any entry with the same field and value as $E$, otherwise the detection packet might match it and execute its action instead of the action of $E$. This corresponds to the third aggregation condition. If an $E$ is found, it is added into $a_x$. Otherwise, if we cannot find any $E$, $s_y$ becomes a leaf switch, and we return to the parent node of $s_y$ in the aggregation tree and continue to find another entry that matches the requirements of $E$ in the parent node. If more than one entry fit the requirements of $E$, this switch becomes a splitting switch, and we need to add an auxiliary entry that forwards the detection packet to all the forwarding destinations of all these entries.
@@ -500,9 +498,7 @@ We search $s_y$ for the entry $E$ which meets the aggregation conditions. Additi
 The selected entry forwards to a destination that may be a switch or a host. If the destination is a host, the $s_y$ is also a leaf switch, an auxiliary entry will be installed on $s_y$ which use \texttt{Packet\_In} to send the detection packet back to the controller. If it is a switch, we move on to the next depth, treating this switch as $s_y$ and start the above procedure all over again until that all the fields in the detection packet are taken, or all of the flow entries belong to certain group, and the group finding process for $a_x$ is complete.
 
 \texttt{Step 4.}
-After finding the aggregated group $a_x$, the controller will send a detection packet with \texttt{Packet\_Out} to the starting switch, and the detection packet will pass through the switches in the aggregation tree. When it arrives at a splitting switch, it will be duplicated and sent to more than one switches due to the auxiliary entry we installed. Eventually, when the detection packet reaches the last entry in $a_x$, it will be sent to a leaf switch which either contains no flow entry in $a_x$ or a host. In the former case, the packet will be sent back to the controller due to the table-miss entry, while in the later case, the detection packet is sent back by the auxiliary entry.
-
-Suppose the number of all entries in the network be $E$, average number of entries in each switch is $ES$, average number of entries in each aggregated group is $EG$, and number of aggregated groups is $G$. The total time complexity of all aggregated groups finding will be $O(E*ES + ES^2*EG) * EG * G$, which equals to $O(E*S*EG*G + ES^2*EG^2*G)$. Since $G$ \texttt{Packet\_Out}s will be sent, the time for the \texttt{Packet\_In} checking process is between $O(G)$ and $O(G*EG)$.
+After finding the aggregated group $a_x$, the controller sends a detection packet with \texttt{Packet\_Out} to the starting switch, and the packet will pass through the switches in the aggregation tree. When the packet arrives at a splitting switch, it will be duplicated and sent to more than one switches due to the auxiliary entry we installed. Eventually, when the packet reaches the last entry in $a_x$, it will be sent to a leaf switch which either contains no flow entry in $a_x$ or a host. In the former case, the packet will be sent back to the controller due to the table-miss entry, while in the later case, the detection packet is sent back by the auxiliary entry.
 
 \subsubsection{Checking detection packets on the controller}
 The controller checks two things to see if the forwarding actions of all entries work as expected. First, when it receives \texttt{Packet\_In}, it checks the \texttt{vid} field of the detection packet. The packet is expected to come back from one of the leaf switches in the aggregated group the \texttt{vid} is associated with. If the \texttt{vid} is not one of the leaf switches, then the controller should raise an alarm. Second, the controller waits for the detection packets to come back. After the time that all the detection packets should arrive, it checks all the leaf switches, where the \texttt{Packet\_In} is expected to come back from, to see if any switch does not send back a \texttt{Packet\_In} as expected. 
@@ -512,15 +508,15 @@ The controller checks two things to see if the forwarding actions of all entries
 In this chapter, we evaluate the method presented in Chapter 3. First, the environment and the reasons of using them will be explained. Then we will show various experiments and their results.
 
 \subsection{General setup}
-We use the virtual machine provided by Mininet official to simulate the data center network. It comes along with Ryu controller 4.0 and OpenvSwitch 2.5.0. Fast Network Simualtion Setup (FNSS) 0.6.1 is used as the topology generator. We evaluate the effectiveness of the detection method in two-tier topologies, three-tier topologies and fat-tree topologies of various sizes. The numbers in the topology name are parameters such as number of core switches, aggregation switches and edge switches, which characterize the network size, they have the same meaning as the ones in [http://fnss.github.io/doc/core/apidoc/fnss.functions.html\#topologies-package]. The hosts do not have any functionality to the detection method, only a minimal number of them are assumed in the experiment to make the topology reasonable. In a fat-tree topology, the number of hosts is the number of pods divided by 2, while in two-tier and three-tier topologies, one host is connected to each edge switch.
+We use the virtual machine provided by Mininet official to simulate the data center network. It comes along with Ryu controller 4.0 and OpenvSwitch 2.5.0. Fast Network Simualtion Setup (FNSS) 0.6.1 is used as the topology generator. We evaluate the effectiveness of the detection method in two-tier topologies, three-tier topologies and fat-tree topologies of various sizes. The numbers in the topology name are parameters that characterize the network size, they have the same meaning as in [http://fnss.github.io/doc/core/apidoc/fnss.functions.html]. Only a minimal number of hosts are assumed in the experiment to make the topology reasonable. In a fat-tree topology, the number of hosts is the number of pods divided by 2, while in two-tier and three-tier topologies, one host is connected to each edge switch.
 
 The in-band control is used for control channel by default in Mininet. Only one controller is used. The flow entries are installed pro-actively in the OpenFlow switches, and the controller will maintain a record of switches, including ports, links and flow entries. The detection packets from the controller should be sent to a normal port rather than the default controller-specifying port \texttt{OFPP\_CONTROLLER}.
 
-The core algorithm of the flow entry detection method is implemented on the Ryu controller. It keeps topology information and finds aggregated groups, generates raw packets, sends them by \texttt{Packet\_out}, and checks \texttt{Packet\_in} to see if the packets come back as expected. Packets are generated by Ryu's built-in API library. To send \texttt{Packet\_out} with a raw packet, the action should be set to ``forwarding to \texttt{OFPP\_TABLE}'' [http://flowgrammable.org/sdn/openflow/message-layer/packetout/].
+The core algorithm of the flow entry detection method is implemented on the Ryu controller. It keeps topology information and finds aggregated groups, generates raw packets, sends them by \texttt{Packet\_out}, and checks \texttt{Packet\_in} to see if the packets come back as expected. Packets are generated by Ryu's built-in API library. To send \texttt{Packet\_out} with a raw packet, the action should be set to ``forwarding to \texttt{OFPP\_TABLE}'' [http://flowgrammable.org/sdn/openflow/].
 
 \subsection{Flow entry generation}
 \label{flow_entry_generation}
-The chosen protocol fields are source and destination of ethernet, IP, TCP, UDP, icmpv4\_type amd icmpv4\_code. The flow entries are randomly generated, and the Ryu application installs them on the switches. When a flow entry is generated, the script selects a random match field from the set of chosen match fields and an output port, along with random values in a valid range and format. There will be only ``output port\_no'' action in all the flow entries. To make the scenario more realistic, the following setup is considered for flow entry generation:
+The chosen protocol fields are source and destination of ethernet, IP, TCP, UDP, icmpv4\_type amd icmpv4\_code. When a flow entry is generated, the script selects a random match field from the set of chosen match fields and an output port, along with random values in a valid range and format, and controller installs them to the switch. There will be only ``output port\_no'' action in all the flow entries. To make the scenario more realistic, the following setup is considered for flow entry generation:
 
 \begin{itemize}
 \item
@@ -538,10 +534,10 @@ The distribution of TCP ports are based on [http://dkqnkzjkqr9h2.cloudfront.net/
 \section{Experiment and result}
 In this section, we compare the effectiveness of our method in various types of network environments. Each subsection contains an experiment designed for a different purpose. The control variables, including topology type, network scale and number of flow entries on each switch, will be experimented and discussed. 
 
-In the tables in the following subsections, the effective aggregation rate is the total number of entries in the network divided by the total number of groups, and the actual aggregation rate is the total number of entries inside aggregated groups divided by the total number of groups. Since the entries with the same match field and value as some other entries may belong to more than one aggregated group, the total entries in the latter aggregation rate will be more than those in the former aggregation rate. 
+In the tables in the following subsections, the effective aggregation rate is the total number of entries in the network divided by the total number of groups, and the actual aggregation rate is the total number of entries inside aggregated groups divided by the total number of groups. Since the entries may belong to more than one aggregated group, the actual aggregation rate will be larger than effective aggregation rate. 
 
 \subsection{Influence of topology type}
-To see the influence of topology type, we select 8 topologies with 20 switches with 20 entries on each switch. The topologies including one fat-tree topology, three two-tier topologies and four three-tier topologies are listed along with their experimental result in Table~\ref{table:different_topo_type}. 
+To see the influence of topology type, we select 8 topologies with 20 switches with 20 entries on each switch. The topologies including one fat-tree topology, three two-tier topologies and four three-tier topologies. The experimental result is in Table~\ref{table:different_topo_type}. 
 
 \begin{table}
 \centering
@@ -561,10 +557,11 @@ To see the influence of topology type, we select 8 topologies with 20 switches w
 \end{tabular}
 \label{table:different_topo_type}
 \end{table}
+The fat\_tree\_4 has best result while three\_tier\_4\_2\_7 has the worst. Although the average degree number of two-tier topologies is high, there are not as many options as we expect for an aggregated group to choose during entry selection, since the ports for forwarding to the neighbors are uniformly distributed among the entries. Thus the aggregation rates of two-tier topologies are not high.
 
-The area coverage of the trend chart of three\_tier\_4\_2\_7 is apparently larger than fat\_tree\_4, and many groups in three\_tier\_4\_2\_7 contain only one entry. Since the same number of switches and entries is in each topology, it means that the groups of three\_tier\_4\_2\_7 contain more redundant entries caused by the entries with the same match field value. However, the redundant entries should not be the reason for poor aggregation rates in the three-tier topologies, since the difference between effective and actual aggregation rates of the fat-tree topology is even slightly larger than that of the three-tier topology. The problem is induced by the fact that only a few aggregation switches connect all other core switches and edge switches. After a few aggregated groups with many entries are formed, the rest of the entries in the core switches and edge switches are cut off and unable to form another big group. It is even more so in three\_tier\_4\_2\_7, since it only has two aggregation switches. 
+To further analyze the result, we select the most effective one and the least effective one, and find distribution of the number of entries each group contains, which are shown in Figure~\ref{different_topo_distribute}. The x-axis is the number of entries in an aggregated group, and the y-axis is the number of groups that contain the number of entries.
 
-To further analyze the result, we select the most effective one, fat\_tree\_4, and the least effective one, three\_tier\_4\_2\_7, and find the distributions of the number of groups that contain a certain number of entries, which are shown in Figure~\ref{different_topo_distribute}. The x-axis is the number of entries in an aggregated group, and the y-axis is the number of groups that contain a certain number of entries.
+The area between the trend chart of three\_tier\_4\_2\_7 and x-axis is apparently larger than that of fat\_tree\_4, and many groups in three\_tier\_4\_2\_7 contain only one entry. The problem is induced by the fact that only a few aggregation switches connect all other core switches and edge switches. After a few aggregated groups with many entries are formed, the rest of the entries in the core switches and edge switches are cut off and unable to form another big group. It is even more so in three\_tier\_4\_2\_7, since it only has two aggregation switches. 
 
 \begin{figure}[ht]
 \centering 
@@ -574,7 +571,7 @@ To further analyze the result, we select the most effective one, fat\_tree\_4, a
 \end{figure}
 
 \subsection{Influence of network scale}
-To observe how effective our method is for various network scales, various sizes of fat-tree topology will be used. Fat-tree topologies are chosen for this experiment because the other two topology types have influence on the experimental result mostly by the way switches are connected. The parameter $n$ (i.e., the number of pods) ranges from 2 to 14. Since the network scale grows significantly with a larger number of pods, we consider at most 14 pods. There are also 20 entries on each switch. The results are shown in Table~\ref{table:different_scale}, and the trend chart of effective aggregation rates and actual aggregation rates are shown in Figure~\ref{different_scale_rate_trend}.
+To observe the influence of various network scales, different sizes of fat-tree topology will be used. Fat-tree topologies are chosen for this experiment because the other two topology types have influence on the experimental result mostly by the way switches are connected. The parameter $n$ (i.e., the number of pods) ranges from 2 to 14. Since the network scale grows significantly with a larger number of pods, we consider at most 14 pods. There are also 20 entries on each switch. The results are shown in Table~\ref{table:different_scale}, and the trend chart of effective aggregation rates and actual aggregation rates are shown in Figure~\ref{different_scale_rate_trend}.
 
 \begin{table}
 \centering
@@ -594,7 +591,7 @@ To observe how effective our method is for various network scales, various sizes
 \label{table:different_scale}
 \end{table}
 
-In the trend chart of effective and actual aggregation rates in Figure~\ref{different_scale_rate_trend}, the aggregation rates are similar in various sizes of topology except fat\_tree\_2 which has lower aggregation rates due to fewer number of links, and the scale does not have any clear effect on the aggregation rates. Theoretically, there should be positive and negative factors that will influence the aggregation rates. A positive factor, for example, is a larger number of links, which help to raise the chance of adopting an entry into a group if the ratio between the number of forwarding ports and entries are balanced. Some examples of negative factors are more entries to be fit into aggregated groups and more hosts that will stop an aggregated group from extension. The result shows that these factors break even, and the effectiveness of our method will not drop with the increasing topology size on common topology type.
+In the trend chart of effective and actual aggregation rates in Figure~\ref{different_scale_rate_trend}, the aggregation rates are similar in various sizes of topology except fat\_tree\_2 which has lower aggregation rates due to fewer number of links, and the scale does not have any clear effect on the aggregation rates. Theoretically, there should be positive and negative factors that will influence the aggregation rates. The result shows that these factors break even, and the effectiveness of our method will not drop with the increasing topology size on common topology type.
 
 \begin{figure}[ht]
 \centering
@@ -639,18 +636,9 @@ In this experiment, we will use fat\_tree\_4, and change the number of entries o
 
 From the trend chart in Figure~\ref{exp_entrynum_trend}, we can clearly see that the aggregation rates grow as the number of entries in the switch increases from 5 to 50 entries per switch. However, the growth rate decreases as the number of entries gets larger. A reasonable explanation is the limited number of fields in a detection packet. Two fields can be selected at each L2/L3/L4 layer at most, and a detection packet is able to accommodate no more than 6 fields and values. Hence, it is harder to find next entry that fit in the aggregated group if there are more entries in the group.
 
-\subsubsection{Examination and discussion}
-\label{examination_and_discussion}
-
-Before the experiment, we expect that higher degree results in higher aggregation rates. However, according to the result in Table~\ref{table:different_topo_type}, it seems that it is not always true, since the two-tier topologies have the highest average degree overall but has a moderate result. The fat-tree topology has the best result, while the three-tier topologies tend to have the worse result. After tracking down the entries inside the two-tier topologies, we discover that although the number of degrees is high, the ratio between the number of forwarding ports and the number of entries is imbalanced. The ports for forwarding to the neighbors are uniformly distributed among the entries, and they indicate the forwarding paths to choose while finding an aggregated group. There are not as many paths as we expect for an aggregated group to choose during entry selection, and thus the aggregation rates of two-tier topologies are lower than those of the fat-tree topology. 
-
-From the above experiments and analysis, we have the following conclusions. First, although the network scales are the same, the way how the switches are connected to each other leads to significant differences. Second, the network scale does not have clear influence on the efficiency of the detection method. Last but not the least, the more entries there are in the switches, the higher aggregation rates we are able to get; but as the average effective aggregation rate get higher, the aggregation rates grow slower. 
-
 \section{Conclusion}
 \label{conclusion}
-In this work, we discuss the hazard that a compromised switch in SDN may bring. We propose an effective way to scan through the entire network for disobedient forwarding behavior and evaluate it with various network topology types, scales and number of entries on each switch. The experimental result demonstrates that our method is effective in a network topology with balanced structure. The method detects through all the entries in topology ``fat\_tree\_4'' with around 135 packets. Also, the scale of the network topology does not affect the efficiency significantly. the effective aggregation rate grows to 3.48 in a fat-tree topology once there are 120 entries in each switch. In future work, more realistic factors should be taken into consideration, such as the collaboration of multiple compromised switches and the entries with multiple match fields and wildcard fields. Furthermore, the aggregated group finding method performs DFS without any estimation, and the core algorithm can be improved by adding heuristics. Also, as the new versions of OpenFlow are released, the method should be able to be optimized with the support of new features. For example, the auxiliary entries can be installed on the egress table once it is fully supported.
-%We can conclude that the detection method is effective. Moreover, in our experimental environments, the structures are at most three tiers, which means in real-case network structures with more tiers, the method can be even more effective.  
-
+We discussed the hazard that a compromised switch in SDN may bring and propose an effective way to scan  for disobedient forwarding behavior. The method detects through all the entries in topology ``fat\_tree\_4'' with around 135 packets. Also, the scale of the network topology chosen in our experiment does not affect the efficiency significantly. Last but not the least, the more entries there are in the switches, the higher aggregation rates will be; but as the effective aggregation rate get higher, it grows slower. In future work, the core algorithm can be improved by adding heuristics. Also, more realistic situation such as wildcard and multiple match fields should be considered.
 
 % conference papers do not normally have an appendix
 % use section* for acknowledgment
