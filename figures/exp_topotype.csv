@@ -1,0 +1,9 @@
+topology name, Effective aggregation rate, Actual aggregation rate, Execution time(sec), Number of auxiliary entry
+fat_tree_4,2.96,3.27,8.27,142
+two_tier_6_14,1.77,1.82,6.69,262
+two_tier_10_10,2.70,3.04,7.96,182
+two_tier_14_6,2.72,3.81,9.57,109
+three_tier_2_3_5,1.44,1.49,6.23,290
+three_tier_4_2_7,1.35,1.56,6.61,271
+three_tier_4_4_3,1.83,2.03,7.72,232
+three_tier_5_5_2,2.21,2.51,7.63,184
