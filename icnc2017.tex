@@ -352,7 +352,7 @@ Software-defined networking (SDN) allows network administrators to manage networ
 
 \section{Introduction}
 \label{chap:intro}
-Software-defined networking (SDN) is a dynamic, programmable, cost-effective solution that gains great popularity in recent years. A controller can centrally manage the flow rules on the switches in a consistent manner, and network applications can be developed on the controller for flexible management. Nevertheless, SDN often comes with new security threats \cite{SOS13} as new mechanisms such as topology discovery, OpenFlow protocols and application interfaces have been introduced. For example, applications may be malicious, topology discovery mechanisms can be leveraged to launch man-in-the-middle (MITM) or denial-of-service (DoS) attacks, malicious controllers may affect the control channel, and switches may be compromised.
+Software-defined networking (SDN) is a dynamic, programmable, cost-effective solution that gains great popularity in recent years. A controller can centrally manage the flow rules on the switches in a consistent manner, and network applications can be developed on the controller for flexible management. Nevertheless, SDN often comes with new security threats \cite{SOS13}, as new mechanisms such as topology discovery, OpenFlow protocols and application interfaces have been introduced. For example, applications may be malicious, topology discovery mechanisms can be leveraged to launch man-in-the-middle (MITM) or denial-of-service (DoS) attacks, malicious controllers may affect the control channel, and switches may be compromised.
 
 Since Openflow switches lie between the controller and the hosts, an attacker can utilize a number of components to perform attacks. In \cite{HXWG15}, Hong et al. studied the attacks that poison network visibility and the countermeasure, but the situation in which switches are compromised is not considered. A compromised switch is able to modify its own flow entries for malicious behavior like undesired forwarding or packet dropping. It can also connect to a malicious controller and manipulate the control traffic in the way the attacker desires, such as sending forged OpenFlow messages. Another attack type is to exploit the topology discovery mechanism, making the controller into believing the existence of non-existing links.
 
@@ -367,7 +367,7 @@ Proposing a detection method that verifies all the entries inside the network wi
 Evaluating the effectiveness of the method in various scenarios.
 \end{enumerate}
 
-The following sections are organized as follows. Section~\ref{sec:background} covers background knowledge of related technology and discusses possible threats and countermeasures. Section~\ref{sec:method} is about the threat model and the theory behind the detection method. Section~\ref{Implementation_and_Evaluation} describes the implementation and setup for evaluation. Section~\ref{sec:experiment} contains the experimental details including setup, considerations and the results. Finally, the conclusion and future work will be in Section~\ref{conclusion}.
+The remainder of this work is organized as follows. Section~\ref{sec:background} covers background knowledge of related technology and discusses possible threats and countermeasures. Section~\ref{sec:method} is about the threat model and the theory behind the detection method. Section~\ref{Implementation_and_Evaluation} describes the implementation and setup for evaluation. Section~\ref{sec:experiment} contains the experimental details and discussions. Finally, the conclusion and future work will be in Section~\ref{conclusion}.
 
 \section{Background and related work}
 \label{sec:background}
@@ -506,7 +506,7 @@ All the switches have the same number of flow entries.
 The TCP port numbers are distributed based on the statistics in \cite{BREAKDOWN} to make the entries more realistic.
 \end{itemize}
 
-\section{Experiment and result}
+\section{Experimental results}
 \label{sec:experiment}
 In this section, we compare the effectiveness of the detection method in various network environments. Each subsection contains an experiment designed for a different purpose. The control variables, including topology type, network scale and number of flow entries on each switch, will be experimented and discussed. The effective aggregation rate is the total number of entries in the network divided by the total number of groups, and the actual aggregation rate is the total number of entries inside the aggregated groups divided by the total number of groups. Since the entries may belong to more than one aggregated group, the actual aggregation rate will be larger than or equal to the effective aggregation rate. 
 
@@ -672,18 +672,6 @@ M. Antikainen, T. Aura and M. Särelä,
 \bibitem{ARDC14}
 K. Agarwal, E. Rozner, C. Dixon and J. Carter,
 ``SDN traceroute: Tracing SDN Forwarding without Changing Network Behavior,'' In Proc. of the 3rd ACM Workshop on Hot Topics in Software Defined Networking (HotSDN), Aug. 2014.
-
-\bibitem{LAB14}
-L. Schehlmann, A. Sebastian and B. Harald, 
-``Blessing or Curse? Revisiting Security Aspects of Software-defined Networking,'' In Proc. of 10th IEEE International Conference on Network and Service Management (CNSM), Nov. 2014.
-
-\bibitem{KJK}
-A. Khandelwal, N. Jain and S. Kamara,
-``Attacking Data Center Networks from the Inside,'' \url{https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/dcn.pdf}.
- 
-\bibitem{BCKK15}
-R. Bifulco, H. Cui, G. O. Karame and F. Klaedtke,
-``Fingerprinting Software-defined Networks,'' In Proc. of 2015 IEEE 23rd International Conference on Network Protocols (ICNP), Nov. 2015.
 
 \bibitem{FNSS}
 FNSS functions, \url{http://fnss.github.io/doc/core/apidoc/fnss.functions.html}.
